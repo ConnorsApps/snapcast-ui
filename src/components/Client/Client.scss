@@ -1,0 +1,16 @@
+.client {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+
+        svg {
+            font-size: 2rem;
+        }
+    }
+}

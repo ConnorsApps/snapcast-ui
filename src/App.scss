@@ -2,43 +2,4 @@
   background: center;
   background-size: cover;
   height: 100%;
-
-  .group {
-    background: #ffffff79 !important;
-    margin-top: 2rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    height: 10rem;
-
-    .stream {
-      padding-top: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-
-      .volume {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        font-size: 1.5rem;
-      }
-    }
-
-
-    .client {
-      padding-top: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-
-      .title {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1.5rem;
-
-        svg {
-          font-size: 2rem;
-        }
-      }
-    }
-  }
 }
