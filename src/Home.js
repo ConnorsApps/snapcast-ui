@@ -1,3 +1,4 @@
+import './Home.scss';
 import background from './assets/chirag-saini-wkZ_6jkugYM-unsplash.jpg';
 import Loader from './components/Loader/Loader';
 import { useContext } from 'react';
@@ -8,11 +9,11 @@ import { AppContext } from './utils/AppContext';
 const title = process.env.REACT_APP_HOME_TITLE;
 
 const Home = () => {
-    const { groups, streams, isLoading } = useContext(AppContext);
+    const { groups, isLoading } = useContext(AppContext);
 
     return (
         <div
-            className='app'
+            className='home'
             style={{ backgroundImage: `url(${background})` }}
         >
             <AppBar position="static">
@@ -20,14 +21,14 @@ const Home = () => {
                     <h1> {title ?? 'Snapcast Audio'} </h1>
                 </Toolbar>
             </AppBar>
-
-            {groups.map((group, i) =>
-                <Group
-                    key={i}
-                    group={group}
-                />
-            )}
-
+            <div className='groups'>
+                {groups.map((group, i) =>
+                    <Group
+                        key={i}
+                        group={group}
+                    />
+                )}
+            </div>
             <Loader isLoading={isLoading} />
         </div>
     )

@@ -1,4 +1,3 @@
-import './App.scss';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Home from './Home';
 import { AppContextProvider } from './utils/AppContext';
@@ -17,14 +16,12 @@ const theme = createTheme({
   },
 });
 
-function App() {
-
-  return (
-    <ThemeProvider theme={theme}>
-      <AppContextProvider>
-        <Home />
-      </AppContextProvider>
-    </ThemeProvider>);
-}
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <AppContextProvider>
+      <Home />
+    </AppContextProvider>
+  </ThemeProvider>
+);
 
 export default App;

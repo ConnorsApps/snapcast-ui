@@ -1,0 +1,15 @@
+.home {
+    background: center;
+    background-size: cover;
+    height: 100%;
+
+    .groups {
+        margin-left: 5vw;
+        margin-right: 5vw;
+        margin-top: 1rem;
+
+        .group {
+            margin-bottom: 1rem;
+        }
+    }
+}
