@@ -1,47 +1,48 @@
-import { createContext, useEffect, useReducer, useState } from "react";
-
-const host = process.env.REACT_APP_SNAPCAST_HOST;
-const ws = new WebSocket(`${host}/jsonrpc`);
-const request = {
-    'id': 0,
-    'jsonrpc': '2.0',
-    'method': 'Server.GetStatus'
-};
-
-ws.addEventListener('open', () => {
-    console.log("sending");
-    ws.send(JSON.stringify(++request.id && request))
-});
+import { createContext, useEffect, useReducer, useState } from 'react';
+import { EVENTS, REQUESTS } from './Constants.js';
+import { groupsReducer, streamsReducer, ws, requests } from './WebSocket.js';
 
 export const AppContext = createContext(null);
 
-// const groupsReducer = (state, action) =>{
-    // switch (action.type) {
-// }
-
 export const AppContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [streams, setStreams] = useState({});
     const [server, setServer] = useState([]);
-    const [groups, setGroups] = useState([]);
-    // const [groups, disbatchGroups] = useReducer()
+    const [groups, disbatchGroups] = useReducer(groupsReducer, {});
+    const [streams, disbatchStreams] = useReducer(streamsReducer, {});
 
     useEffect(() => {
         ws.addEventListener('message', (message) => {
-            const data = JSON.parse(message.data).result.server;
-            console.log("data",data)
-            const streams = {};
-            
-            data.streams.map(stream => streams[stream.id] = stream);
+            const data = JSON.parse(message.data);
+            const isRequest = data.id !== undefined;
 
-            setStreams(streams);
-            setServer(data.server);
-            setGroups(data.groups);
+            if (isRequest) {
+                const event = requests[data.id];
+                const result = data.result;
 
-            setIsLoading(false);
+                if (event === REQUESTS.server.getStatus) {
+                    const streams = {};
+
+                    result.server.streams.map(stream => streams[stream.id] = stream);
+
+                    setServer(result.server.server);
+                    disbatchStreams({ type: 'init', streams });
+                    disbatchGroups({ type: 'init', groups: result.server.groups });
+
+                    setIsLoading(false);
+                }
+            } else {
+                const event = data.method;
+                const params = data.params;
+
+                if (EVENTS.client.onVolumeChanged) {
+                    console.log('params', params);
+
+                } else {
+                    console.log("event", event);
+                }
+            }
         });
 
-        
         ws.onerror = (event) => console.error(event);
     }, []);
 
@@ -52,6 +53,8 @@ export const AppContextProvider = ({ children }) => {
                 server,
                 groups,
                 isLoading,
+                disbatchStreams,
+                disbatchGroups,
             }}
         >
             {children}

@@ -11,6 +11,8 @@ const title = process.env.REACT_APP_HOME_TITLE;
 const Home = () => {
     const { groups, isLoading } = useContext(AppContext);
 
+    const groupList = Object.values(groups ?? {});
+
     return (
         <div
             className='home'
@@ -22,7 +24,7 @@ const Home = () => {
                 </Toolbar>
             </AppBar>
             <div className='groups'>
-                {groups.map((group, i) =>
+                {groupList.map((group, i) =>
                     <Group
                         key={i}
                         group={group}
