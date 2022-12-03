@@ -1,18 +1,14 @@
-
+import background from './assets/chirag-saini-wkZ_6jkugYM-unsplash.jpg';
 import Loader from './components/Loader/Loader';
 import { useContext } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
-import background from './assets/chirag-saini-wkZ_6jkugYM-unsplash.jpg';
-
-import Stream from './components/Stream/Stream';
-import Client from './components/Client/Client';
 import Group from './components/Group/Group';
 import { AppContext } from './utils/AppContext';
 
 const title = process.env.REACT_APP_HOME_TITLE;
 
 const Home = () => {
-    const state = useContext(AppContext);
+    const { groups, streams, isLoading } = useContext(AppContext);
 
     return (
         <div
@@ -25,12 +21,15 @@ const Home = () => {
                 </Toolbar>
             </AppBar>
 
-            <Group>
-                <Stream name='Spotify' />
-                <Client />
-            </Group>
-            
-            <Loader isLoading={state.isLoading} />
-        </div>)
+            {groups.map((group, i) =>
+                <Group
+                    key={i}
+                    group={group}
+                />
+            )}
+
+            <Loader isLoading={isLoading} />
+        </div>
+    )
 };
 export default Home;

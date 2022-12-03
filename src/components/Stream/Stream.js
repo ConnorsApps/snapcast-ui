@@ -2,12 +2,12 @@ import { useState } from 'react';
 import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import './Stream.scss';
 
-const Stream = ({ name }) => {
+const Stream = ({ id }) => {
     const [volume, setVolume] = useState(0);
     const [muted, setMuted] = useState(false);
     
     return <div className='stream'>
-        <p> {name} </p>
+        <p> {id} </p>
 
         <VolumeSlider
             volume={volume}

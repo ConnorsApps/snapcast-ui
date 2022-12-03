@@ -5,9 +5,10 @@ import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import { useState } from 'react';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 
-const Client = () => {
+const Client = ({ client }) => {
     const [volume, setVolume] = useState(0);
     const [muted, setMuted] = useState(false);
+    console.log("client",client);
 
     return <Paper className='client'>
         <div className='topRow'>
