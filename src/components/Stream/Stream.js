@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import VolumeSlider from '../VolumeSlider/VolumeSlider';
+import { useContext } from 'react';
+import { AppContext } from '../../utils/AppContext';
+import PlayingLoader from '../PlayingLoader/PlayingLoader';
 import './Stream.scss';
 
 const Stream = ({ id }) => {
-    const [volume, setVolume] = useState(0);
-    const [muted, setMuted] = useState(false);
-    
-    return <div className='stream'>
-        <p> {id} </p>
 
-        <VolumeSlider
-            volume={volume}
-            setVolume={setVolume}
-            muted={muted}
-            setMuted={setMuted}
-        />
-    </div>
+    const { streams } = useContext(AppContext);
+    const stream = streams[id];
+    const name = stream?.uri?.query?.name || stream.id;
+    console.log("stream", stream);
+
+    return (
+        <div className='stream'>
+            <p> {name} </p>
+            {stream.status === 'playing' && <PlayingLoader />}
+            {stream.status === 'idle' && 'idle'}
+        </div>
+    );
 };
 
 

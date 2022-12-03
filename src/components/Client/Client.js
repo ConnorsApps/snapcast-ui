@@ -6,22 +6,20 @@ import { useState } from 'react';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 
 const Client = ({ client }) => {
-    const [volume, setVolume] = useState(0);
-    const [muted, setMuted] = useState(false);
-    console.log("client",client);
+    // console.log("client",client);
+    const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
+    const [volume, setVolume] = useState(client.config.volume);
 
     return <Paper className='client'>
         <div className='topRow'>
             <div className='title'>
                 <BsFillSpeakerFill />
-                <p> Outside </p>
+                <p> {name} </p>
 
             </div>
             <VolumeSlider
                 volume={volume}
                 setVolume={setVolume}
-                muted={muted}
-                setMuted={setMuted}
             />
         </div>
 

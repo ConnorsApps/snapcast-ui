@@ -8,26 +8,36 @@ const request = {
     'method': 'Server.GetStatus'
 };
 
+ws.addEventListener('open', () => {
+    console.log("sending");
+    ws.send(JSON.stringify(++request.id && request))
+});
+
 export const AppContext = createContext(null);
 
 export const AppContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [streams, setStreams] = useState([]);
+    const [streams, setStreams] = useState({});
     const [server, setServer] = useState([]);
     const [groups, setGroups] = useState([]);
 
     useEffect(() => {
         ws.addEventListener('message', (message) => {
             const data = JSON.parse(message.data).result.server;
+            console.log("data",data)
+            const streams = {};
+            
+            data.streams.map(stream => streams[stream.id] = stream);
 
-            setStreams(data.streams);
+            setStreams(streams);
             setServer(data.server);
             setGroups(data.groups);
 
             setIsLoading(false);
         });
 
-        ws.addEventListener('open', () => ws.send(JSON.stringify(++request.id && request)));
+        
+        ws.onerror = (event) => console.error(event);
     }, []);
 
     return (

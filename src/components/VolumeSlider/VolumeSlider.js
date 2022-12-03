@@ -3,36 +3,37 @@ import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-i
 import { Slider } from '@mui/material';
 import './VolumeSlider.scss';
 
-const VolumeIcon = ({ volume, muted }) => {
-    if (volume === 0 || muted) {
+const VolumeIcon = ({ percent, muted }) => {
+    if (percent === 0 || muted) {
         return <IoVolumeMute className='icon' />;
-    } else if (volume < 30) {
+    } else if (percent < 30) {
         return <IoVolumeLow className='icon' />;
-    } else if (volume < 60) {
+    } else if (percent < 60) {
         return <IoVolumeMedium className='icon' />;
     } else {
         return <IoVolumeHigh className='icon' />;
     }
 }
 
-const VolumeSlider = ({ volume, setVolume, muted, setMuted, color = 'secondary' }) => {
-    const handleChange = (_, newValue) => setVolume(newValue);
+const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
+    const handleChange = (_, newValue) => setVolume({ percent: newValue, muted: volume.muted });
+
 
     return <div className='volume-slider'>
         <button
-            onClick={()=>setMuted(!muted)}
+            onClick={() => setVolume({ percent: volume.percent, muted: !volume.muted })}
         >
             <VolumeIcon
-                volume={volume}
-                muted={muted}
+                percent={volume.percent}
+                muted={volume.muted}
             />
         </button>
 
         <Slider
-            value={volume}
+            value={volume.percent}
             onChange={handleChange}
             color={color}
-            disabled={muted}
+            disabled={volume.muted}
         />
     </div>
 }
