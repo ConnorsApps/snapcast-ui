@@ -21,7 +21,6 @@ const Stream = ({ id }) => {
     const { streams } = useContext(AppContext);
     const stream = streams[id];
     const name = stream?.uri?.query?.name || stream.id;
-    console.log("stream", stream);
 
     const artData = stream?.properties?.metadata?.artData;
     return (

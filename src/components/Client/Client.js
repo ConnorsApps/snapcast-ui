@@ -8,7 +8,9 @@ import { MdOutlineDragIndicator } from 'react-icons/md';
 const Client = ({ client }) => {
     // console.log("client",client);
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
-    const [volume, setVolume] = useState(client.config.volume);
+    const setVolume = (volume) =>{
+        console.log("setVolume",volume)
+    }
 
     return <Paper className='client'>
         <div className='topRow'>
@@ -18,7 +20,7 @@ const Client = ({ client }) => {
 
             </div>
             <VolumeSlider
-                volume={volume}
+                volume={client.config.volume}
                 setVolume={setVolume}
             />
         </div>

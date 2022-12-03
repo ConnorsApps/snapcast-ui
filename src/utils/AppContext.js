@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 
 const host = process.env.REACT_APP_SNAPCAST_HOST;
 const ws = new WebSocket(`${host}/jsonrpc`);
@@ -15,11 +15,16 @@ ws.addEventListener('open', () => {
 
 export const AppContext = createContext(null);
 
+// const groupsReducer = (state, action) =>{
+    // switch (action.type) {
+// }
+
 export const AppContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [streams, setStreams] = useState({});
     const [server, setServer] = useState([]);
     const [groups, setGroups] = useState([]);
+    // const [groups, disbatchGroups] = useReducer()
 
     useEffect(() => {
         ws.addEventListener('message', (message) => {
