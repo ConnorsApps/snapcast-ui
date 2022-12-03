@@ -6,6 +6,7 @@ import background from './assets/chirag-saini-wkZ_6jkugYM-unsplash.jpg';
 import Stream from './components/Stream/Stream';
 import Client from './components/Client/Client';
 import Group from './components/Group/Group';
+import { AppContextProvider } from './utils/AppContext';
 
 const title = process.env.REACT_APP_HOME_TITLE;
 
@@ -27,18 +28,20 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='app' style={{ backgroundImage: `url(${background})` }}>
-        <AppBar position="static">
-          <Toolbar variant="regular">
-            <h1> {title ?? 'Snapcast Audio'} </h1>
-          </Toolbar>
-        </AppBar>
+      <AppContextProvider>
+        <div className='app' style={{ backgroundImage: `url(${background})` }}>
+          <AppBar position="static">
+            <Toolbar variant="regular">
+              <h1> {title ?? 'Snapcast Audio'} </h1>
+            </Toolbar>
+          </AppBar>
 
-        <Group>
-          <Stream name='Spotify' />
-          <Client />
-        </Group>
-      </div>
+          <Group>
+            <Stream name='Spotify' />
+            <Client />
+          </Group>
+        </div>
+      </AppContextProvider>
     </ThemeProvider>);
 }
 
