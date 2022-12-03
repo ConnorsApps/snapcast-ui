@@ -1,14 +1,7 @@
 import './App.scss';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AppBar, Toolbar } from '@mui/material';
-import background from './assets/chirag-saini-wkZ_6jkugYM-unsplash.jpg';
-
-import Stream from './components/Stream/Stream';
-import Client from './components/Client/Client';
-import Group from './components/Group/Group';
+import Home from './Home';
 import { AppContextProvider } from './utils/AppContext';
-
-const title = process.env.REACT_APP_HOME_TITLE;
 
 const theme = createTheme({
   typography: {
@@ -29,18 +22,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppContextProvider>
-        <div className='app' style={{ backgroundImage: `url(${background})` }}>
-          <AppBar position="static">
-            <Toolbar variant="regular">
-              <h1> {title ?? 'Snapcast Audio'} </h1>
-            </Toolbar>
-          </AppBar>
-
-          <Group>
-            <Stream name='Spotify' />
-            <Client />
-          </Group>
-        </div>
+        <Home />
       </AppContextProvider>
     </ThemeProvider>);
 }
