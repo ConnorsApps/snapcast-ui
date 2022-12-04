@@ -6,8 +6,11 @@ import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
 
 const Group = ({ group }) => {
-    const { streams } = useContext(AppContext);
-    const clients = group.clients.filter(client => client.connected);
+    const { streams, clients: allClients } = useContext(AppContext);
+    
+    const clients = Object.values(allClients)
+        .filter(client => client.connected)
+        .filter(client => client.groupId === group.id);
 
     const streamList = Object.values(streams);
 

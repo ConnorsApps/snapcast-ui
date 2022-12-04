@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer, useState } from 'react';
 import { EVENTS, REQUESTS } from './Constants.js';
-import { groupsReducer, streamsReducer, ws, requests } from './WebSocket.js';
+import { groupsReducer, streamsReducer, clientsReducer, ws, requests } from './WebSocket.js';
 
 export const AppContext = createContext(null);
 
@@ -9,6 +9,7 @@ export const AppContextProvider = ({ children }) => {
     const [server, setServer] = useState([]);
     const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
+    const [clients, disbatchClients] = useReducer(clientsReducer, {})
 
     useEffect(() => {
         ws.addEventListener('message', (message) => {
@@ -28,14 +29,23 @@ export const AppContextProvider = ({ children }) => {
                     disbatchStreams({ type: 'init', streams });
                     disbatchGroups({ type: 'init', groups: result.server.groups });
 
+                    const clients = {};
+                    result.server.groups.forEach(group => group.clients.forEach(client => {
+                        clients[client.id] = { ...client, groupId: group.id }
+                    }));
+
+                    disbatchClients({ type: 'init', clients });
+
                     setIsLoading(false);
                 }
             } else {
                 const event = data.method;
                 const params = data.params;
 
-                if (EVENTS.client.onVolumeChanged) {
-                    console.log('params', params);
+                if (event === EVENTS.client.onVolumeChanged) {
+                    disbatchClients({ type: event, params });
+
+                    // console.log('params', params);
 
                 } else {
                     console.log("event", event);
@@ -52,6 +62,7 @@ export const AppContextProvider = ({ children }) => {
                 streams,
                 server,
                 groups,
+                clients,
                 isLoading,
                 disbatchStreams,
                 disbatchGroups,

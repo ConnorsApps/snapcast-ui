@@ -1,4 +1,4 @@
-import { REQUESTS } from "./Constants";
+import { EVENTS, REQUESTS } from "./Constants";
 
 const host = process.env.REACT_APP_SNAPCAST_HOST;
 
@@ -20,7 +20,7 @@ ws.addEventListener('open', () => sendRequest(REQUESTS.server.getStatus));
 export const groupsReducer = (state, action) => {
     switch (action.type) {
         case 'init':
-            return  action.groups;
+            return action.groups;
         default:
             throw new Error('Unknown action ' + action.type);
     }
@@ -29,6 +29,19 @@ export const streamsReducer = (state, action) => {
     switch (action.type) {
         case 'init':
             return action.streams;
+        default:
+            throw new Error('Unknown action ' + action.type);
+    }
+}
+export const clientsReducer = (state, action) => {
+    switch (action.type) {
+        case 'init':
+            return action.clients;
+        case EVENTS.client.onVolumeChanged:
+            const params = action.params;
+            state[params.id].volume = params.volume;
+            // console.log("state", state);
+            return state;
         default:
             throw new Error('Unknown action ' + action.type);
     }
