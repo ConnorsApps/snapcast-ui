@@ -18,24 +18,24 @@ const VolumeIcon = ({ percent, muted }) => {
 const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
     const handleChange = (_, newValue) => setVolume({ percent: newValue, muted: volume.muted });
 
+    return (
+        <div className='volume-slider'>
+            <button
+                onClick={() => setVolume({ percent: volume.percent, muted: !volume.muted })}
+            >
+                <VolumeIcon
+                    percent={volume.percent}
+                    muted={volume.muted}
+                />
+            </button>
 
-    return <div className='volume-slider'>
-        <button
-            onClick={() => setVolume({ percent: volume.percent, muted: !volume.muted })}
-        >
-            <VolumeIcon
-                percent={volume.percent}
-                muted={volume.muted}
+            <Slider
+                value={volume.percent}
+                onChange={handleChange}
+                color={color}
+                disabled={volume.muted}
             />
-        </button>
-
-        <Slider
-            value={volume.percent}
-            onChange={handleChange}
-            color={color}
-            disabled={volume.muted}
-        />
-    </div>
+        </div>)
 }
 
 export default VolumeSlider;

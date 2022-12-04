@@ -9,7 +9,7 @@ export const AppContextProvider = ({ children }) => {
     const [server, setServer] = useState([]);
     const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
-    const [clients, disbatchClients] = useReducer(clientsReducer, {})
+    const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
     useEffect(() => {
         ws.addEventListener('message', (message) => {

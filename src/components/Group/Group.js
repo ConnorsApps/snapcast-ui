@@ -6,11 +6,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
 
 const Group = ({ group }) => {
-    const { streams, clients: allClients } = useContext(AppContext);
-    
-    const clients = Object.values(allClients)
-        .filter(client => client.connected)
-        .filter(client => client.groupId === group.id);
+    const { streams } = useContext(AppContext);
 
     const streamList = Object.values(streams);
 
@@ -39,12 +35,14 @@ const Group = ({ group }) => {
                     </MenuItem>
                 ))}
             </Select>
-            {clients.map((client, i) =>
-                <Client
-                    client={client}
-                    key={i}
-                />
-            )}
+            {group.clients
+                .filter(client => client.connected)
+                .map((client, i) =>
+                    <Client
+                        id={client.id}
+                        key={i}
+                    />
+                )}
         </Paper>
     )
 }

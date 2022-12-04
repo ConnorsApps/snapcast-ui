@@ -39,9 +39,9 @@ export const clientsReducer = (state, action) => {
             return action.clients;
         case EVENTS.client.onVolumeChanged:
             const params = action.params;
-            state[params.id].volume = params.volume;
-            // console.log("state", state);
-            return state;
+            state[params.id].config.volume = params.volume;
+
+            return { ...state };
         default:
             throw new Error('Unknown action ' + action.type);
     }
