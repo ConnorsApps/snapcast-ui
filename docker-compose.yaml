@@ -1,0 +1,11 @@
+services:
+    app:
+        container_name: snapcast-ui
+        image: snapcast-ui
+        build:
+            context: .
+            args: 
+              REACT_APP_HOME_TITLE: "Home Audio"
+              REACT_APP_SNAPCAST_HOST: "ws://192.168.1.19:1780"
+        ports:
+            - "8080:8080"
