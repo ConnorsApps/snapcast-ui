@@ -4,14 +4,33 @@ import Stream from '../Stream/Stream';
 import Client from '../Client/Client';
 import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
+import { REQUESTS } from '../../utils/Constants';
+import { VolumeIcon } from '../VolumeSlider/VolumeSlider';
 
 const Group = ({ group }) => {
-    const { streams } = useContext(AppContext);
+    const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);
 
     const streamList = Object.values(streams);
 
-    const handleChange = (event) => {
-        // setAge(event.target.value);
+    const clients = Object.values(allClients)
+        .filter(client => client.groupId === group.id)
+        .filter(clients => clients.connected);
+
+    const setStream = (event) => {
+        const selectedStream = event.target.value;
+        const params = { id: group.id, stream_id: selectedStream };
+
+        if (selectedStream !== group.stream_id)
+            disbatchGroups({ type: REQUESTS.group.setStream, params });
+    };
+
+    if (clients.length === 0) {
+        return <></>;
+    };
+
+    const toggleMute = () => {
+        const params = { id: group.id, mute: !group.mute };
+        disbatchGroups({ type: REQUESTS.group.setMute, params })
     };
 
     return (
@@ -19,32 +38,46 @@ const Group = ({ group }) => {
             className='group'
             elevation={3}
         >
-            <Select
-                value={group.stream_id}
-                onChange={handleChange}
-                className='streamSelector'
-            >
-                {streamList.map((stream, i) => (
-                    <MenuItem
-                        value={stream.id}
-                        key={i}
-                    >
-                        <Stream
-                            id={stream.id}
-                        />
-                    </MenuItem>
-                ))}
-            </Select>
-            {group.clients
-                .filter(client => client.connected)
-                .map((client, i) =>
-                    <Client
-                        id={client.id}
-                        key={i}
+            <div className='groupInfo'>
+                <Select
+                    value={group.stream_id}
+                    onChange={setStream}
+                    className='streamSelector'
+                >
+                    {streamList.map((stream, i) => (
+                        <MenuItem
+                            value={stream.id}
+                            divider={true}
+                            sx={{ padding: '1rem' }}
+                            key={i}
+                        >
+                            <Stream
+                                id={stream.id}
+                            />
+                        </MenuItem>
+                    ))}
+                </Select>
+                <button
+                    onClick={toggleMute}
+                    className='volumeIcon'
+                >
+                    <VolumeIcon
+                        muted={group.mute}
                     />
-                )}
+                </button>
+            </div>
+            <div className={`clients ${group.mute ? 'groupMuted' : ''}`}>
+                {clients
+                    .filter(client => client.connected)
+                    .map((client, i) =>
+                        <Client
+                            id={client.id}
+                            key={i}
+                        />
+                    )}
+            </div>
         </Paper>
     )
-}
+};
 
 export default Group;

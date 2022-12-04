@@ -22,12 +22,16 @@ export const AppContextProvider = ({ children }) => {
 
                 if (event === REQUESTS.server.getStatus) {
                     const streams = {};
-
                     result.server.streams.map(stream => streams[stream.id] = stream);
 
                     setServer(result.server.server);
+
                     disbatchStreams({ type: 'init', streams });
-                    disbatchGroups({ type: 'init', groups: result.server.groups });
+
+                    const groups = {};
+                    result.server.groups.map(group => groups[group.id] = group);
+
+                    disbatchGroups({ type: 'init', groups });
 
                     const clients = {};
                     result.server.groups.forEach(group => group.clients.forEach(client => {
@@ -66,6 +70,7 @@ export const AppContextProvider = ({ children }) => {
                 isLoading,
                 disbatchStreams,
                 disbatchGroups,
+                disbatchClients,
             }}
         >
             {children}

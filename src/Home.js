@@ -11,7 +11,7 @@ const title = process.env.REACT_APP_HOME_TITLE;
 const Home = () => {
     const { groups, isLoading } = useContext(AppContext);
 
-    const groupList = Object.values(groups ?? {});
+    const groupList = Object.values(groups ?? {});    
 
     return (
         <div

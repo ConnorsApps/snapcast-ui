@@ -3,7 +3,7 @@ import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-i
 import { Slider } from '@mui/material';
 import './VolumeSlider.scss';
 
-const VolumeIcon = ({ percent, muted }) => {
+export const VolumeIcon = ({ percent, muted }) => {
     if (percent === 0 || muted) {
         return <IoVolumeMute className='icon' />;
     } else if (percent < 30) {

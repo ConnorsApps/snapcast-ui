@@ -5,14 +5,15 @@ import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import { useContext } from 'react';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 import { AppContext } from '../../utils/AppContext';
+import { REQUESTS } from '../../utils/Constants';
 
 const Client = ({ id }) => {
-    const { clients } = useContext(AppContext);
+    const { clients, disbatchClients } = useContext(AppContext);
     const client = clients[id];
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
 
     const setVolume = (volume) => {
-        console.log("setVolume", volume);
+        disbatchClients({ type: REQUESTS.client.setVolume, params: { id, volume } });
     };
 
     return (

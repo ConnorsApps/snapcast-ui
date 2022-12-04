@@ -1,7 +1,21 @@
 .group {
     background: #ffffff79 !important;
 
-    .streamSelector {
-        min-width: 50%;
+    .groupInfo {
+        display: flex;
+        align-items: center;
+
+        .streamSelector {
+            min-width: 50%;
+        }
+        
+        .volumeIcon {
+            padding: 1rem;
+            font-size: 2rem;
+        }
+    }
+
+    .groupMuted {
+        opacity: .3;
     }
 }
