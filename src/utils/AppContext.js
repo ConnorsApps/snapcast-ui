@@ -66,7 +66,6 @@ export const AppContextProvider = ({ children }) => {
             const params = data.params;
 
             if (event === EVENTS.client.onVolumeChanged) {
-                console.log('onVolumeChanged');
                 disbatchClients({ type: event, params });
 
                 // console.log('params', params);

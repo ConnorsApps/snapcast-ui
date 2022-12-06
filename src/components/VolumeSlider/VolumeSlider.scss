@@ -3,9 +3,11 @@
     align-items: center;
     gap: 1rem;
     font-size: 1.5rem;
+    user-select: none;
 
     .icon {
         font-size: 2rem;
         color: black;
+        user-select: none;
     }
 }

@@ -16,7 +16,13 @@ export const VolumeIcon = ({ percent, muted }) => {
 }
 
 const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
-    const handleChange = (_, newValue) => setVolume({ percent: newValue, muted: volume.muted });
+    const handleChange = (event, newValue) => {
+        // Slider component workaround for safari https://github.com/mui/material-ui/issues/31869
+        if (event.type === 'mousedown') {
+            return;
+        }
+        setVolume({ percent: newValue, muted: volume.muted })
+    };
 
     return (
         <div className='volume-slider'>
