@@ -17,11 +17,11 @@ const theme = createTheme({
 });
 
 const App = () => (
-  <ThemeProvider theme={theme}>
-    <AppContextProvider>
+  <AppContextProvider>
+    <ThemeProvider theme={theme}>
       <Home />
-    </AppContextProvider>
-  </ThemeProvider>
+    </ThemeProvider>
+  </AppContextProvider>
 );
 
 export default App;
