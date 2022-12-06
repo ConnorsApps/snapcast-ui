@@ -1,13 +1,13 @@
 import { EVENTS, REQUESTS } from "./Constants";
-
 const host = process.env.REACT_APP_SNAPCAST_HOST;
 
 export const ws = new WebSocket(`${host}/jsonrpc`);
+ws.addEventListener('open', () => sendRequest(REQUESTS.server.getStatus, null, true));
 
 let requestId = 0;
 export const requests = {};
 
-const sendRequest = (method, params, saveRequest) => {
+export const sendRequest = (method, params, saveRequest) => {
     if (saveRequest)
         requests[requestId] = method;
 
@@ -16,7 +16,6 @@ const sendRequest = (method, params, saveRequest) => {
     requestId++;
 }
 
-ws.addEventListener('open', () => sendRequest(REQUESTS.server.getStatus, null, true));
 
 export const groupsReducer = (state, action) => {
     const params = action.params;
