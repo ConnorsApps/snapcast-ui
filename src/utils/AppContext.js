@@ -25,7 +25,7 @@ const waitForWebsocket = (ws, callback, iterations) => {
         throw new Error('Unable to connect to server');
     }
     setTimeout(() => {
-        if (ws.readyState == 1) {
+        if (ws.readyState === 1) {
             callback();
         } else {
             waitForWebsocket(ws, callback, ++iterations);
@@ -66,6 +66,7 @@ export const AppContextProvider = ({ children }) => {
             const params = data.params;
 
             if (event === EVENTS.client.onVolumeChanged) {
+                console.log('onVolumeChanged');
                 disbatchClients({ type: event, params });
 
                 // console.log('params', params);
