@@ -1,0 +1,17 @@
+FROM debian:bullseye
+
+WORKDIR /app
+
+RUN apkArch="$(apk --print-arch)"; \
+    case "$apkArch" in \
+    armhf) wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb -o ./snapcast ;; \
+    x86) wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb -o ./snapcast ;; \
+    esac;
+
+RUN apt install ./snapcast -y
+
+COPY .docker/snapserver.conf /etc/snapserver.conf
+
+RUN systemctl start snapserver
+RUN systemctl enable snapserver
+RUN systemctl restart snapserver

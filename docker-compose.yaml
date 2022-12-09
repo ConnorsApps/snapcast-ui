@@ -1,11 +1,22 @@
 services:
-    app:
-        container_name: snapcast-ui
-        image: snapcast-ui
+    # frontend:
+    #     container_name: snapcast-ui
+    #     image: snapcast-ui
+    #     env_file:
+    #         - "./.env"
+    #     build:
+    #         context: .
+    #         dockerfile: .docker/DockerfileLocal
+    #     ports:
+    #         - "3000:3000"
+    #     volumes:
+    #       - "/app/node_modules"
+    #       - "./:/app/"
+    snapcastServer:
+        container_name: snapcast-server
+        image: snapcast-server
         build:
             context: .
-            args: 
-              REACT_APP_HOME_TITLE: "Home Audio"
-              REACT_APP_SNAPCAST_HOST: "ws://192.168.1.19:1780"
+            dockerfile: .docker/DockerfileSnapcastServer
         ports:
-            - "8080:8080"
+            - "1780:1780"
