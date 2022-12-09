@@ -8,10 +8,11 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#fafafa'
+      main: '#040E21',
+      contrastText: "#fff"
     },
     secondary: {
-      main: '#26c6da',
+      main: '#FBBA89',
     },
   },
 });

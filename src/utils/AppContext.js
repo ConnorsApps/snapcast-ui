@@ -21,16 +21,26 @@ const stateFromStatus = (result) => {
 }
 
 const waitForWebsocket = (ws, callback, iterations) => {
-    if (iterations > 400) {
-        throw new Error('Unable to connect to server');
+    ws.onerror = (event) => {
+        return callback({ error: true, message: 'Unable to connect to server' + JSON.stringify(event) });
+    };
+
+    if (iterations > 10) {
+        return callback({ error: true, message: 'Unable to connect to server' });
     }
     setTimeout(() => {
         if (ws.readyState === 1) {
-            callback();
+            callback({ error: false });
         } else {
             waitForWebsocket(ws, callback, ++iterations);
         }
-    }, 50)
+    }, 500)
+}
+
+export const WEBSOCKET_STATUS = {
+    connecting: 'connecting',
+    open: 'open',
+    failed: 'failed'
 }
 
 export const AppContext = createContext(null);
@@ -42,6 +52,7 @@ export const AppContextProvider = ({ children }) => {
     const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
     const [clients, disbatchClients] = useReducer(clientsReducer, {});
+    const [webSocketStatus, setWebSocketStatus] = useState(WEBSOCKET_STATUS.connecting)
 
     const onServerRequest = useCallback((message) => {
         const data = JSON.parse(message.data);
@@ -68,8 +79,6 @@ export const AppContextProvider = ({ children }) => {
             if (event === EVENTS.client.onVolumeChanged) {
                 disbatchClients({ type: event, params });
 
-                // console.log('params', params);
-
             } else {
                 console.log("event", event);
             }
@@ -80,10 +89,16 @@ export const AppContextProvider = ({ children }) => {
         setInit(true);
         // Work around to connect to websocket with hooks
         if (!init) {
-            waitForWebsocket(ws, () => {
-                sendRequest(REQUESTS.server.getStatus, null, true);
-                ws.addEventListener('message', onServerRequest);
-                ws.onerror = (event) => console.error(event);
+            waitForWebsocket(ws, ({ error, message }) => {
+                if (!error) {
+                    setWebSocketStatus(WEBSOCKET_STATUS.open);
+                    sendRequest(REQUESTS.server.getStatus, null, true);
+                    ws.addEventListener('message', onServerRequest);
+                } else {
+                    console.error(message);
+                    setIsLoading(false);
+                    setWebSocketStatus(WEBSOCKET_STATUS.failed);
+                }
             }, 0);
         }
 
@@ -100,6 +115,7 @@ export const AppContextProvider = ({ children }) => {
                 disbatchStreams,
                 disbatchGroups,
                 disbatchClients,
+                webSocketStatus,
             }}
         >
             {children}
