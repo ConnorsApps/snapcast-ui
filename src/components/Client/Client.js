@@ -17,7 +17,7 @@ const Client = ({ id }) => {
     };
 
     return (
-        <Paper className='client'>
+        <Paper className='viewClient'>
             <div className='topRow'>
                 <div className='title'>
                     <BsFillSpeakerFill />

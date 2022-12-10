@@ -24,7 +24,7 @@ const Home = () => {
                 <Toolbar variant="regular">
                     <h1> {title ?? 'Snapcast Audio'} </h1>
                     <button
-                        className='settings'
+                        className='menuPage'
                         onClick={() => setPage(page === 'groups' ? 'settings' : 'groups')}
                     >
                         {page === 'groups' && <IoSettingsOutline />}
