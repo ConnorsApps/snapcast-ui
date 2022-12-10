@@ -19,7 +19,15 @@
     .client {
         opacity: 1;
         display: flex;
-        flex-direction: row;
+
+        @media only screen and (max-width: 500px) {
+            flex-direction: column;
+        }
+
+        @media only screen and (min-width: 500px) {
+            flex-direction: row;
+        }
+
         padding: 1rem;
         gap: 1rem;
         flex-wrap: wrap;
@@ -41,12 +49,18 @@
             }
         }
 
-        .col {
-            max-width: 10rem;
+        .info {
+            flex-direction: row;
+            display: flex;
+            gap: 1rem;
 
-            .title {
-                font-weight: bold;
-                font-size: 1.1rem;
+            .col {
+                max-width: 10rem;
+
+                .title {
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                }
             }
         }
     }
