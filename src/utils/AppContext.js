@@ -1,30 +1,9 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { EVENTS, REQUESTS } from './Constants.js';
-import { groupsReducer, streamsReducer, clientsReducer, ws, requests, sendRequest } from './WebSocket.js';
-
-
-const stateFromStatus = (result) => {
-    const server = result.server.server;
-
-    const streams = {};
-    result.server.streams.map(stream => streams[stream.id] = stream);
-
-    const groups = {};
-    result.server.groups.map(group => groups[group.id] = group);
-
-    const clients = {};
-    result.server.groups.forEach(group => group.clients.forEach(client => {
-        clients[client.id] = { ...client, groupId: group.id }
-    }));
-
-    return { server, streams, groups, clients };
-}
+import { clientsReducer, groupsReducer, stateFromStatus, streamsReducer } from './Reducer.js';
+import { ws, requests, sendRequest, createNewWebsocket, getWebsocketStatus, WEBSOCKET_STATUS } from './WebSocket.js';
 
 const waitForWebsocket = (ws, callback, iterations) => {
-    ws.onerror = (event) => {
-        return callback({ error: true, message: 'Unable to connect to server' + JSON.stringify(event) });
-    };
-
     if (iterations > 10) {
         return callback({ error: true, message: 'Unable to connect to server' });
     }
@@ -37,22 +16,18 @@ const waitForWebsocket = (ws, callback, iterations) => {
     }, 500)
 }
 
-export const WEBSOCKET_STATUS = {
-    connecting: 'connecting',
-    open: 'open',
-    failed: 'failed'
-}
-
 export const AppContext = createContext(null);
 
 export const AppContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [init, setInit] = useState(false);
+    const [failed, setFailed] = useState(false);
+    const [webSocketStatus, setWebSocketStatus] = useState(WEBSOCKET_STATUS.connecting);
+
     const [server, setServer] = useState([]);
     const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
     const [clients, disbatchClients] = useReducer(clientsReducer, {});
-    const [webSocketStatus, setWebSocketStatus] = useState(WEBSOCKET_STATUS.connecting)
 
     const onServerRequest = useCallback((message) => {
         const data = JSON.parse(message.data);
@@ -97,12 +72,29 @@ export const AppContextProvider = ({ children }) => {
                 } else {
                     console.error(message);
                     setIsLoading(false);
-                    setWebSocketStatus(WEBSOCKET_STATUS.failed);
+                    setFailed(true);
                 }
             }, 0);
         }
 
     }, [init, onServerRequest]);
+
+    useEffect(() => {
+        const interval = setInterval(() => setWebSocketStatus(getWebsocketStatus()), 3000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(()=>{
+        const createNewSocket = webSocketStatus === WEBSOCKET_STATUS.closed && init === true;
+
+        if (createNewSocket) {
+            createNewWebsocket();
+        }
+        setInit(createNewSocket ? false : init);
+        setIsLoading(createNewSocket ? true : isLoading);
+
+    },[webSocketStatus]);
 
     return (
         <AppContext.Provider
@@ -116,6 +108,7 @@ export const AppContextProvider = ({ children }) => {
                 disbatchGroups,
                 disbatchClients,
                 webSocketStatus,
+                failed,
             }}
         >
             {children}

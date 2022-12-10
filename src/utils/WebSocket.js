@@ -1,8 +1,9 @@
-import { EVENTS, REQUESTS } from "./Constants";
 
 const host = process.env.REACT_APP_SNAPCAST_HOST;
 
-export const ws = new WebSocket(`${host}/jsonrpc`);
+export const createNewWebsocket = () => ws = new WebSocket(`${host}/jsonrpc`);
+
+export let ws = new WebSocket(`${host}/jsonrpc`);
 
 let requestId = 0;
 export const requests = {};
@@ -16,54 +17,24 @@ export const sendRequest = (method, params, saveRequest) => {
     requestId++;
 }
 
+export const WEBSOCKET_STATUS = {
+    connecting: 'connecting',
+    open: 'open',
+    closed: 'closed',
+};
 
-export const groupsReducer = (state, action) => {
-    const params = action.params;
+export const getWebsocketStatus = () => {
+    const state = ws.readyState;
+    let status;
 
-    switch (action.type) {
-        case 'init':
-            return action.groups;
-        case REQUESTS.group.setStream:
-            state[params.id].stream_id = params.stream_id;
-
-            sendRequest(REQUESTS.group.setStream, params);
-            return { ...state };
-
-        case REQUESTS.group.setMute:
-            state[params.id].mute = params.mute;
-
-            sendRequest(REQUESTS.group.setMute, params);
-            return { ...state };
-        default:
-            throw new Error('Unknown action ' + action.type);
+    if (state === 0) {
+        status = WEBSOCKET_STATUS.connecting;
+    } else if (state === 1) {
+        status = WEBSOCKET_STATUS.open;
+    } else if (state === 2 || state === 3) {
+        status = WEBSOCKET_STATUS.closed;
+    } else {
+        throw new Error('unknown websocket status', state)
     }
-}
-
-export const streamsReducer = (state, action) => {
-    switch (action.type) {
-        case 'init':
-            return action.streams;
-        default:
-            throw new Error('Unknown action ' + action.type);
-    }
-}
-
-export const clientsReducer = (state, action) => {
-    const params = action.params;
-
-    switch (action.type) {
-        case 'init':
-            return action.clients;
-        case EVENTS.client.onVolumeChanged:
-            state[params.id].config.volume = params.volume;
-
-            return { ...state };
-        case REQUESTS.client.setVolume:
-            state[params.id].config.volume = params.volume;
-
-            sendRequest(REQUESTS.client.setVolume, params);
-            return { ...state };
-        default:
-            throw new Error('Unknown action ' + action.type);
-    }
+    return status;
 }

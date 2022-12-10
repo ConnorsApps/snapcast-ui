@@ -9,7 +9,7 @@ import { AppContext, WEBSOCKET_STATUS } from './utils/AppContext';
 const title = process.env.REACT_APP_HOME_TITLE;
 
 const Home = () => {
-    const { groups, webSocketStatus, isLoading } = useContext(AppContext);
+    const { groups, failed, isLoading } = useContext(AppContext);
     const groupList = Object.values(groups ?? {});
 
     return (
@@ -31,7 +31,7 @@ const Home = () => {
                 )}
             </div>
             <Loader isLoading={isLoading} />
-            {webSocketStatus === WEBSOCKET_STATUS.failed && (
+            {failed && (
                 <div className='errorConnecting'>
                     <Paper className='message'>
                         <p>Failed to connect to audio system</p>
