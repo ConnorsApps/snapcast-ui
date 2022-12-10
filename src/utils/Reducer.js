@@ -47,6 +47,11 @@ export const clientsReducer = (state, action) => {
 
             sendRequest(REQUESTS.client.setVolume, params);
             return { ...state };
+        case REQUESTS.client.setName:
+            state[params.id].config.name = params.name;
+
+            sendRequest(REQUESTS.client.setName, params);
+            return { ...state };
         default:
             throw new Error('Unknown action ' + action.type);
     }

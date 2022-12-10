@@ -1,10 +1,10 @@
 .settings {
-    opacity: .8;
-    margin-top: 10vh;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     gap: .5rem;
     overflow: auto;
+    height: 100%;
     
     @media only screen and (max-width: 700px)  {
         margin-left: 2vw;
@@ -37,6 +37,28 @@
 
                 .edit {
                     font-size: 1.5rem;
+                }
+            }
+        }
+        .info {
+            display: flex;
+            flex-direction: row;
+            padding-top: 0.5rem;
+            gap: 1rem;
+            justify-content: space-between;
+
+            .title {
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+
+            .host {
+                display: flex;
+                flex-direction: column;
+                
+                .cols {
+                    display: flex;
+                    gap: .5rem;
                 }
             }
         }

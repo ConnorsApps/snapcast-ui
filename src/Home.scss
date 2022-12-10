@@ -2,6 +2,8 @@
     background: center;
     background-size: cover;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 
     .appBar {
         .menuPage {
