@@ -1,7 +1,6 @@
-import { Button, Paper, TextField } from '@mui/material';
-import { useContext, useState } from 'react';
+import { Paper, TextField } from '@mui/material';
+import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
-import { FiEdit } from 'react-icons/fi';
 import { formatDistance } from 'date-fns'
 
 import './Settings.scss';
@@ -11,79 +10,44 @@ import { REQUESTS } from '../../utils/Constants';
 const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
 
 const Client = ({ client }) => {
-    const [isEditingName, setIsEditingName] = useState(false);
-    const [clientName, setClientName] = useState(client.config.name);
-    const handleChange = (event) => setClientName(event.target.value);
-
     const { disbatchClients } = useContext(AppContext);
 
-    const saveName = () => {
-        setIsEditingName(false);
-        disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: clientName } });
+    const handleChange = (event) => {
+        disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: event.target.value } });
     };
 
     return (
         <Paper elevation={1} className='client'>
-            <div className='topRow'>
-                <div className='name'>
+            <div className='left'>
+                <div className='row'>
                     <ConnectionIcon conencted={client.connected} />
+                    <TextField
+                        label='Name'
+                        variant='outlined'
+                        value={client.config.name}
+                        onChange={handleChange}
+                    />
 
-                    {isEditingName ? (
-                        <>
-                            <TextField
-                                label='Name'
-                                variant='outlined'
-                                value={clientName}
-                                onChange={handleChange}
-                            />
-                            <Button
-                                className='save'
-                                onClick={saveName}
-                                variant='contained'
-                            >
-                                Save
-                            </Button>
-                        </>
-
-                    ) : (
-                        <>
-                            <h3>{client.config.name || 'Empty Name'}</h3>
-                            <button
-                                className='edit'
-                                onClick={() => setIsEditingName(!isEditingName)}
-                            >
-                                <FiEdit />
-                            </button>
-                        </>
-
-                    )}
-
-
-                    <p>
-                        Last Seen: {lastSeen(client.lastSeen.sec)}
-                    </p>
                 </div>
+                <p className='lastSeen'>
+                    Last Seen: {lastSeen(client.lastSeen.sec)}
+                </p>
             </div>
 
-            <div className='info'>
-                <div>
+            <div className='right'>
+                <div className='col'>
                     <p className='title'>Config</p>
                     <p>Latency: {client.config.latency}ms</p>
                     <p>Instance Id: {client.config.instance}</p>
-                </div>
-                <div className='host'>
-                    <p className='title'>Host</p>
-                    <div className='cols'>
-                        <div>
-                            <p>Arch: {client.host.arch}</p>
-                            <p>Ip: {client.host.ip}</p>
+                    <p>Arch: {client.host.arch}</p>
 
-                        </div>
-                        <div>
-                            <p>Name: {client.host.name}</p>
-                            <p>Mac: {client.host.mac}</p>
-                        </div>
-                    </div>
+                </div>
+
+                <div className='col'>
+                    <p className='title'>Host</p>
+                    <p>Ip: {client.host.ip}</p>
+                    <p>Name: {client.host.name}</p>
+                    <p>Mac: {client.host.mac}</p>
                 </div>
             </div>
         </Paper>
@@ -97,8 +61,6 @@ const Settings = () => {
 
     const clientList = Object.values(clients || {})
         .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec);
-
-    console.log('clients', clients)
 
     return (
         <div className='settings'>

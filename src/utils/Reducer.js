@@ -18,6 +18,11 @@ export const groupsReducer = (state, action) => {
 
             sendRequest(REQUESTS.group.setMute, params);
             return { ...state };
+        case REQUESTS.group.setName:
+            state[params.id].name = params.name;
+
+            sendRequest(REQUESTS.group.setName, params);
+            return { ...state };
         default:
             throw new Error('Unknown action ' + action.type);
     }

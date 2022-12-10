@@ -1,14 +1,15 @@
 import './Group.scss';
-import { MenuItem, Paper, Select } from '@mui/material';
+import { MenuItem, Paper, Select, TextField } from '@mui/material';
 import Stream from '../Stream/Stream';
 import Client from '../Client/Client';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
 import { VolumeIcon } from '../VolumeSlider/VolumeSlider';
 
-const Group = ({ group }) => {
+const Group = ({ group, number }) => {
     const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);
+    const [groupName, setGroupName] = useState(group.name || `Group ${number}`);
 
     const streamList = Object.values(streams);
 
@@ -28,6 +29,13 @@ const Group = ({ group }) => {
         return <></>;
     };
 
+    const changeGroupName = (event) => {
+        const name = event.target.value;
+        setGroupName(name);
+        const params = { id: group.id, name };
+        disbatchGroups({ type: REQUESTS.group.setName, params });
+    };
+
     const toggleMute = () => {
         const params = { id: group.id, mute: !group.mute };
         disbatchGroups({ type: REQUESTS.group.setMute, params })
@@ -38,33 +46,45 @@ const Group = ({ group }) => {
             className='group'
             elevation={3}
         >
-            <div className='groupInfo'>
-                <Select
-                    value={group.stream_id}
-                    onChange={setStream}
-                    className='streamSelector'
-                >
-                    {streamList.map((stream, i) => (
-                        <MenuItem
-                            value={stream.id}
-                            divider={true}
-                            sx={{ padding: '1rem' }}
-                            key={i}
-                        >
-                            <Stream
-                                id={stream.id}
-                            />
-                        </MenuItem>
-                    ))}
-                </Select>
-                <button
-                    onClick={toggleMute}
-                    className='volumeIcon'
-                >
-                    <VolumeIcon
-                        muted={group.mute}
+            <div className='info'>
+                <div className='left'>
+                    <input
+                        className='nameInput'
+                        value={groupName}
+                        onChange={changeGroupName}
                     />
-                </button>
+                </div>
+                <div className='right'>
+                    <Select
+                        value={group.stream_id}
+                        onChange={setStream}
+                        className='streamSelector'
+
+                    >
+                        {streamList.map((stream, i) => (
+                            <MenuItem
+                                value={stream.id}
+                                divider={true}
+                                sx={{ padding: '1rem' }}
+                                key={i}
+                            >
+                                <Stream
+                                    id={stream.id}
+                                />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <button
+                        onClick={toggleMute}
+                        className='volumeIcon'
+                    >
+                        <VolumeIcon
+                            muted={group.mute}
+                        />
+                    </button>
+                </div>
+
+
             </div>
             <div className={`clients ${group.mute ? 'groupMuted' : ''}`}>
                 {clients

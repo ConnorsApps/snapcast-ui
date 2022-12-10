@@ -18,48 +18,34 @@
     .client {
         opacity: 1;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         padding: 1rem;
 
-        .topRow {
+        .left {
             display: flex;
-            flex-direction: row;
-
-            .name {
+            flex-direction: column;
+            .row {
                 display: flex;
+                flex-direction: row;
+                gap: 0.51rem;
                 align-items: center;
-                gap: .5rem;
-
-                h3 {
-                    margin: 0;
-                    min-width: 10rem;
-                }
-
-                .edit {
-                    font-size: 1.5rem;
-                }
+            }
+            
+            .lastSeen {
+                padding-top: .5rem;
+                opacity: .6;
             }
         }
-        .info {
+
+        .right {
             display: flex;
             flex-direction: row;
-            padding-top: 0.5rem;
             gap: 1rem;
-            justify-content: space-between;
+            padding-left: 1rem;
 
             .title {
                 font-weight: bold;
                 font-size: 1.1rem;
-            }
-
-            .host {
-                display: flex;
-                flex-direction: column;
-                
-                .cols {
-                    display: flex;
-                    gap: .5rem;
-                }
             }
         }
     }

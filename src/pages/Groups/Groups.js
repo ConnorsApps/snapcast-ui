@@ -14,6 +14,7 @@ const Groups = () => {
                 <Group
                     key={i}
                     group={group}
+                    number={i + 1}
                 />
             )}
         </div>
