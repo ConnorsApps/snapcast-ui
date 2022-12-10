@@ -22,17 +22,17 @@ const Client = ({ id }) => {
                 <div className='title'>
                     <BsFillSpeakerFill />
                     <p> {name} </p>
-
                 </div>
-                <VolumeSlider
-                    volume={client.config.volume}
-                    setVolume={setVolume}
-                />
+                <div className='dragIcon'>
+                    <MdOutlineDragIndicator />
+                </div>
             </div>
 
-            <div className='dragIcon'>
-                <MdOutlineDragIndicator />
-            </div>
+
+            <VolumeSlider
+                volume={client.config.volume}
+                setVolume={setVolume}
+            />
         </Paper>);
 }
 
