@@ -1,0 +1,16 @@
+.groups {
+    margin-top: 1rem;
+
+    @media only screen and (max-width: 700px)  {
+        margin-left: 2vw;
+        margin-right: 2vw;
+    }
+    @media only screen and (min-width: 700px)  {
+        margin-left: 10vw;
+        margin-right: 10vw;
+    }
+
+    .group {
+        margin-bottom: 1rem;
+    }
+}

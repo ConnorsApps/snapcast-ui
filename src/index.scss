@@ -14,6 +14,7 @@ body {
   margin: 0;
   font-family: "Space Grotesk";
 }
+
 h1 {
   font-size: 1.2rem;
 }
@@ -28,4 +29,8 @@ button {
   background: transparent;
   padding: 0;
   margin: 0;
+}
+
+button:hover {
+  cursor: pointer;
 }

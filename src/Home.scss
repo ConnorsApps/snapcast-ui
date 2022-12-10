@@ -3,41 +3,15 @@
     background-size: cover;
     height: 100%;
 
-    .groups {
-        margin-left: 5vw;
-        margin-right: 5vw;
-        margin-top: 1rem;
-
-        .group {
-            margin-bottom: 1rem;
-        }
-    }
-
-    .errorConnecting {
-        .message {
-            width: 20rem;
-            height: 5rem;
+    .appBar {
+        .settings {
+            color: white;
             display: flex;
-            align-items: center;
-            margin-right: auto;
-            margin-left: auto;
             justify-content: center;
+            align-items: center;
+            font-size: 2rem;
             position: absolute;
-            left: 0;
-            right: 0;
-            top: 30vh;
-        }
-        .button {
-            right: 0;
-            left: 0;
-            position: absolute;
-            bottom: 10vh;
-            margin-left: auto;
-            margin-right: auto;
-            width: 15rem;
-            height: 5rem;
-            font-weight: bold;
-            font-size: 1rem;
+            right: 2rem;
         }
     }
 }

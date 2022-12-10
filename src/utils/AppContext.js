@@ -94,7 +94,7 @@ export const AppContextProvider = ({ children }) => {
         setInit(createNewSocket ? false : init);
         setIsLoading(createNewSocket ? true : isLoading);
 
-    },[webSocketStatus]);
+    }, [webSocketStatus, init, isLoading]);
 
     return (
         <AppContext.Provider
