@@ -82,6 +82,13 @@ export const AppContextProvider = ({ children }) => {
     useEffect(() => {
         const interval = setInterval(() => setWebSocketStatus(getWebsocketStatus()), 3000);
 
+        // Refresh current state and create new websocket when browser comes back into focus
+        window.addEventListener('focus', () => {
+            createNewWebsocket();
+            setInit(false);
+            setIsLoading(true);
+        });
+
         return () => clearInterval(interval);
     }, []);
 
