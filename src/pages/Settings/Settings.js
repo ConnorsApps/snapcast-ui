@@ -26,6 +26,7 @@ const Client = ({ client }) => {
                         variant='outlined'
                         value={client.config.name}
                         onChange={handleChange}
+                        sx={{ minWidth: '10rem' }}
                     />
 
                 </div>
@@ -34,21 +35,19 @@ const Client = ({ client }) => {
                 </p>
             </div>
 
-            <div className='right'>
-                <div className='col'>
-                    <p className='title'>Config</p>
-                    <p>Latency: {client.config.latency}ms</p>
-                    <p>Instance Id: {client.config.instance}</p>
-                    <p>Arch: {client.host.arch}</p>
+            <div className='col'>
+                <p className='title'>Config</p>
+                <p>Latency: {client.config.latency}ms</p>
+                <p>Instance Id: {client.config.instance}</p>
+                <p>Arch: {client.host.arch}</p>
 
-                </div>
+            </div>
 
-                <div className='col'>
-                    <p className='title'>Host</p>
-                    <p>Ip: {client.host.ip}</p>
-                    <p>Name: {client.host.name}</p>
-                    <p>Mac: {client.host.mac}</p>
-                </div>
+            <div className='col'>
+                <p className='title'>Host</p>
+                <p>Ip: {client.host.ip}</p>
+                <p>Name: {client.host.name}</p>
+                <p>Mac: {client.host.mac}</p>
             </div>
         </Paper>
     )

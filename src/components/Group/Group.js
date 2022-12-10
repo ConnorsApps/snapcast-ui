@@ -1,5 +1,5 @@
 import './Group.scss';
-import { MenuItem, Paper, Select, TextField } from '@mui/material';
+import { MenuItem, Paper, Select } from '@mui/material';
 import Stream from '../Stream/Stream';
 import Client from '../Client/Client';
 import { useContext, useState } from 'react';
@@ -55,6 +55,14 @@ const Group = ({ group, number }) => {
                     />
                 </div>
                 <div className='right'>
+                    <button
+                        onClick={toggleMute}
+                        className='volumeIcon'
+                    >
+                        <VolumeIcon
+                            muted={group.mute}
+                        />
+                    </button>
                     <Select
                         value={group.stream_id}
                         onChange={setStream}
@@ -74,14 +82,6 @@ const Group = ({ group, number }) => {
                             </MenuItem>
                         ))}
                     </Select>
-                    <button
-                        onClick={toggleMute}
-                        className='volumeIcon'
-                    >
-                        <VolumeIcon
-                            muted={group.mute}
-                        />
-                    </button>
                 </div>
 
 
