@@ -3,63 +3,103 @@ import { sendRequest } from "./WebSocket";
 
 export const groupsReducer = (state, action) => {
     const params = action.params;
+    const event = action.type;
 
-    switch (action.type) {
-        case 'init':
-            return action.groups;
-        case REQUESTS.group.setStream:
-            state[params.id].stream_id = params.stream_id;
+    if (event === 'init') {
+        return action.groups;
+    } else if (event === REQUESTS.group.setStream) {
 
-            sendRequest(REQUESTS.group.setStream, params);
-            return { ...state };
+        state[params.id].stream_id = params.stream_id;
+        sendRequest(REQUESTS.group.setStream, params);
 
-        case REQUESTS.group.setMute:
-            state[params.id].mute = params.mute;
+    } else if (event === REQUESTS.group.setMute) {
 
-            sendRequest(REQUESTS.group.setMute, params);
-            return { ...state };
-        case REQUESTS.group.setName:
-            state[params.id].name = params.name;
+        state[params.id].mute = params.mute;
+        sendRequest(REQUESTS.group.setMute, params);
 
-            sendRequest(REQUESTS.group.setName, params);
-            return { ...state };
-        default:
-            throw new Error('Unknown action ' + action.type);
+    } else if (event === REQUESTS.group.setName) {
+
+        state[params.id].name = params.name;
+        sendRequest(REQUESTS.group.setName, params);
+
+    } else if (event === EVENTS.group.onMute) {
+        
+        state[params.id].mute = params.mute;
+
+    } else if (event === EVENTS.group.onStreamChanged) {
+
+        state[params.id].stream_id = params.stream_id;
+
+    } else if (event === EVENTS.group.onNameChanged) {
+
+        state[params.id].name = params.name;
+
+    } else {
+        console.error(`Unable to handle event`, state, action)
     }
+
+    return { ...state };
 }
 
 export const streamsReducer = (state, action) => {
-    switch (action.type) {
-        case 'init':
-            return action.streams;
-        default:
-            throw new Error('Unknown action ' + action.type);
+    const params = action.params;
+    const event = action.type;
+
+    if (event === 'init'){
+
+        return action.streams;
+
+    }else if(event === EVENTS.stream.onUpdate){
+
+        state[params.id] = params.stream;
+
+    }else if (event === EVENTS.stream.onProperties){
+        const stream = state[params.id];
+
+        console.log('stream ',stream,'params',params)
+
+    } else {
+        console.error(`Unable to handle event`, state, action)
     }
+    return {...state};
 }
 
 export const clientsReducer = (state, action) => {
     const params = action.params;
+    const event = action.type;
 
-    switch (action.type) {
-        case 'init':
-            return action.clients;
-        case EVENTS.client.onVolumeChanged:
-            state[params.id].config.volume = params.volume;
+    if (event === 'init') {
+        return action.clients;
+    } else if (event === EVENTS.client.onVolumeChanged) {
 
-            return { ...state };
-        case REQUESTS.client.setVolume:
-            state[params.id].config.volume = params.volume;
+        state[params.id].config.volume = params.volume;
 
-            sendRequest(REQUESTS.client.setVolume, params);
-            return { ...state };
-        case REQUESTS.client.setName:
-            state[params.id].config.name = params.name;
+    } else if (event === EVENTS.client.onConnect || event === EVENTS.client.onDisconnect) {
 
-            sendRequest(REQUESTS.client.setName, params);
-            return { ...state };
-        default:
-            throw new Error('Unknown action ' + action.type);
+        state[params.id] = { ...params, id: params.id };
+
+    } else if (event === EVENTS.client.onLatencyChanged) {
+
+        state[params.id].config.latency = params.latency;
+
+    } else if (event === EVENTS.client.onNameChanged) {
+
+        state[params.id].config.name = params.name;
+
+    } else if (event === REQUESTS.client.setVolume) {
+
+        state[params.id].config.volume = params.volume;
+        sendRequest(REQUESTS.client.setVolume, params);
+
+    } else if (event === REQUESTS.client.setName) {
+
+        state[params.id].config.name = params.name;
+        sendRequest(REQUESTS.client.setName, params);
+    } else {
+        console.error(`Unable to handle event`, state, action)
     }
+
+    return { ...state };
 }
 
 export const stateFromStatus = (result) => {

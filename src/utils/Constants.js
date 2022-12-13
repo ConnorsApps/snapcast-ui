@@ -40,7 +40,7 @@ export const EVENTS = {
         onNameChanged: 'Group.OnNameChanged',
     },
     server: {
-        onUpdate: 'Server.Server.OnUpdate',
+        onUpdate: 'Server.OnUpdate',
     },
     stream: {
         onProperties: 'Stream.OnProperties',

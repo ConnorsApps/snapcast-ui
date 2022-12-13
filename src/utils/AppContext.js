@@ -14,40 +14,59 @@ export const AppContextProvider = ({ children }) => {
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
     const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
+    const onServerUpdate = (update) => {
+        const { server, streams, groups, clients } = stateFromStatus(update);
+        setServer(server);
+
+        disbatchStreams({ type: 'init', streams });
+        disbatchGroups({ type: 'init', groups });
+        disbatchClients({ type: 'init', clients });
+
+        setIsLoading(false);
+    }
+
     const onMessage = useCallback((message) => {
         const data = JSON.parse(message.data);
-        const isRequest = data.id !== undefined;
-
-        if (isRequest) {
+        const isRequestResponse = data.id !== undefined;
+        if (isRequestResponse) {
             const event = requests[data.id];
-            const result = data.result;
-
             if (event === REQUESTS.server.getStatus) {
-                const { server, streams, groups, clients } = stateFromStatus(result);
-                setServer(server);
-
-                disbatchStreams({ type: 'init', streams });
-                disbatchGroups({ type: 'init', groups });
-                disbatchClients({ type: 'init', clients });
-
-                setIsLoading(false);
+                onServerUpdate(data.result);
             }
         } else {
             const event = data.method;
             const params = data.params;
 
-            if (event === EVENTS.client.onVolumeChanged) {
+            if (event === EVENTS.server.onUpdate) {
+                onServerUpdate(params)
+            } else if (
+                event === EVENTS.group.onMute ||
+                event === EVENTS.group.onNameChanged ||
+                event === EVENTS.group.onStreamChanged
+            ) {
+                disbatchGroups({ type: event, params });
+            } else if (
+                event === EVENTS.stream.onUpdate ||
+                event === EVENTS.stream.onProperties
+            ) {
+                disbatchStreams({ type: event, params });
+            } else if (
+                event === EVENTS.client.onConnect ||
+                event === EVENTS.client.onDisconnect ||
+                event === EVENTS.client.onLatencyChanged ||
+                event === EVENTS.client.onNameChanged ||
+                event === EVENTS.client.onVolumeChanged
+            ) {
                 disbatchClients({ type: event, params });
-
-            } else {
-                console.log("event", event);
             }
+
         }
+
     }, [disbatchStreams, disbatchGroups, disbatchClients, setIsLoading]);
 
     useEffect(() => {
-        console.log('On status change',status);
-        
+        console.log('On status change', status);
+
         if (status === WEBSOCKET_STATUS.open) {
             sendRequest(REQUESTS.server.getStatus, null, true);
         }
