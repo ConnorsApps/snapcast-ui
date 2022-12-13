@@ -78,7 +78,17 @@ export const sendRequest = (method, params, saveRequest) => {
     if (saveRequest)
         requests[requestId] = method;
 
-    ws.send(JSON.stringify({ id: requestId, jsonrpc: '2.0', method, params }));
+    try {
+        if (ws) {
+            ws.send(JSON.stringify({ id: requestId, jsonrpc: '2.0', method, params }));
+        } else {
+            throw new Error("Websocket is undefined");
+        }
+
+    } catch (error) {
+
+        console.error(`Unable to send request${method}`, error);
+    }
 
     requestId++;
 }

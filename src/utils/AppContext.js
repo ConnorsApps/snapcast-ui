@@ -65,28 +65,22 @@ export const AppContextProvider = ({ children }) => {
     }, [disbatchStreams, disbatchGroups, disbatchClients, setIsLoading]);
 
     useEffect(() => {
-        console.log('On status change', status);
+        console.debug('On websocket status change', status);
 
         if (status === WEBSOCKET_STATUS.open) {
             sendRequest(REQUESTS.server.getStatus, null, true);
         }
     }, [status]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => setWebSocketStatus(getWebsocketStatus()), 3000);
-
-    //     // Refresh current state and create new websocket when browser comes back into focus
-    //     window.addEventListener('focus', () => {
-    //         createNewWebsocket();
-    //         setInit(false);
-    //         setIsLoading(true);
-    //     });
-
-    //     return () => clearInterval(interval);
-    // }, []);
+    useEffect(() => {
+        // Refresh current state and create new websocket when browser comes back into focus
+        window.addEventListener('focus', () => {
+            connectToSnapcastServer(0, onMessage, setStatus);
+        });
+    }, []);
 
     useEffect(() => {
-        connectToSnapcastServer(0, onMessage, setStatus)
+        connectToSnapcastServer(0, onMessage, setStatus);
     }, [onMessage, setStatus]);
 
     return (
