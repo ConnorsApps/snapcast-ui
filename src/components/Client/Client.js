@@ -3,7 +3,6 @@ import { BsFillSpeakerFill } from 'react-icons/bs';
 import { Paper } from '@mui/material';
 import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import { useContext } from 'react';
-import { MdOutlineDragIndicator } from 'react-icons/md';
 import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
 

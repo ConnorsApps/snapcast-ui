@@ -62,7 +62,7 @@ export const AppContextProvider = ({ children }) => {
 
         }
 
-    }, [disbatchStreams, disbatchGroups, disbatchClients, setIsLoading]);
+    }, [disbatchStreams, disbatchGroups, disbatchClients]);
 
     useEffect(() => {
         console.debug('On websocket status change', status);
@@ -77,7 +77,7 @@ export const AppContextProvider = ({ children }) => {
         window.addEventListener('focus', () => {
             connectToSnapcastServer(0, onMessage, setStatus);
         });
-    }, []);
+    }, [onMessage]);
 
     useEffect(() => {
         connectToSnapcastServer(0, onMessage, setStatus);
