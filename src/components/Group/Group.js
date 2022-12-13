@@ -2,7 +2,7 @@ import './Group.scss';
 import { MenuItem, Paper, Select } from '@mui/material';
 import Stream from '../Stream/Stream';
 import Client from '../Client/Client';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
 import { VolumeIcon } from '../VolumeSlider/VolumeSlider';
@@ -27,13 +27,6 @@ const Group = ({ group, number }) => {
     if (clients.length === 0) {
         return <></>;
     };
-
-    // const changeGroupName = (event) => {
-    //     const name = event.target.value;
-    //     setGroupName(name);
-    //     const params = { id: group.id, name };
-    //     disbatchGroups({ type: REQUESTS.group.setName, params });
-    // };
 
     const toggleMute = () => {
         const params = { id: group.id, mute: !group.mute };

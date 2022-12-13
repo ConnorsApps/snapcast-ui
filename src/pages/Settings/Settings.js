@@ -1,76 +1,60 @@
 import { Paper, TextField } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../utils/AppContext';
-import { formatDistance } from 'date-fns';
-import { BsFillSpeakerFill } from 'react-icons/bs';
+import { REQUESTS } from '../../utils/Constants';
+import ClientSetting from './ClientSetting';
 
 import './Settings.scss';
-import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
-import { REQUESTS } from '../../utils/Constants';
 
-const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
 
-const Client = ({ client }) => {
-    const { disbatchClients } = useContext(AppContext);
 
-    const handleChange = (event) => {
-        disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: event.target.value } });
+const GroupSetting = ({ group, clients, number }) => {
+    const { disbatchGroups } = useContext(AppContext)
+    const [groupName, setGroupName] = useState(group.name || `Group ${number}`);
+
+    const changeGroupName = (event) => {
+        const name = event.target.value;
+        setGroupName(name);
+        const params = { id: group.id, name };
+        disbatchGroups({ type: REQUESTS.group.setName, params });
     };
 
     return (
-        <Paper elevation={1} className='client'>
-            <div className='mainInfo'>
-                <div className='row'>
-                    <BsFillSpeakerFill className='icon' />
-
-                    <TextField
-                        label='Name'
-                        variant='standard'
-                        value={client.config.name}
-                        onChange={handleChange}
-                        sx={{ minWidth: '10rem' }}
-                    />
-
-                </div>
-                <div className='lastSeen'>
-                    <ConnectionIcon conencted={client.connected} /> Seen: {lastSeen(client.lastSeen.sec)}
-                </div>
+        <Paper className='groupSetting'>
+            <div className='groupName'>
+                <TextField
+                    label='Name'
+                    variant='standard'
+                    value={groupName}
+                    onChange={changeGroupName}
+                />
             </div>
 
-            {/* <div className='info'>
-                <div className='col'>
-                    <p className='title'>Config</p>
-                    <p>Latency: {client.config.latency}ms</p>
-                    <p>Instance Id: {client.config.instance}</p>
-                    <p>Arch: {client.host.arch}</p>
 
-                </div>
+            {clients.length === 0 && <p>No Clients</p>}
 
-                <div className='col'>
-                    <p className='title'>Host</p>
-                    <p>Ip: {client.host.ip}</p>
-                    <p>Name: {client.host.name}</p>
-                    <p>Mac: {client.host.mac}</p>
-                </div>
-            </div> */}
-
+            {clients.map((client, i) => <ClientSetting client={client} key={i} />)}
         </Paper>
-    )
-};
-
+    );
+}
 
 const Settings = () => {
-    const { clients } = useContext(AppContext);
-
+    const { groups, clients } = useContext(AppContext);
+    const groupList = Object.values(groups ?? {});
 
     const clientList = Object.values(clients || {})
         .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec);
 
     return (
         <div className='settings'>
-            {clientList.length === 0 && <p>No Clients Found</p>}
-
-            {clientList.map((client, i) => <Client client={client} key={i} />)}
+            {groupList.map((group, i) => (
+                <GroupSetting
+                    group={group}
+                    key={i}
+                    number={i+1}
+                    clients={clientList.filter(c => c.groupId === group.id)}
+                />
+            ))}
         </div>
     )
 };

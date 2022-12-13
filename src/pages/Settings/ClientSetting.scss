@@ -1,0 +1,55 @@
+.clientSetting {
+    opacity: 1;
+    display: flex;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+
+    @media only screen and (min-width: 500px) {
+        flex-direction: row;
+    }
+
+    padding: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .mainInfo {
+        .row {
+            display: flex;
+            flex-direction: row;
+            gap: 0.51rem;
+            align-items: center;
+            .icon {
+                font-size: 2rem;
+            }
+        }
+
+        .lastSeen {
+            display: flex;
+            opacity: 0.6;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: flex-start;
+        }
+    }
+
+    .info {
+        flex-direction: row;
+        display: flex;
+        gap: 1rem;
+
+        .col {
+            max-width: 10rem;
+
+            .title {
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+            .mac {
+                font-size: 70%;
+                opacity: .5;
+            }
+        }
+    }
+}
