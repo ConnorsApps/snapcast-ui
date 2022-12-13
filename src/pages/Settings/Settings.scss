@@ -32,20 +32,23 @@
         gap: 1rem;
         flex-wrap: wrap;
 
-        .left {
-            display: flex;
-            flex-direction: column;
-
+        .mainInfo {
             .row {
                 display: flex;
                 flex-direction: row;
                 gap: 0.51rem;
                 align-items: center;
+                .icon {
+                    font-size: 2rem;
+                }
             }
 
             .lastSeen {
-                padding-top: .5rem;
-                opacity: .6;
+                display: flex;
+                opacity: 0.6;
+                gap: 0.5rem;
+                align-items: center;
+                justify-content: flex-start;
             }
         }
 

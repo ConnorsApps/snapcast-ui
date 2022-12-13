@@ -3,32 +3,18 @@
     padding: 1rem;
     flex-direction: column;
 
-    .topRow {
+    .title {
         display: flex;
-        justify-content: space-between;
-        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+        user-select: none;
 
-        .title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            user-select: none;
-
-            svg {
-                font-size: 2rem;
-            }
-        }
-
-        .dragIcon {
-            width: 10%;
-            display: flex;
-            height: 100%;
-            justify-content: center;
+        svg {
             font-size: 2rem;
         }
     }
-
+    
     .volume-slider {
         padding-top: 1rem;
     }
