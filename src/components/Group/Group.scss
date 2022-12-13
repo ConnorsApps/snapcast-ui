@@ -7,20 +7,9 @@
         align-items: center;
         justify-content: space-between;
 
-        .left {
-            display: flex;
-            align-items: center;
+        .name {
+            font-size: 1.5rem;
             padding-left: 1rem;
-
-            .nameInput {
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                font-family: inherit;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-            }
         }
 
         .right {

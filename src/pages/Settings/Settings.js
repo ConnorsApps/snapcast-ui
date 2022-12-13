@@ -1,7 +1,8 @@
 import { Paper, TextField } from '@mui/material';
 import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
-import { formatDistance } from 'date-fns'
+import { formatDistance } from 'date-fns';
+import { BsFillSpeakerFill } from 'react-icons/bs';
 
 import './Settings.scss';
 import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
@@ -18,24 +19,25 @@ const Client = ({ client }) => {
 
     return (
         <Paper elevation={1} className='client'>
-            <div className='left'>
+            <div className='mainInfo'>
                 <div className='row'>
-                    <ConnectionIcon conencted={client.connected} />
+                    <BsFillSpeakerFill className='icon' />
+
                     <TextField
                         label='Name'
-                        variant='outlined'
+                        variant='standard'
                         value={client.config.name}
                         onChange={handleChange}
                         sx={{ minWidth: '10rem' }}
                     />
 
                 </div>
-                <p className='lastSeen'>
-                    Last Seen: {lastSeen(client.lastSeen.sec)}
-                </p>
+                <div className='lastSeen'>
+                    <ConnectionIcon conencted={client.connected} /> Seen: {lastSeen(client.lastSeen.sec)}
+                </div>
             </div>
 
-            <div className='info'>
+            {/* <div className='info'>
                 <div className='col'>
                     <p className='title'>Config</p>
                     <p>Latency: {client.config.latency}ms</p>
@@ -50,7 +52,7 @@ const Client = ({ client }) => {
                     <p>Name: {client.host.name}</p>
                     <p>Mac: {client.host.mac}</p>
                 </div>
-            </div>
+            </div> */}
 
         </Paper>
     )

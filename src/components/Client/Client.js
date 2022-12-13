@@ -18,16 +18,10 @@ const Client = ({ id }) => {
 
     return (
         <Paper className='viewClient'>
-            <div className='topRow'>
-                <div className='title'>
-                    <BsFillSpeakerFill />
-                    <p> {name} </p>
-                </div>
-                <div className='dragIcon'>
-                    <MdOutlineDragIndicator />
-                </div>
+            <div className='title'>
+                <BsFillSpeakerFill />
+                <p> {name} </p>
             </div>
-
 
             <VolumeSlider
                 volume={client.config.volume}

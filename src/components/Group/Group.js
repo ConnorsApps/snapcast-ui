@@ -9,7 +9,6 @@ import { VolumeIcon } from '../VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
     const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);
-    const [groupName, setGroupName] = useState(group.name || `Group ${number}`);
 
     const streamList = Object.values(streams);
 
@@ -29,12 +28,12 @@ const Group = ({ group, number }) => {
         return <></>;
     };
 
-    const changeGroupName = (event) => {
-        const name = event.target.value;
-        setGroupName(name);
-        const params = { id: group.id, name };
-        disbatchGroups({ type: REQUESTS.group.setName, params });
-    };
+    // const changeGroupName = (event) => {
+    //     const name = event.target.value;
+    //     setGroupName(name);
+    //     const params = { id: group.id, name };
+    //     disbatchGroups({ type: REQUESTS.group.setName, params });
+    // };
 
     const toggleMute = () => {
         const params = { id: group.id, mute: !group.mute };
@@ -47,13 +46,8 @@ const Group = ({ group, number }) => {
             elevation={3}
         >
             <div className='info'>
-                <div className='left'>
-                    <input
-                        className='nameInput'
-                        value={groupName}
-                        onChange={changeGroupName}
-                    />
-                </div>
+                <p className='name'> {group.name || `Group ${number}`} </p>
+                
                 <div className='right'>
                     <button
                         onClick={toggleMute}
