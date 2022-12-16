@@ -2,9 +2,6 @@
 const host = process.env.REACT_APP_SNAPCAST_HOST;
 let ws;
 
-// export const createNewWebsocket = () => ws = new WebSocket(`${host}/jsonrpc`);
-
-// export let ws = new WebSocket(`${host}/jsonrpc`);
 export const WEBSOCKET_STATUS = {
     connecting: 'connecting',
     open: 'open',
@@ -28,7 +25,7 @@ const getWebsocketStatus = (ws) => {
 }
 
 const MAX_RETRIES = 10;
-const RETRY_WAIT = 5;
+const RETRY_WAIT = 2;
 
 export const connectToSnapcastServer = (retries = 0, onMessage, onStatus) => {
     const url = `${host}/jsonrpc`;

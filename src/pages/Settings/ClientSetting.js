@@ -1,25 +1,43 @@
 import './ClientSetting.scss';
-import { Paper, TextField } from '@mui/material';
+import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
 import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import { BsFillSpeakerFill } from 'react-icons/bs';
 import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
 import { REQUESTS } from '../../utils/Constants';
 import { formatDistance } from 'date-fns';
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
 
 const ClientSetting = ({ client }) => {
-    const { disbatchClients } = useContext(AppContext);
+    const { disbatchClients, disbatchGroups, groups } = useContext(AppContext);
+    const groupList = Object.values(groups);
 
     const handleChange = (event) => {
         disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: event.target.value } });
     };
+    const groupChange = (event) => {
+        const group = groups[event.target.value];
+        const existingClients = group.clients.map(client => client.id);
+        const newClients = existingClients.concat(event.target.value);
 
+        disbatchGroups({ type: REQUESTS.group.setClients, params: { id: event.target.value, clients: newClients } });
+    }
+
+    const setLatency = (value) => {
+        if (value >= 0) {
+            disbatchClients({ type: REQUESTS.client.setLatency, params: { id: client.id, latency: value } });
+        }
+    }
     return (
-        <Paper elevation={1} className='clientSetting'>
+        <Paper
+            elevation={1}
+            className='clientSetting'
+        >
             <div className='mainInfo'>
                 <div className='row'>
+                    <ConnectionIcon conencted={client.connected} />
                     <BsFillSpeakerFill className='icon' />
 
                     <TextField
@@ -29,28 +47,58 @@ const ClientSetting = ({ client }) => {
                         onChange={handleChange}
                         sx={{ minWidth: '10rem' }}
                     />
-
                 </div>
-                <div className='lastSeen'>
-                    <ConnectionIcon conencted={client.connected} /> Seen: {lastSeen(client.lastSeen.sec)}
+
+                <div className='latency row'>
+                    <p> Latency: {client.config.latency}ms </p>
+                    <ButtonGroup>
+                        <Button
+                            className='stepper'
+                            onClick={() => setLatency(--client.config.latency)}
+                        >
+                            <AiOutlineMinus />
+                        </Button>
+                        <Button
+                            className='stepper'
+                            onClick={() => setLatency(++client.config.latency)}
+                        >
+                            <AiOutlinePlus />
+                        </Button>
+                    </ButtonGroup>
+                </div>
+                <div>
+                    <p className='lastSeen'>Seen: {lastSeen(client.lastSeen.sec)}</p>
                 </div>
             </div>
 
             <div className='info'>
-                <div className='col'>
-                    <p className='title'>Config</p>
-                    <p>Latency: {client.config.latency}ms</p>
+                <p className='name'>{client.host.name} IP: {client.host.ip}</p>
+                <div className='secondary'>
                     <p>Instance Id: {client.config.instance}</p>
-                    <p>Arch: {client.host.arch}</p>
-
+                    <p>Mac: {'  '}
+                        <span className='mac'>
+                            {client.host.mac}
+                        </span>
+                    </p>
                 </div>
-
-                <div className='col'>
-                    <p className='title'>Host</p>
-                    <p>Ip: {client.host.ip}</p>
-                    <p>Name: {client.host.name}</p>
-                    <p>Mac: <span className='mac'>{client.host.mac}</span></p>
-                </div>
+                {/* <FormControl className='group'>
+                    <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
+                    <Select
+                        labelId={`group-label-${client.id}`}
+                        label='Group'
+                        value={client.groupId}
+                        onChange={groupChange}
+                    >
+                        {groupList.map((group, i) => (
+                            <MenuItem
+                                key={i}
+                                value={group.id}
+                            >
+                                {group.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl> */}
             </div>
 
         </Paper>

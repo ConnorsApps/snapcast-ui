@@ -22,6 +22,9 @@ export const groupsReducer = (state, action) => {
         state[params.id].name = params.name;
         sendRequest(REQUESTS.group.setName, params);
 
+    }else if (event === REQUESTS.group.setClients) {
+        sendRequest(REQUESTS.group.setClients, params);
+
     } else if (event === EVENTS.group.onMute) {
         
         state[params.id].mute = params.mute;
@@ -91,7 +94,12 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.volume = params.volume;
         sendRequest(REQUESTS.client.setVolume, params);
 
-    } else if (event === REQUESTS.client.setName) {
+    } else if (event === REQUESTS.client.setLatency) {
+
+        state[params.id].config.latency = params.latency;
+        sendRequest(REQUESTS.client.setLatency, params);
+
+    }else if (event === REQUESTS.client.setName) {
 
         state[params.id].config.name = params.name;
         sendRequest(REQUESTS.client.setName, params);
