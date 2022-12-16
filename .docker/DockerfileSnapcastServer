@@ -2,44 +2,38 @@ FROM debian:bullseye
 
 WORKDIR /app
 
-RUN apt-get update && apt-get upgrade
-RUN apt-get install -y wget
+RUN apt update && apt upgrade
+RUN apt install -y curl
 
 RUN apkArch="$(dpkg --print-architecture)"; \
     case "$apkArch" in \
     arm64) \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb \
-            -O ./snapclient.deb   \
-    && wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb \
-            -O ./snapserver.deb  \
+    curl -O https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb && \
+    curl -O https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb \
     ;; \
     amd64) \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb \
-            -O ./snapclient.deb  \
-    && wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_amd64.deb \
-            -O ./snapserver.deb  \
+    curl -O https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb && \
+    curl -O https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_amd64.deb \
     ;; \
     esac;
 
-RUN apt-get install -y \
-    libatomic1 \
-    libasound2 \
-    libavahi-client3 \
-    libavahi-common3 \
-    libc6 \
-    libflac8 \
-    libgcc1 \
-    libogg0 \
-    libopus0 \
-    libpulse0 \
-    libsoxr0 \
-    libstdc++6 \
-    libvorbisidec1
+# RUN apt install -y \
+#     libatomic1 \
+#     libasound2 \
+#     libavahi-client3 \
+#     libavahi-common3 \
+#     libc6 \
+#     libflac8 \
+#     libgcc1 \
+#     libogg0 \
+#     libopus0 \
+#     libpulse0 \
+#     libsoxr0 \
+#     libstdc++6 \
+#     libvorbisidec1
 
-RUN apt-get install -f
-
-RUN apt-get install ./snapclient.deb -y 
-RUN apt-get install ./snapserver.deb -y
+RUN apt install ./snapclient.deb -y 
+RUN apt install ./snapserver.deb -y
 
 RUN rm -rf /var/lib/apt/lists/*
 
