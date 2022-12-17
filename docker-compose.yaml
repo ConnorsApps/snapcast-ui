@@ -1,18 +1,20 @@
 services:
-    # frontend:
-    #     container_name: snapcast-ui
-    #     image: snapcast-ui
-    #     env_file:
-    #         - "./.env"
-    #     build:
-    #         context: .
-    #         dockerfile: .docker/DockerfileLocal
-    #     ports:
-    #         - "3000:3000"
-    #     volumes:
-    #       - "/app/node_modules"
-    #       - "./:/app/"
-    snapcastServer:
+    frontend:
+        container_name: snapcast-ui
+        image: snapcast-ui
+        env_file:
+            - "./.env"
+        environment:
+            REACT_APP_SNAPCAST_HOST: "ws://snapcast-server:1780"
+        build:
+            context: .
+            dockerfile: .docker/DockerfileLocal
+        ports:
+            - "3000:3000"
+        volumes:
+          - "/app/node_modules"
+          - "./:/app/"
+    snapcast-server:
         container_name: snapcast-server
         image: snapcast-server
         build:
@@ -20,3 +22,11 @@ services:
             dockerfile: .docker/DockerfileSnapcastServer
         ports:
             - "1780:1780"
+    snapcast-client:
+        container_name: snapcast-client
+        image: snapcast-client
+        build:
+            context: .
+            args:
+                INSTANCE: "1"
+            dockerfile: .docker/DockerfileSnapcastClient

@@ -1,54 +1,26 @@
 FROM debian:bullseye
 
+ARG INSTANCE=1
+
 WORKDIR /app
 
 RUN dpkg --add-architecture armhf
 
 RUN apt update && apt upgrade
 RUN apt install -y wget
-RUN apt install -y systemd
 
 RUN apkArch="$(dpkg --print-architecture)"; \
     case "$apkArch" in \
     arm64) \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb -O ./snapclient.deb && \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb -O ./snapserver.deb \
-    ;; \
+    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb -O ./snapserver.deb;; \
     amd64) \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb -O ./snapclient.deb && \
-    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_amd64.deb -O ./snapserver.deb \
-    ;; \
+    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_amd64.deb -O ./snapserver.deb;; \
     esac;
 
-RUN apt install -y \
-    libatomic1 \
-    libasound2 \
-    libavahi-client3 \
-    libavahi-common3 \
-    libc6 \
-    libflac8 \
-    libgcc1 \
-    libogg0 \
-    libopus0 \
-    libpulse0 \
-    libsoxr0 \
-    libstdc++6 \
-    libvorbisidec1
-
-RUN apt install ./snapclient.deb -y 
 RUN apt install ./snapserver.deb -y
 
 RUN rm -rf /var/lib/apt/lists/*
 
 COPY .docker/snapserver.conf /etc/snapserver.conf
-COPY .docker/snapclient2.conf /lib/systemd/system/snapclient2.service
 
-RUN systemctl enable snapclient
-RUN systemctl start snapclient
-RUN systemctl restart snapclient
-
-RUN systemctl enable snapserver
-RUN systemctl start snapserver
-RUN systemctl restart snapserver
-
-CMD tail -f /dev/null
+CMD /usr/bin/snapserver --logging.sink=system --instance $INSTANCE

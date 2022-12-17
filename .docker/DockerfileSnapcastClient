@@ -1,0 +1,22 @@
+FROM debian:bullseye
+
+WORKDIR /app
+
+RUN dpkg --add-architecture armhf
+
+RUN apt update && apt upgrade
+RUN apt install -y wget
+
+RUN apkArch="$(dpkg --print-architecture)"; \
+    case "$apkArch" in \
+    arm64) \
+    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb -O ./snapclient.deb;; \
+    amd64) \
+    wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb -O ./snapclient.deb;; \
+    esac;
+
+RUN apt install ./snapclient.deb -y 
+
+RUN rm -rf /var/lib/apt/lists/*
+
+CMD /usr/bin/snapclient --logsink=system
