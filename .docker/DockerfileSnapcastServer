@@ -1,17 +1,15 @@
 FROM debian:bullseye
 
-ARG INSTANCE=1
 
 WORKDIR /app
 
-RUN dpkg --add-architecture armhf
-
-RUN apt update && apt upgrade
+RUN apt update && apt upgrade -y
 RUN apt install -y wget
 
 RUN apkArch="$(dpkg --print-architecture)"; \
     case "$apkArch" in \
     arm64) \
+    dpkg --add-architecture armhf && apt update && apt upgrade -y && \
     wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb -O ./snapserver.deb;; \
     amd64) \
     wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_amd64.deb -O ./snapserver.deb;; \
@@ -23,4 +21,4 @@ RUN rm -rf /var/lib/apt/lists/*
 
 COPY .docker/snapserver.conf /etc/snapserver.conf
 
-CMD /usr/bin/snapserver --logging.sink=system --instance $INSTANCE
+ENTRYPOINT /usr/bin/snapserver --logging.sink=stdout

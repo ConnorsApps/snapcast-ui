@@ -13,4 +13,12 @@
     .group {
         margin-bottom: 1rem;
     }
+    .noGroups {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+        padding: 3rem;
+        align-items: center;
+    }
 }

@@ -1,3 +1,4 @@
+version: '3'
 services:
     frontend:
         container_name: snapcast-ui
@@ -5,7 +6,7 @@ services:
         env_file:
             - "./.env"
         environment:
-            REACT_APP_SNAPCAST_HOST: "ws://snapcast-server:1780"
+            REACT_APP_SNAPCAST_HOST: "ws://localhost:1780"
         build:
             context: .
             dockerfile: .docker/DockerfileLocal
@@ -22,11 +23,23 @@ services:
             dockerfile: .docker/DockerfileSnapcastServer
         ports:
             - "1780:1780"
+            - "1704:1704"
     snapcast-client:
         container_name: snapcast-client
-        image: snapcast-client
+        command:
+            - "--logfilter=warning"
+            - "--instance=1"
+
         build:
             context: .
-            args:
-                INSTANCE: "1"
+            dockerfile: .docker/DockerfileSnapcastClient
+
+    snapcast-client2:
+        container_name: snapcast-client2
+        command:
+            - "--logfilter=warning"
+            - "--instance=2"
+
+        build:
+            context: .
             dockerfile: .docker/DockerfileSnapcastClient

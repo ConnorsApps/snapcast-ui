@@ -4,12 +4,13 @@ WORKDIR /app
 
 RUN dpkg --add-architecture armhf
 
-RUN apt update && apt upgrade
+RUN apt update && apt upgrade -y
 RUN apt install -y wget
 
 RUN apkArch="$(dpkg --print-architecture)"; \
     case "$apkArch" in \
     arm64) \
+    dpkg --add-architecture armhf && apt update && apt upgrade -y && \
     wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_armhf.deb -O ./snapclient.deb;; \
     amd64) \
     wget https://github.com/badaix/snapcast/releases/download/v0.26.0/snapclient_0.26.0-1_amd64.deb -O ./snapclient.deb;; \
@@ -19,4 +20,4 @@ RUN apt install ./snapclient.deb -y
 
 RUN rm -rf /var/lib/apt/lists/*
 
-CMD /usr/bin/snapclient --logsink=system
+ENTRYPOINT ["/usr/bin/snapclient","--logsink=stdout","--host=snapcast-server","--player=file"]
