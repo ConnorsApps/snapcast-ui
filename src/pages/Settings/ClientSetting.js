@@ -6,7 +6,7 @@ import { BsFillSpeakerFill } from 'react-icons/bs';
 import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
 import { REQUESTS } from '../../utils/Constants';
 import { formatDistance } from 'date-fns';
-import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineMinus, AiFillDelete } from 'react-icons/ai';
 
 const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
 
@@ -16,7 +16,8 @@ const ClientSetting = ({ client }) => {
 
     const handleChange = (event) => {
         disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: event.target.value } });
-    };
+    }
+
     const groupChange = (event) => {
         const group = groups[event.target.value];
         const existingClients = group.clients.map(client => client.id);
@@ -30,6 +31,11 @@ const ClientSetting = ({ client }) => {
             disbatchClients({ type: REQUESTS.client.setLatency, params: { id: client.id, latency: value } });
         }
     }
+
+    const deleteClient = () => {
+        disbatchClients({ type: REQUESTS.server.deleteClient, params: { id: client.id } });
+    }
+    
     return (
         <Paper
             elevation={1}
@@ -72,7 +78,9 @@ const ClientSetting = ({ client }) => {
             </div>
 
             <div className='info'>
-                <p className='name'>{client.host.name} IP: {client.host.ip}</p>
+                <div className='clientName'>
+                    {client.host.name} IP: {client.host.ip}
+                </div>
                 <div className='secondary'>
                     <p>Instance Id: {client.config.instance}</p>
                     <p>Mac: {'  '}
@@ -101,6 +109,14 @@ const ClientSetting = ({ client }) => {
                 </FormControl> */}
             </div>
 
+            {!client.connected && (
+                <button
+                    className='delete'
+                    onClick={deleteClient}
+                >
+                    <AiFillDelete />
+                </button>
+            )}
         </Paper>
     )
 };

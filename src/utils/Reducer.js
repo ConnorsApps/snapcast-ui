@@ -94,6 +94,11 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.volume = params.volume;
         sendRequest(REQUESTS.client.setVolume, params);
 
+    } else if (event === REQUESTS.server.deleteClient) {
+
+        delete state[params.id];
+        sendRequest(REQUESTS.server.deleteClient, params);
+
     } else if (event === REQUESTS.client.setLatency) {
 
         state[params.id].config.latency = params.latency;

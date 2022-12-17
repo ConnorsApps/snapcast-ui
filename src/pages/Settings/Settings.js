@@ -6,8 +6,6 @@ import ClientSetting from './ClientSetting';
 
 import './Settings.scss';
 
-
-
 const GroupSetting = ({ group, clients, number }) => {
     const { disbatchGroups } = useContext(AppContext)
     const [groupName, setGroupName] = useState(group.name || `Group ${number}`);
@@ -30,7 +28,6 @@ const GroupSetting = ({ group, clients, number }) => {
                 />
             </div>
 
-
             {clients.length === 0 && <p>No Clients</p>}
 
             {clients.map((client, i) => <ClientSetting client={client} key={i} />)}
@@ -51,7 +48,7 @@ const Settings = () => {
                 <GroupSetting
                     group={group}
                     key={i}
-                    number={i+1}
+                    number={i + 1}
                     clients={clientList.filter(c => c.groupId === group.id)}
                 />
             ))}

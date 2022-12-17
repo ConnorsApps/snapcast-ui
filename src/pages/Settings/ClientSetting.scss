@@ -47,9 +47,12 @@
         flex-direction: column;
         min-width: 14rem;
 
-        .name {
+        .clientName {
             font-weight: bold;
+            display: flex;
+            gap: 1rem;
             padding-bottom: 2px;
+            align-items: center;
         }
 
         .secondary {
@@ -70,6 +73,12 @@
                 padding-bottom: 4px;
             }
         }
-
+    }
+    .delete {
+        color: red;
+        font-size: 1.5rem;
+        position: absolute;
+        opacity: 0.9;
+        right: 2rem;
     }
 }
