@@ -15,27 +15,50 @@ const ClientSetting = ({ client }) => {
     const groupList = Object.values(groups);
 
     const handleChange = (event) => {
-        disbatchClients({ type: REQUESTS.client.setName, params: { id: client.id, name: event.target.value } });
-    }
+        disbatchClients({
+            type: REQUESTS.client.setName,
+            params: {
+                id: client.id,
+                name: event.target.value
+            }
+        });
+    };
 
     const groupChange = (event) => {
         const group = groups[event.target.value];
         const existingClients = group.clients.map(client => client.id);
-        const newClients = existingClients.concat(event.target.value);
+        const newClients = existingClients.concat(client.id);
 
-        disbatchGroups({ type: REQUESTS.group.setClients, params: { id: event.target.value, clients: newClients } });
-    }
+        disbatchGroups({
+            type: REQUESTS.group.setClients,
+            params: {
+                id: event.target.value,
+                clients: newClients
+            }
+        });
+    };
 
     const setLatency = (value) => {
         if (value >= 0) {
-            disbatchClients({ type: REQUESTS.client.setLatency, params: { id: client.id, latency: value } });
+            disbatchClients({
+                type: REQUESTS.client.setLatency,
+                params: {
+                    id: client.id,
+                    latency: value
+                }
+            });
         }
-    }
+    };
 
     const deleteClient = () => {
-        disbatchClients({ type: REQUESTS.server.deleteClient, params: { id: client.id } });
-    }
-    
+        disbatchClients({
+            type: REQUESTS.server.deleteClient,
+            params: {
+                id: client.id
+            }
+        });
+    };
+
     return (
         <Paper
             elevation={1}
@@ -89,7 +112,7 @@ const ClientSetting = ({ client }) => {
                         </span>
                     </p>
                 </div>
-                {/* <FormControl className='group'>
+                <FormControl className='group'>
                     <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
                     <Select
                         labelId={`group-label-${client.id}`}
@@ -102,11 +125,11 @@ const ClientSetting = ({ client }) => {
                                 key={i}
                                 value={group.id}
                             >
-                                {group.name}
+                                {group.name || `Group ${i + 1}`}
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl> */}
+                </FormControl>
             </div>
 
             {!client.connected && (

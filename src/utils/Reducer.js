@@ -23,6 +23,7 @@ export const groupsReducer = (state, action) => {
         sendRequest(REQUESTS.group.setName, params);
 
     }else if (event === REQUESTS.group.setClients) {
+
         sendRequest(REQUESTS.group.setClients, params);
 
     } else if (event === EVENTS.group.onMute) {
