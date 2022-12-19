@@ -2,12 +2,25 @@
 
 A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied with the default UI so I decided to start from scratch.
 
-## Images
-
-<div style="display:flex;">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" alt="Home Page" style="width: 40%;">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 40%;">
+<div style="display:flex;gap:.5rem">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" alt="Home Page" style="width: 50%;">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 50%;">
 </div>
+
+## Overview
+
+### Framework
+Built with [Reactjs](https://reactjs.org/). Static files served with nginx in container.
+
+### Testing Locally
+Develop locally with Docker compose with snapcast client server built in.
+
+### Customisation
+Args in Dockerfile:
+```
+ARG REACT_APP_HOME_TITLE
+ARG REACT_APP_SNAPCAST_HOST
+```
 
 ## Useful Links
 
