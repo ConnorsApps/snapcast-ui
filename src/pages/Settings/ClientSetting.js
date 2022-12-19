@@ -7,6 +7,7 @@ import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
 import { REQUESTS } from '../../utils/Constants';
 import { formatDistance } from 'date-fns';
 import { AiOutlinePlus, AiOutlineMinus, AiFillDelete } from 'react-icons/ai';
+import { IoAddCircleOutline } from 'react-icons/io5';
 
 const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
 
@@ -25,17 +26,31 @@ const ClientSetting = ({ client }) => {
     };
 
     const groupChange = (event) => {
-        const group = groups[event.target.value];
-        const existingClients = group.clients.map(client => client.id);
-        const newClients = existingClients.concat(client.id);
+        const value = event.target.value;
+        if (value === 'add') {
+            // To create a new snapcast group, set the existing group id to only have selected client
 
-        disbatchGroups({
-            type: REQUESTS.group.setClients,
-            params: {
-                id: event.target.value,
-                clients: newClients
-            }
-        });
+            disbatchGroups({
+                type: REQUESTS.group.setClients,
+                params: {
+                    id: client.groupId,
+                    clients: [client.id],
+                }
+            });
+
+        } else {
+            const group = groups[value];
+            const existingClients = group.clients.map(client => client.id);
+            const newClients = existingClients.concat(client.id);
+
+            disbatchGroups({
+                type: REQUESTS.group.setClients,
+                params: {
+                    id: value,
+                    clients: newClients
+                }
+            });
+        }
     };
 
     const setLatency = (value) => {
@@ -128,6 +143,12 @@ const ClientSetting = ({ client }) => {
                                 {group.name || `Group ${i + 1}`}
                             </MenuItem>
                         ))}
+                        <MenuItem
+                            sx={{ gap: '.5rem', display: 'flex', alignContent: 'center' }}
+                            value='add'
+                        >
+                            <IoAddCircleOutline /> Add Group
+                        </MenuItem>
                     </Select>
                 </FormControl>
             </div>

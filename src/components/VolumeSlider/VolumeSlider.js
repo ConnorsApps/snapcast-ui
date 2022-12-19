@@ -15,10 +15,27 @@ export const VolumeIcon = ({ percent, muted }) => {
     }
 }
 
+// FROM https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+const iOS = () => {
+    const platform = navigator.userAgentData?.platform || navigator.platform;
+
+    return [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod'
+    ].includes(platform)
+    // iPad on iOS 13 detection
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}
+const isIOS = iOS();
+
 const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
     const handleChange = (event, newValue) => {
-        // Slider component workaround for safari https://github.com/mui/material-ui/issues/31869
-        if (event.type === 'mousedown') {
+        // Slider component workaround for Safari https://github.com/mui/material-ui/issues/31869
+        if (event.type === 'mousedown' && isIOS) {
             return;
         }
         setVolume({ percent: newValue, muted: volume.muted })
