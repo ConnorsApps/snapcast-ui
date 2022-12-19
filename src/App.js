@@ -1,28 +1,19 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Home from './Home';
 import { AppContextProvider } from './utils/AppContext';
+import useTheme from './utils/useTheme';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: "Space Grotesk"
-  },
-  palette: {
-    primary: {
-      main: '#040E21',
-      contrastText: "#fff"
-    },
-    secondary: {
-      main: '#FBBA89',
-    },
-  },
-});
 
-const App = () => (
-  <AppContextProvider>
-    <ThemeProvider theme={theme}>
-      <Home />
-    </ThemeProvider>
-  </AppContextProvider>
-);
+const App = () => {
+  const { backgroundImage, matTheme } = useTheme();
+
+  return (
+    <AppContextProvider>
+      <ThemeProvider theme={matTheme}>
+        <Home backgroundImage={backgroundImage} />
+      </ThemeProvider>
+    </AppContextProvider>
+  );
+};
 
 export default App;

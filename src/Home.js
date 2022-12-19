@@ -1,5 +1,4 @@
 import './Home.scss';
-import background from './assets/josiah-gardner-ksi5l4iJBjM-unsplash.jpg';
 import Loader from './components/Loader/Loader';
 import { useContext, useState } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
@@ -12,14 +11,14 @@ import { WEBSOCKET_STATUS } from './utils/WebSocket';
 
 const title = process.env.REACT_APP_HOME_TITLE;
 
-const Home = () => {
+const Home = ({ backgroundImage }) => {
     const { webSocketStatus, isLoading } = useContext(AppContext);
     const [page, setPage] = useState('groups');
 
     return (
         <div
             className='home'
-            style={{ backgroundImage: `url(${background})` }}
+            style={{ backgroundImage: `url(${backgroundImage})` }}
         >
             <AppBar className='appBar' position="static">
                 <Toolbar variant="regular">

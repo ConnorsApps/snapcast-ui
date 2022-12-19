@@ -1,8 +1,7 @@
 .settings {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
     overflow: auto;
     height: 100%;
 
@@ -22,6 +21,12 @@
         .groupName {
             padding-left: 1rem;
             padding-top: .5rem;
+        }
+
+        .clients {
+            display: flex;
+            gap: .5rem;
+            flex-direction: column;
         }
     }
 }

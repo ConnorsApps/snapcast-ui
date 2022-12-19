@@ -30,7 +30,13 @@ const GroupSetting = ({ group, clients, number }) => {
 
             {clients.length === 0 && <p>No Clients</p>}
 
-            {clients.map((client, i) => <ClientSetting client={client} key={i} />)}
+            <div className='clients'>
+                {clients.map((client, i) => (
+                    <ClientSetting client={client} key={i} />
+                ))
+                }
+            </div>
+
         </Paper>
     );
 }
