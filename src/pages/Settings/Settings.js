@@ -2,7 +2,7 @@ import { Paper, TextField } from '@mui/material';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
-import ClientSetting from './ClientSetting';
+import ClientSetting from './ClientSetting/ClientSetting';
 
 import './Settings.scss';
 

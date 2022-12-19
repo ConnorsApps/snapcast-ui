@@ -1,11 +1,11 @@
 import './Group.scss';
 import { MenuItem, Paper, Select } from '@mui/material';
-import Stream from '../Stream/Stream';
-import Client from '../Client/Client';
+import Stream from '../../../components/Stream/Stream';
+import Client from './Client/Client';
 import { useContext } from 'react';
-import { AppContext } from '../../utils/AppContext';
-import { REQUESTS } from '../../utils/Constants';
-import { VolumeIcon } from '../VolumeSlider/VolumeSlider';
+import { AppContext } from '../../../utils/AppContext';
+import { REQUESTS } from '../../../utils/Constants';
+import { VolumeIcon } from '../../../components/VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
     const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);

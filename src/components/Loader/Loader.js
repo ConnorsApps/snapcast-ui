@@ -13,12 +13,10 @@ const Loader = ({ isLoading }) => {
                 className={`loader ${isLoading ? '' : 'loader-hidden'}`}
                 onTransitionEnd={() => setShowLoading(false)}
             />
-        )
+        );
     } else {
-        return <></>
-    }
-
+        return <></>;
+    };
 }
-
 
 export default Loader;

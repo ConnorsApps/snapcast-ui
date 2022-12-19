@@ -1,10 +1,10 @@
 import './Client.scss';
 import { BsFillSpeakerFill } from 'react-icons/bs';
 import { Paper } from '@mui/material';
-import VolumeSlider from '../VolumeSlider/VolumeSlider';
+import VolumeSlider from '../../../../components/VolumeSlider/VolumeSlider';
 import { useContext } from 'react';
-import { AppContext } from '../../utils/AppContext';
-import { REQUESTS } from '../../utils/Constants';
+import { AppContext } from '../../../../utils/AppContext';
+import { REQUESTS } from '../../../../utils/Constants';
 
 const Client = ({ id }) => {
     const { clients, disbatchClients } = useContext(AppContext);
@@ -26,7 +26,8 @@ const Client = ({ id }) => {
                 volume={client.config.volume}
                 setVolume={setVolume}
             />
-        </Paper>);
+        </Paper>
+    );
 }
 
 export default Client;

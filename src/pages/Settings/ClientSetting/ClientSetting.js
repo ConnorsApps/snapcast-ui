@@ -1,10 +1,10 @@
 import './ClientSetting.scss';
 import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
 import { useContext } from 'react';
-import { AppContext } from '../../utils/AppContext';
+import { AppContext } from '../../../utils/AppContext';
 import { BsFillSpeakerFill } from 'react-icons/bs';
-import ConnectionIcon from '../../components/ConnectionIcon/ConnectionIcon';
-import { REQUESTS } from '../../utils/Constants';
+import ConnectionIcon from '../../../components/ConnectionIcon/ConnectionIcon';
+import { REQUESTS } from '../../../utils/Constants';
 import { formatDistance } from 'date-fns';
 import { AiOutlinePlus, AiOutlineMinus, AiFillDelete } from 'react-icons/ai';
 import { IoAddCircleOutline } from 'react-icons/io5';

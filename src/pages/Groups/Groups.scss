@@ -22,3 +22,24 @@
         align-items: center;
     }
 }
+
+.groupsLoading {
+    .clientName {
+        margin-left: .5rem;
+    }
+
+    .volumeSkeleton {
+        display: flex;
+        align-items: center;
+        margin-top: 1.2rem;
+
+        .slider {
+            margin-left: 1rem;
+        }
+    }
+}
+
+.groupsHidden {
+    opacity: .7;
+    transition: all 300ms linear 100ms;
+}

@@ -33,7 +33,6 @@ const Home = () => {
                     </button>
                 </Toolbar>
             </AppBar>
-
             {page === 'groups' && <Groups />}
             {page === 'settings' && <Settings />}
 
