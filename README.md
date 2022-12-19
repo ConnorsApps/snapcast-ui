@@ -4,8 +4,10 @@ A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied
 
 ## Images
 
-<img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" alt="Home Page" style="width: 50%;">
-<img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 50%;">
+<div style="display:flex;">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" alt="Home Page" style="width: 40%;">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 40%;">
+</div>
 
 ## Useful Links
 
