@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import Group from './Group/Group';
 import { AppContext } from '../../utils/AppContext';
 import './Groups.scss';
+import { WEBSOCKET_STATUS } from '../../utils/WebSocket';
 
 const ClientLoading = () => (
     <Paper className='viewClient'>
@@ -36,13 +37,15 @@ const ClientLoading = () => (
 );
 
 const Groups = () => {
-    const { groups, isLoading } = useContext(AppContext);
+    const { groups, isLoading, webSocketStatus } = useContext(AppContext);
     const [showLoading, setShowLoading] = useState(isLoading);
     const groupList = Object.values(groups ?? {});
 
     const clients = [0, 1];
 
-    if (!isLoading && groupList.length === 0) {
+    if (webSocketStatus === WEBSOCKET_STATUS.failed){
+        return <></>;
+    } else if (!isLoading && groupList.length === 0) {
         return (
             <div className='groups'>
                 <Paper className='noGroups'>
@@ -51,8 +54,7 @@ const Groups = () => {
                 </Paper>
             </div>
         );
-    }
-    if (showLoading) {
+    } else if (showLoading) {
         return (
             <div
                 className={`groups groupsLoading ${isLoading ? '' : 'groupsHidden'}`}

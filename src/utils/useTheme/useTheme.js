@@ -31,7 +31,7 @@ const useTheme = () => {
   const setMetaTheme = (color) =>
     document.querySelector('meta[name=theme-color]')
       .setAttribute('content', color);
-  
+
   if (theme === 'roses') {
     backgroundImage = roseImage;
     matTheme = matThemes.roseTheme;
@@ -51,7 +51,7 @@ const useTheme = () => {
   } else {
     backgroundImage = defaultImage;
     matTheme = matThemes.defaultTheme;
-    
+
   }
   setMetaTheme(matTheme.palette.primary.main);
 

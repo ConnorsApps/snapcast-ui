@@ -80,7 +80,11 @@ export const AppContextProvider = ({ children, theme }) => {
     }, [onMessage]);
 
     useEffect(() => {
-        connectToSnapcastServer(0, onMessage, setStatus);
+        connectToSnapcastServer(0, onMessage, (status)=>{
+            if (status === WEBSOCKET_STATUS.failed) 
+                setIsLoading(false);
+            setStatus(status);
+        });
     }, [onMessage, setStatus]);
 
     return (

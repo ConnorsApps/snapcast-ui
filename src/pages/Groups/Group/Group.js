@@ -40,7 +40,7 @@ const Group = ({ group, number }) => {
         >
             <div className='info'>
                 <p className='name'> {group.name || `Group ${number}`} </p>
-                
+
                 <div className='right'>
                     <button
                         onClick={toggleMute}

@@ -22,12 +22,12 @@ export const groupsReducer = (state, action) => {
         state[params.id].name = params.name;
         sendRequest(REQUESTS.group.setName, params);
 
-    }else if (event === REQUESTS.group.setClients) {
+    } else if (event === REQUESTS.group.setClients) {
 
         sendRequest(REQUESTS.group.setClients, params);
 
     } else if (event === EVENTS.group.onMute) {
-        
+
         state[params.id].mute = params.mute;
 
     } else if (event === EVENTS.group.onStreamChanged) {
@@ -49,23 +49,23 @@ export const streamsReducer = (state, action) => {
     const params = action.params;
     const event = action.type;
 
-    if (event === 'init'){
+    if (event === 'init') {
 
         return action.streams;
 
-    }else if(event === EVENTS.stream.onUpdate){
+    } else if (event === EVENTS.stream.onUpdate) {
 
         state[params.id] = params.stream;
 
-    }else if (event === EVENTS.stream.onProperties){
+    } else if (event === EVENTS.stream.onProperties) {
         const stream = state[params.id];
 
-        console.log('stream ',stream,'params',params)
+        console.log('stream ', stream, 'params', params)
 
     } else {
         console.error(`Unable to handle event`, state, action)
     }
-    return {...state};
+    return { ...state };
 }
 
 export const clientsReducer = (state, action) => {
@@ -105,7 +105,7 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.latency = params.latency;
         sendRequest(REQUESTS.client.setLatency, params);
 
-    }else if (event === REQUESTS.client.setName) {
+    } else if (event === REQUESTS.client.setName) {
 
         state[params.id].config.name = params.name;
         sendRequest(REQUESTS.client.setName, params);
