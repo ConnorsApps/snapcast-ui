@@ -4,12 +4,12 @@ A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied
 
 <div style="display:flex;gap:10%">
   <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.jpg" 
     alt="Home Page" 
     style="width: 45%;"
   >
   <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.jpg" 
     alt="Settings Page" 
     style="width: 45%;"
   >
@@ -35,17 +35,17 @@ ARG REACT_APP_THEME
 
 <div style="display:flex;justify-content: space-evenly;">
   <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.png" 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.jpg" 
     alt="Roses Theme"
     style="width: 30%;"
   >
   <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/80s.png" 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/80s.jpg" 
     alt="80s Theme"
     style="width: 30%;"
   >
   <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/tropic.png" 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/tropic.jpg" 
     alt="Tropic Theme"
     style="width: 30%;"
   >

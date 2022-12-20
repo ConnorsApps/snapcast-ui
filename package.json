@@ -1,7 +1,9 @@
 {
   "name": "snapcast-ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "Connor Skees",
   "private": true,
+  "license": "MIT",
   "dependencies": {
     "@canvas-fonts/comic-sans-ms": "^1.0.4",
     "@emotion/react": "^11.10.5",
@@ -10,18 +12,18 @@
     "@fontsource/comic-neue": "^4.5.10",
     "@fontsource/sansita": "^4.5.9",
     "@fontsource/space-grotesk": "^4.5.10",
-    "@mui/material": "^5.10.16",
+    "@mui/material": "^5.11.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.4.3",
     "base-64": "^1.0.0",
     "date-fns": "^2.29.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "react-scripts": "5.0.1",
-    "sass": "^1.56.1",
-    "web-vitals": "^2.1.4"
+    "react-scripts": "^5.0.1",
+    "sass": "^1.57.1",
+    "web-vitals": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
