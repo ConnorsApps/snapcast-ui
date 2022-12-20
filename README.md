@@ -7,6 +7,12 @@ A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied
   <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 45%;">
 </div>
 
+<div style="display:flex">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.png" alt="Roses Theme">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/80s.png" alt="80s Theme">
+  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/tropic.png" alt="Tropic Theme">
+</div>
+
 ## Overview
 
 ### Framework
