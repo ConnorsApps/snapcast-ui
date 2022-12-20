@@ -20,7 +20,9 @@ Args in Dockerfile:
 ```
 ARG REACT_APP_HOME_TITLE
 ARG REACT_APP_SNAPCAST_HOST
+ARG REACT_APP_THEME
 ```
+Themes: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
 
 ## Useful Links
 
