@@ -11,25 +11,30 @@ import { WEBSOCKET_STATUS } from './utils/WebSocket';
 
 const title = process.env.REACT_APP_HOME_TITLE;
 
-const Home = ({ backgroundImage }) => {
-    const { webSocketStatus, isLoading } = useContext(AppContext);
+const Home = () => {
+    const { webSocketStatus, isLoading, theme } = useContext(AppContext);
     const [page, setPage] = useState('groups');
 
     return (
         <div
             className='home'
-            style={{ backgroundImage: `url(${backgroundImage})` }}
+            style={{ backgroundImage: `url(${theme.backgroundImage})` }}
         >
             <AppBar className='appBar' position="static">
                 <Toolbar variant="regular">
                     <h1> {title ?? 'Snapcast Audio'} </h1>
-                    <button
-                        className='menuPage'
-                        onClick={() => setPage(page === 'groups' ? 'settings' : 'groups')}
-                    >
-                        {page === 'groups' && <IoSettingsOutline />}
-                        {page === 'settings' && <IoHomeOutline />}
-                    </button>
+                    <div className='rightOptions'>
+                        {page === 'settings' && <theme.Selector
+                            className='themeSelector'
+                        />}
+                        <button
+                            className='togglePage'
+                            onClick={() => setPage(page === 'groups' ? 'settings' : 'groups')}
+                        >
+                            {page === 'groups' && <IoSettingsOutline />}
+                            {page === 'settings' && <IoHomeOutline />}
+                        </button>
+                    </div>
                 </Toolbar>
             </AppBar>
             {page === 'groups' && <Groups />}

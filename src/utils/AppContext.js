@@ -5,7 +5,7 @@ import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from
 
 export const AppContext = createContext(null);
 
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = ({ children, theme }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState(WEBSOCKET_STATUS.connecting);
 
@@ -94,7 +94,8 @@ export const AppContextProvider = ({ children }) => {
                 disbatchStreams,
                 disbatchGroups,
                 disbatchClients,
-                webSocketStatus: status
+                webSocketStatus: status,
+                theme,
             }}
         >
             {children}

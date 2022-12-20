@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@canvas-fonts/comic-sans-ms": "^1.0.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/changa": "^4.5.10",
+    "@fontsource/comic-neue": "^4.5.10",
+    "@fontsource/sansita": "^4.5.9",
     "@fontsource/space-grotesk": "^4.5.10",
     "@mui/material": "^5.10.16",
     "@testing-library/jest-dom": "^5.16.5",

@@ -5,12 +5,12 @@ import useTheme from './utils/useTheme';
 
 
 const App = () => {
-  const { backgroundImage, matTheme } = useTheme();
+  const theme = useTheme();
 
   return (
-    <AppContextProvider>
-      <ThemeProvider theme={matTheme}>
-        <Home backgroundImage={backgroundImage} />
+    <AppContextProvider theme={theme}>
+      <ThemeProvider theme={theme.matTheme}>
+        <Home />
       </ThemeProvider>
     </AppContextProvider>
   );

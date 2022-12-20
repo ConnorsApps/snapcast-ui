@@ -7,14 +7,26 @@
     flex-direction: column;
 
     .appBar {
-        .menuPage {
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
+        .rightOptions {
             position: absolute;
             right: 2rem;
+            display: flex;
+            gap: 1rem;
+
+            .togglePage {
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+            }
+            
+            .themeSelector {
+                margin-top: .5rem;
+                [role="button"] {
+                    padding-top: .5rem;
+                }
+            }
         }
     }
 }
