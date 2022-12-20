@@ -19,6 +19,7 @@ export const ThemeSelector = ({ theme, setTheme, className }) => {
         className='selectBox'
         value={theme}
         label='Theme'
+        ariaLabel='Theme Selector'
         sx={{
           color: 'white',
           textTransform: 'capitalize',
