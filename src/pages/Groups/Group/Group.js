@@ -54,7 +54,6 @@ const Group = ({ group, number }) => {
                         value={group.stream_id}
                         onChange={setStream}
                         className='streamSelector'
-
                     >
                         {streamList.map((stream, i) => (
                             <MenuItem

@@ -1,5 +1,8 @@
 .groups {
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
     @media only screen and (max-width: 700px)  {
         margin-left: 2vw;
@@ -10,9 +13,6 @@
         margin-right: 10vw;
     }
 
-    .group {
-        margin-bottom: 1rem;
-    }
     .noGroups {
         display: flex;
         flex-direction: column;

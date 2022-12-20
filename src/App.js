@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import Home from './Home';
 import { AppContextProvider } from './utils/AppContext';
-import useTheme from './utils/useTheme';
+import useTheme from './utils/useTheme/useTheme';
 
 
 const App = () => {
