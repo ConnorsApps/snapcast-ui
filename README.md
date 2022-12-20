@@ -3,14 +3,16 @@
 A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied with the default UI so I decided to start from scratch.
 
 <div style="display:flex;gap:10%">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" alt="Home Page" style="width: 45%;">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" alt="Settings Page" style="width: 45%;">
-</div>
-
-<div style="display:flex">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.png" alt="Roses Theme">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/80s.png" alt="80s Theme">
-  <img src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/tropic.png" alt="Tropic Theme">
+  <img 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.png" 
+    alt="Home Page" 
+    style="width: 45%;"
+  >
+  <img 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.png" 
+    alt="Settings Page" 
+    style="width: 45%;"
+  >
 </div>
 
 ## Overview
@@ -28,7 +30,26 @@ ARG REACT_APP_HOME_TITLE
 ARG REACT_APP_SNAPCAST_HOST
 ARG REACT_APP_THEME
 ```
-Themes: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
+
+**Themes**: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
+
+<div style="display:flex; gap: 3%">
+  <img 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.png" 
+    alt="Roses Theme"
+    style="width: 30%;"
+  >
+  <img 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/80s.png" 
+    alt="80s Theme"
+    style="width: 30%;"
+  >
+  <img 
+    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/tropic.png" 
+    alt="Tropic Theme"
+    style="width: 30%;"
+  >
+</div>
 
 ## Useful Links
 
