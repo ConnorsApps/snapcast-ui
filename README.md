@@ -33,7 +33,7 @@ ARG REACT_APP_THEME
 
 **Themes**: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
 
-<div style="display:flex; gap: 3%">
+<div style="display:flex;justify-content: space-evenly;">
   <img 
     src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/roses.png" 
     alt="Roses Theme"
