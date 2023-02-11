@@ -20,6 +20,9 @@ A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied
 ### Framework
 Built with [Reactjs](https://reactjs.org/). Static files served with nginx in container.
 
+### Backend
+Reaches out to the [Snapcast JSON RPC Api](https://github.com/badaix/snapcast/blob/master/doc/json_rpc_api/control.md) using a WebSocket. See `src/utils/WebSocket.js`. Events are handled via `src/utils/Reducer.js`.
+
 ### Testing Locally
 Develop locally with Docker compose with snapcast client server built in.
 
@@ -52,8 +55,6 @@ ARG REACT_APP_THEME
 </div>
 
 ## Useful Links
-
-[Snapcast JSON RPC Api](https://github.com/badaix/snapcast/blob/master/doc/json_rpc_api/control.md)
 
 [Component Library MatUI](https://mui.com/material-ui/react-button/)
 

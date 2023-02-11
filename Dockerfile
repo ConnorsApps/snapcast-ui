@@ -14,8 +14,7 @@ COPY ./public ./public
 
 RUN npm run build
 
-FROM nginx:alpine
-
+FROM nginx:alpine-slim
 WORKDIR /app
 
 COPY --from=build /app/build ./build

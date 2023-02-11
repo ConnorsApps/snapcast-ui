@@ -1,5 +1,4 @@
-FROM debian:bullseye
-
+FROM debian:bullseye-slim
 WORKDIR /app
 
 RUN dpkg --add-architecture armhf

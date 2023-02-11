@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import PlayingLoader from '../PlayingLoader/PlayingLoader';
 import './Stream.scss';
-import base64 from 'base-64';
 
 const SteamIcon = ({ artData }) => {
     if (artData.extension === 'svg') {
-        const image = base64.decode(artData.data);
+       
+        const image = atob(artData.data);
         return <img
             className='streamIcon'
             alt='Steam Icon'

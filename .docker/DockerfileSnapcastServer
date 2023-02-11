@@ -1,6 +1,4 @@
-FROM debian:bullseye
-
-
+FROM debian:bullseye-slim
 WORKDIR /app
 
 RUN apt update && apt upgrade -y
@@ -21,4 +19,4 @@ RUN rm -rf /var/lib/apt/lists/*
 
 COPY .docker/snapserver.conf /etc/snapserver.conf
 
-ENTRYPOINT /usr/bin/snapserver --logging.sink=stdout
+ENTRYPOINT ["/usr/bin/snapserver", "--logging.sink=stdout"]
