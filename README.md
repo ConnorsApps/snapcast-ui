@@ -1,6 +1,7 @@
 # Snapcast UI
+Snapcast UI is a static user interface built on Snapcast to control multi-room audio playback.
 
-A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied with the default UI so I decided to start from scratch.
+A static UI built on [Snapcast](https://github.com/badaix/snapcast).
 
 <div style="display:flex;gap:10%">
   <img 
@@ -17,22 +18,24 @@ A UI built on [Snapcast](https://github.com/badaix/snapcast). I wasn't satisfied
 
 ## Overview
 
-### Framework
-Built with [Reactjs](https://reactjs.org/). Static files served with nginx in container.
+### Tools
+- [ReactJS](https://react.dev/)
+- Component Library [MatUI](https://mui.com/material-ui)
+- Loading Animations [cssloaders](https://cssloaders.github.io/)
+- [Icons](https://react-icons.github.io/react-icons)
 
 ### Backend
-Reaches out to the [Snapcast JSON RPC Api](https://github.com/badaix/snapcast/blob/master/doc/json_rpc_api/control.md) using a WebSocket. See `src/utils/WebSocket.js`. Events are handled via `src/utils/Reducer.js`.
+It uses WebSockets to interact with the [Snapcast JSON RPC API](https://github.com/badaix/snapcast/blob/master/doc/json_rpc_api/control.md) for server communication.
 
-### Testing Locally
-Develop locally with Docker compose with snapcast client server built in.
+### Local Testing
+You can develop Snapcast UI locally using Docker Compose with mock Snapcast client and server services. Here are the steps:
+
+1. Install docker and docker compose.
+2. Copy `.env.example` to `.env`
+3. Run `docker compose up`
+4. Open http://localhost:3000/ in your web browser.
 
 ### Customisation
-Args in Dockerfile:
-```
-ARG REACT_APP_HOME_TITLE
-ARG REACT_APP_SNAPCAST_HOST
-ARG REACT_APP_THEME
-```
 
 **Themes**: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
 
@@ -54,10 +57,37 @@ ARG REACT_APP_THEME
   >
 </div>
 
-## Useful Links
+## Build and Install
+There are two ways to host the static site: using Docker with the prebuilt nginx configuration or building the static files locally and serving them with a tool like [npm serve](https://www.npmjs.com/package/serve).
 
-[Component Library MatUI](https://mui.com/material-ui/react-button/)
+### Build Args
+```
+REACT_APP_HOME_TITLE="Home Audio"
+REACT_APP_SNAPCAST_HOST="ws://localhost:1780"
+REACT_APP_THEME="default"
+```
 
-[Loading Animations](https://cssloaders.github.io/)
+### Using Docker
 
-[Icons](https://react-icons.github.io/react-icons)
+To use Docker, check out the build-example.sh file and modify the build args accordingly. Here is an example docker-compose.yaml:
+```
+version: '3'
+services:
+    frontend:
+        image: "my-registry:latest"
+        ports:
+            - "3000:3000"
+```
+
+### Using npm Serve
+
+To build and serve the static files locally, follow these steps:
+
+1. Install [NodeJS](https://nodejs.org/en/download).
+2. `npm install --global serve`
+3. `npm install`
+4. Copy `.env.example` to `.env` changing as needed. 
+5. `npm build`
+6. `serve build/`
+
+The environment variables are read from the `.env` file when running `npm build`.
