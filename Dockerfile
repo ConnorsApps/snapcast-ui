@@ -6,7 +6,7 @@ ARG REACT_APP_THEME
 
 WORKDIR /app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci
 
