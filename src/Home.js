@@ -30,7 +30,7 @@ const Home = () => {
                         <button
                             className='togglePage'
                             onClick={() => setPage(page === 'groups' ? 'settings' : 'groups')}
-                            ariaLabel='Toggle Page'
+                            aria-label='Toggle Page'
                         >
                             {page === 'groups' && <IoSettingsOutline />}
                             {page === 'settings' && <IoHomeOutline />}
