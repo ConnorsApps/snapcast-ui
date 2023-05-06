@@ -79,7 +79,7 @@ const ClientSetting = ({ client }) => {
             elevation={1}
             className='clientSetting'
         >
-            <div className='mainInfo'>
+            <div className='primarySection section'>
                 <div className='row'>
                     <ConnectionIcon conencted={client.connected} />
                     <BsFillSpeakerFill className='icon' />
@@ -110,23 +110,9 @@ const ClientSetting = ({ client }) => {
                         </Button>
                     </ButtonGroup>
                 </div>
-                <div>
-                    <p className='lastSeen'>Seen: {lastSeen(client.lastSeen.sec)}</p>
-                </div>
             </div>
 
-            <div className='info'>
-                <div className='clientName'>
-                    {client.host.name} IP: {client.host.ip}
-                </div>
-                <div className='secondary'>
-                    <p>Instance Id: {client.config.instance}</p>
-                    <p>Mac: {'  '}
-                        <span className='mac'>
-                            {client.host.mac}
-                        </span>
-                    </p>
-                </div>
+            <div className='secondarySection section'>
                 <FormControl className='group'>
                     <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
                     <Select
@@ -151,6 +137,31 @@ const ClientSetting = ({ client }) => {
                         </MenuItem>
                     </Select>
                 </FormControl>
+
+            </div>
+            <div className='section infoTable'>
+                <table>
+                    <tr>
+                        <th> Host: </th>
+                        <td>{client.host.name}</td>
+                    </tr>
+                    <tr>
+                        <th> IP: </th>
+                        <td>{client.host.ip}</td>
+                    </tr>
+                    <tr>
+                        <th> Mac: </th>
+                        <td> {client.host.mac} </td>
+                    </tr>
+                    <tr>
+                        <th> Instance Id: </th>
+                        <td>{client.config.instance}</td>
+                    </tr>
+                    <tr>
+                        <th> Connected </th>
+                        <td> {lastSeen(client.lastSeen.sec)} </td>
+                    </tr>
+                </table>
             </div>
 
             {!client.connected && (
