@@ -93,23 +93,6 @@ const ClientSetting = ({ client }) => {
                     />
                 </div>
 
-                <div className='latency row'>
-                    <p> Latency: {client.config.latency}ms </p>
-                    <ButtonGroup>
-                        <Button
-                            className='stepper'
-                            onClick={() => setLatency(--client.config.latency)}
-                        >
-                            <AiOutlineMinus />
-                        </Button>
-                        <Button
-                            className='stepper'
-                            onClick={() => setLatency(++client.config.latency)}
-                        >
-                            <AiOutlinePlus />
-                        </Button>
-                    </ButtonGroup>
-                </div>
             </div>
 
             <div className='secondarySection section'>
@@ -137,30 +120,50 @@ const ClientSetting = ({ client }) => {
                         </MenuItem>
                     </Select>
                 </FormControl>
-
+                <div className='latency row'>
+                    <p> Latency: {client.config.latency}ms </p>
+                    <ButtonGroup>
+                        <Button
+                            className='stepper'
+                            onClick={() => setLatency(--client.config.latency)}
+                        >
+                            <AiOutlineMinus />
+                        </Button>
+                        <Button
+                            className='stepper'
+                            onClick={() => setLatency(++client.config.latency)}
+                        >
+                            <AiOutlinePlus />
+                        </Button>
+                    </ButtonGroup>
+                </div>
             </div>
-            <div className='section infoTable'>
+            
+            <div className='infoTable'>
                 <table>
-                    <tr>
-                        <th> Host: </th>
-                        <td>{client.host.name}</td>
-                    </tr>
-                    <tr>
-                        <th> IP: </th>
-                        <td>{client.host.ip}</td>
-                    </tr>
-                    <tr>
-                        <th> Mac: </th>
-                        <td> {client.host.mac} </td>
-                    </tr>
-                    <tr>
-                        <th> Instance Id: </th>
-                        <td>{client.config.instance}</td>
-                    </tr>
-                    <tr>
-                        <th> Connected </th>
-                        <td> {lastSeen(client.lastSeen.sec)} </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th> Host: </th>
+                            <td>{client.host.name}</td>
+                        </tr>
+                        <tr>
+                            <th> IP: </th>
+                            <td>{client.host.ip}</td>
+                        </tr>
+                        <tr>
+                            <th> Mac: </th>
+                            <td> {client.host.mac} </td>
+                        </tr>
+                        <tr>
+                            <th> Instance Id: </th>
+                            <td>{client.config.instance}</td>
+                        </tr>
+                        <tr>
+                            <th> Connected </th>
+                            <td> {lastSeen(client.lastSeen.sec)} </td>
+                        </tr>
+                    </tbody>
+
                 </table>
             </div>
 

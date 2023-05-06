@@ -1,5 +1,4 @@
 .clientSetting {
-    opacity: 1;
     display: flex;
     background-color: #ffffffe0 !important;
 
@@ -41,10 +40,6 @@
     }
 
     .secondarySection {
-        display: flex;
-        flex-direction: column;
-        min-width: 14rem;
-
         .group {
             margin-top: .5rem;
 
@@ -59,7 +54,17 @@
     .infoTable {
         text-align: left;
 
+        @media only screen and (max-width: 650px) {
+            width: 100%;
+            table {
+                width: 100%;
+            }
+        }
+        
         table {
+            @media only screen and (min-width: 650px) {
+                min-width: 20rem;
+            }
             border-collapse: collapse;
         }
         tr {
@@ -68,11 +73,6 @@
         th, td {
             padding-top: 5px;
         }
-    
-    }
-
-    .lastSeen {
-        opacity: .5;
     }
 
     .delete {
