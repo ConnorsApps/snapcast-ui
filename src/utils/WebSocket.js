@@ -30,7 +30,9 @@ const getWebsocketStatus = (ws) => {
     return status;
 }
 
-export const connectToSnapcastServer = (retries = 0, onMessage, onStatus) => {
+const keepSocketAlive = () => setTimeout(() => sendRequest('Server.GetRPCVersion'), 20 * 1000);
+
+export const connectToSnapcastServer = (onMessage, onStatus, retries = 0, firstConnection = true) => {
     let hasRetried = false;
 
     const retry = () => {
@@ -39,7 +41,7 @@ export const connectToSnapcastServer = (retries = 0, onMessage, onStatus) => {
             onStatus(WEBSOCKET_STATUS.failed);
             console.error(`Unable to connect to web socket after ${MAX_RETRIES * RETRY_WAIT} seconds.`);
         } else {
-            connectToSnapcastServer(++retries, onMessage, onStatus);
+            connectToSnapcastServer(onMessage, onStatus, ++retries, false);
         }
     }
 
@@ -47,17 +49,20 @@ export const connectToSnapcastServer = (retries = 0, onMessage, onStatus) => {
 
     try {
         ws = new WebSocket(websocketUrl);
+        // Connection timeout 5 seconds
         setTimeout(() => {
-            // If is still connecting
             if (!hasRetried && ws.readyState === 0)
                 onStatus(WEBSOCKET_STATUS.failed);
-        }, TIMEOUT * 1000);
+        }, TIMEOUT * 5000);
     } catch (error) {
         console.error(`Unable to create Websocket ${JSON.stringify(error)}`);
         retry();
     }
 
     ws.onopen = () => {
+        if (firstConnection)
+            keepSocketAlive();
+
         onStatus(getWebsocketStatus(ws));
         retries = 0;
     };
@@ -89,8 +94,7 @@ export const sendRequest = (method, params, saveRequest) => {
         }
 
     } catch (error) {
-
-        console.error(`Unable to send request${method}`, error);
+        console.error(`Unable to send request ${method}`, error);
     }
 
     requestId++;

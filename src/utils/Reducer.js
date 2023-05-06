@@ -35,7 +35,7 @@ export const groupsReducer = (state, action) => {
 
         sendRequest(REQUESTS.group.setClients, params);
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.error(`Groups Event not implimented`, state, action)
     }
 
     return { ...state };
@@ -59,7 +59,7 @@ export const streamsReducer = (state, action) => {
         console.log('stream ', stream, 'params', params)
 
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.warn(`Streams Event not implimented`, state, action)
     }
     return { ...state };
 }
@@ -106,7 +106,7 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.name = params.name;
         sendRequest(REQUESTS.client.setName, params);
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.warn(`Client Event not implimented`, state, action)
     }
 
     return { ...state };
