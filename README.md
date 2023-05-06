@@ -37,7 +37,7 @@ You can develop Snapcast UI locally using Docker Compose with mock Snapcast clie
 
 ### Customisation
 
-**Themes**: `default`, `roses`, `tropic`, `80s`, `liveLaughLove`
+**Themes**: `default`, `roses`, `tropic`, `80s`
 
 <div style="display:flex;justify-content: space-evenly;">
   <img 

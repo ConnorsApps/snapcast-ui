@@ -7,6 +7,15 @@ export const groupsReducer = (state, action) => {
 
     if (event === 'init') {
         return action.groups;
+    } else if (event === EVENTS.group.onMute) {
+        state[params.id].mute = params.mute;
+
+    } else if (event === EVENTS.group.onStreamChanged) {
+        state[params.id].stream_id = params.stream_id;
+
+    } else if (event === EVENTS.group.onNameChanged) {
+        state[params.id].name = params.name;
+
     } else if (event === REQUESTS.group.setStream) {
 
         state[params.id].stream_id = params.stream_id;
@@ -25,19 +34,6 @@ export const groupsReducer = (state, action) => {
     } else if (event === REQUESTS.group.setClients) {
 
         sendRequest(REQUESTS.group.setClients, params);
-
-    } else if (event === EVENTS.group.onMute) {
-
-        state[params.id].mute = params.mute;
-
-    } else if (event === EVENTS.group.onStreamChanged) {
-
-        state[params.id].stream_id = params.stream_id;
-
-    } else if (event === EVENTS.group.onNameChanged) {
-
-        state[params.id].name = params.name;
-
     } else {
         console.error(`Unable to handle event`, state, action)
     }

@@ -6,8 +6,8 @@ import './Stream.scss';
 
 const SteamIcon = ({ artData, name }) => {
     const streamName = name ? name.toLowerCase() : '';
-    if (artData.extension === 'svg') {
-
+    
+    if (artData && artData.extension === 'svg') {
         const image = atob(artData.data);
         return (
             <img
@@ -34,7 +34,7 @@ const Stream = ({ id }) => {
     const artData = stream?.properties?.metadata?.artData;
     return (
         <div className='stream'>
-            {artData && <SteamIcon artData={artData} name={name} />}
+            <SteamIcon artData={artData} name={name} />
             <p> {name} {stream.status === 'idle' && 'idle'} </p>
             {stream.status === 'playing' && <PlayingLoader />}
         </div>

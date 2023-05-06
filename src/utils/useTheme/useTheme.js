@@ -3,7 +3,6 @@ import defaultImage from '../../assets/josiah-gardner-ksi5l4iJBjM-unsplash.jpg';
 import roseImage from '../../assets/christina-deravedisian-xu2YiLvBj3U-unsplash.jpg';
 import recordImage from '../../assets/karl-hornfeldt-i4UcdpKoA9c-unsplash.jpg';
 import tropicImage from '../../assets/tobias-tullius-fo7AX02q-eo-unsplash.jpg';
-import liveLaughLoveImage from '../../assets/brandi-alexandra-ykYknpMsndk-unsplash.jpg';
 import '@fontsource/space-grotesk';
 import '@fontsource/sansita';
 import '@fontsource/comic-neue';
@@ -14,8 +13,7 @@ export const THEME_OPTIONS = [
   'default',
   'roses',
   'tropic',
-  '80s',
-  'liveLaughLove',
+  '80s'
 ];
 
 const envTheme = process.env.REACT_APP_THEME;
@@ -43,10 +41,6 @@ const useTheme = () => {
   } else if (theme === 'tropic') {
     backgroundImage = tropicImage;
     matTheme = matThemes.tropicTheme;
-
-  } else if (theme === 'liveLaughLove') {
-    backgroundImage = liveLaughLoveImage;
-    matTheme = matThemes.liveLaughLoveTheme;
 
   } else {
     backgroundImage = defaultImage;
