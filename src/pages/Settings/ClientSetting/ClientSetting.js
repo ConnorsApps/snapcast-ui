@@ -1,19 +1,18 @@
 import './ClientSetting.scss';
-import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
-import { useContext } from 'react';
+import { Button, ButtonGroup, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../../utils/AppContext';
 import { BsFillSpeakerFill } from 'react-icons/bs';
 import ConnectionIcon from '../../../components/ConnectionIcon/ConnectionIcon';
 import { REQUESTS } from '../../../utils/Constants';
-import { formatDistance } from 'date-fns';
-import { AiOutlinePlus, AiOutlineMinus, AiFillDelete } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineMinus, AiFillDelete, AiFillInfoCircle } from 'react-icons/ai';
 import { IoAddCircleOutline } from 'react-icons/io5';
-
-const lastSeen = (secondsSince) => formatDistance(new Date(secondsSince * 1000), new Date(), { addSuffix: true });
+import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
 
 const ClientSetting = ({ client }) => {
     const { disbatchClients, disbatchGroups, groups } = useContext(AppContext);
     const groupList = Object.values(groups);
+    const [showInfo, setShowInfo] = useState(false);
 
     const handleChange = (event) => {
         disbatchClients({
@@ -79,8 +78,8 @@ const ClientSetting = ({ client }) => {
             elevation={1}
             className='clientSetting'
         >
-            <div className='mainInfo'>
-                <div className='row'>
+            <div className='topRow section'>
+                <div className='primarySection row'>
                     <ConnectionIcon conencted={client.connected} />
                     <BsFillSpeakerFill className='icon' />
 
@@ -93,66 +92,54 @@ const ClientSetting = ({ client }) => {
                     />
                 </div>
 
-                <div className='latency row'>
-                    <p> Latency: {client.config.latency}ms </p>
-                    <ButtonGroup>
-                        <Button
-                            className='stepper'
-                            onClick={() => setLatency(--client.config.latency)}
+                <div className='secondarySection section'>
+                    <FormControl className='group'>
+                        <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
+                        <Select
+                            sx={{ height: '3rem' }}
+                            labelId={`selector group-label-${client.id}`}
+                            label='Group'
+                            value={client.groupId}
+                            onChange={groupChange}
                         >
-                            <AiOutlineMinus />
-                        </Button>
-                        <Button
-                            className='stepper'
-                            onClick={() => setLatency(++client.config.latency)}
-                        >
-                            <AiOutlinePlus />
-                        </Button>
-                    </ButtonGroup>
-                </div>
-                <div>
-                    <p className='lastSeen'>Seen: {lastSeen(client.lastSeen.sec)}</p>
-                </div>
-            </div>
-
-            <div className='info'>
-                <div className='clientName'>
-                    {client.host.name} IP: {client.host.ip}
-                </div>
-                <div className='secondary'>
-                    <p>Instance Id: {client.config.instance}</p>
-                    <p>Mac: {'  '}
-                        <span className='mac'>
-                            {client.host.mac}
-                        </span>
-                    </p>
-                </div>
-                <FormControl className='group'>
-                    <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
-                    <Select
-                        labelId={`group-label-${client.id}`}
-                        label='Group'
-                        value={client.groupId}
-                        onChange={groupChange}
-                    >
-                        {groupList.map((group, i) => (
+                            {groupList.map((group, i) => (
+                                <MenuItem
+                                    sx={{height: '3rem'}}
+                                    key={i}
+                                    value={group.id}
+                                >
+                                    {group.name || `Group ${i + 1}`}
+                                </MenuItem>
+                            ))}
                             <MenuItem
-                                key={i}
-                                value={group.id}
+                                sx={{ gap: '.5rem', display: 'flex', alignContent: 'center' }}
+                                value='add'
                             >
-                                {group.name || `Group ${i + 1}`}
+                                <IoAddCircleOutline /> Add Group
                             </MenuItem>
-                        ))}
-                        <MenuItem
-                            sx={{ gap: '.5rem', display: 'flex', alignContent: 'center' }}
-                            value='add'
-                        >
-                            <IoAddCircleOutline /> Add Group
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+                        </Select>
+                    </FormControl>
+                    <div className='latency row'>
+                        <p> Latency: {client.config.latency}ms </p>
+                        <ButtonGroup>
+                            <Button
+                                className='stepper'
+                                onClick={() => setLatency(--client.config.latency)}
+                            >
+                                <AiOutlineMinus />
+                            </Button>
+                            <Button
+                                className='stepper'
+                                onClick={() => setLatency(++client.config.latency)}
+                            >
+                                <AiOutlinePlus />
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+                </div>
             </div>
-
+            <ClientInfoTable client={client} showInfo={showInfo} />
+    
             {!client.connected && (
                 <button
                     className='delete'
@@ -161,6 +148,13 @@ const ClientSetting = ({ client }) => {
                     <AiFillDelete />
                 </button>
             )}
+            <IconButton 
+                color="primary" 
+                className='toggleInfo'
+                onClick={() => setShowInfo(!showInfo)}
+            >
+                <AiFillInfoCircle /> 
+            </IconButton>
         </Paper>
     )
 };

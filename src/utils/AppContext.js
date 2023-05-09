@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
-import { EVENTS, REQUESTS } from './Constants.js';
+import { REQUESTS } from './Constants.js';
 import { clientsReducer, groupsReducer, stateFromStatus, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
 
@@ -37,26 +37,13 @@ export const AppContextProvider = ({ children, theme }) => {
             const event = data.method;
             const params = data.params;
 
-            if (event === EVENTS.server.onUpdate) {
+            if (event === 'Server.OnUpdate') {
                 onServerUpdate(params)
-            } else if (
-                event === EVENTS.group.onMute ||
-                event === EVENTS.group.onNameChanged ||
-                event === EVENTS.group.onStreamChanged
-            ) {
+            } else if (event.startsWith('Group.On')) {
                 disbatchGroups({ type: event, params });
-            } else if (
-                event === EVENTS.stream.onUpdate ||
-                event === EVENTS.stream.onProperties
-            ) {
+            } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
-            } else if (
-                event === EVENTS.client.onConnect ||
-                event === EVENTS.client.onDisconnect ||
-                event === EVENTS.client.onLatencyChanged ||
-                event === EVENTS.client.onNameChanged ||
-                event === EVENTS.client.onVolumeChanged
-            ) {
+            } else if (event.startsWith('Client.On')) {
                 disbatchClients({ type: event, params });
             }
 
@@ -65,26 +52,24 @@ export const AppContextProvider = ({ children, theme }) => {
     }, [disbatchStreams, disbatchGroups, disbatchClients]);
 
     useEffect(() => {
-        console.debug('On websocket status change', status);
+        console.debug('Websocket status change', status);
 
         if (status === WEBSOCKET_STATUS.open) {
             sendRequest(REQUESTS.server.getStatus, null, true);
+        } else if (status === WEBSOCKET_STATUS.failed) {
+            setIsLoading(false);
         }
     }, [status]);
 
     useEffect(() => {
         // Refresh current state and create new websocket when browser comes back into focus
         window.addEventListener('focus', () => {
-            connectToSnapcastServer(0, onMessage, setStatus);
+            connectToSnapcastServer(onMessage, setStatus);
         });
     }, [onMessage]);
 
     useEffect(() => {
-        connectToSnapcastServer(0, onMessage, (status)=>{
-            if (status === WEBSOCKET_STATUS.failed) 
-                setIsLoading(false);
-            setStatus(status);
-        });
+        connectToSnapcastServer(onMessage, setStatus);
     }, [onMessage, setStatus]);
 
     return (

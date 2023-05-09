@@ -56,19 +56,5 @@ const tropicTheme = createTheme({
         },
     },
 });
-const liveLaughLoveTheme = createTheme({
-    typography: {
-        fontFamily: 'Comic Neue'
-    },
-    palette: {
-        primary: {
-            main: '#57451C',
-            contrastText: "#fff",
-        },
-        secondary: {
-            main: '#F400F4',
-        },
-    },
-});
 
-export const matThemes = { defaultTheme, roseTheme, eightiesTheme, tropicTheme, liveLaughLoveTheme };
+export const matThemes = { defaultTheme, roseTheme, eightiesTheme, tropicTheme };

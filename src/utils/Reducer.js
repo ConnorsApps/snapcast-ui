@@ -7,6 +7,15 @@ export const groupsReducer = (state, action) => {
 
     if (event === 'init') {
         return action.groups;
+    } else if (event === EVENTS.group.onMute) {
+        state[params.id].mute = params.mute;
+
+    } else if (event === EVENTS.group.onStreamChanged) {
+        state[params.id].stream_id = params.stream_id;
+
+    } else if (event === EVENTS.group.onNameChanged) {
+        state[params.id].name = params.name;
+
     } else if (event === REQUESTS.group.setStream) {
 
         state[params.id].stream_id = params.stream_id;
@@ -25,21 +34,8 @@ export const groupsReducer = (state, action) => {
     } else if (event === REQUESTS.group.setClients) {
 
         sendRequest(REQUESTS.group.setClients, params);
-
-    } else if (event === EVENTS.group.onMute) {
-
-        state[params.id].mute = params.mute;
-
-    } else if (event === EVENTS.group.onStreamChanged) {
-
-        state[params.id].stream_id = params.stream_id;
-
-    } else if (event === EVENTS.group.onNameChanged) {
-
-        state[params.id].name = params.name;
-
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.error(`Groups Event not implimented`, state, action)
     }
 
     return { ...state };
@@ -63,7 +59,7 @@ export const streamsReducer = (state, action) => {
         console.log('stream ', stream, 'params', params)
 
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.warn(`Streams Event not implimented`, state, action)
     }
     return { ...state };
 }
@@ -110,7 +106,7 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.name = params.name;
         sendRequest(REQUESTS.client.setName, params);
     } else {
-        console.error(`Unable to handle event`, state, action)
+        console.warn(`Client Event not implimented`, state, action)
     }
 
     return { ...state };

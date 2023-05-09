@@ -1,0 +1,30 @@
+.infoTable {
+    text-align: left;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease-in-out;
+
+    @media only screen and (max-width: 650px) {
+        width: 100%;
+        table {
+            width: 100%;
+        }
+    }
+    
+    table {
+        @media only screen and (min-width: 650px) {
+            min-width: 30rem;
+        }
+        border-collapse: collapse;
+    }
+    tr {
+        border-bottom: 1px solid rgb(134, 134, 134);
+    }
+    th, td {
+        padding-top: 5px;
+    }
+}
+
+.infoTableOpen {
+    max-height: 100vh;
+}

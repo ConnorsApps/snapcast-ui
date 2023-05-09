@@ -45,7 +45,7 @@ const Group = ({ group, number }) => {
                     <button
                         onClick={toggleMute}
                         className='volumeIcon'
-                        ariaLabel='Toggle Group Volume'
+                        aria-label='Toggle Group Volume'
                     >
                         <VolumeIcon
                             muted={group.mute}
@@ -55,7 +55,7 @@ const Group = ({ group, number }) => {
                         value={group.stream_id}
                         onChange={setStream}
                         className='streamSelector'
-                        ariaLabel='Select Stream'
+                        aria-label='Select Stream'
                     >
                         {streamList.map((stream, i) => (
                             <MenuItem

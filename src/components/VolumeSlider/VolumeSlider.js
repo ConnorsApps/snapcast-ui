@@ -49,7 +49,7 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
                 <VolumeIcon
                     percent={volume.percent}
                     muted={volume.muted}
-                    ariaLabel='Toggle Mute'
+                    aria-label='Toggle Mute'
                 />
             </button>
 
@@ -57,8 +57,9 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
                 value={volume.percent}
                 onChange={handleChange}
                 color={color}
-                disabled={volume.muted}
-                ariaLabel='Volume Slider'
+                // Not using offical disabled field to still allow adjusting volume
+                className={volume.muted ? 'disabled' : ''}
+                aria-label='Volume Slider'
             />
         </div>)
 }
