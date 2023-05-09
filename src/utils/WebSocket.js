@@ -30,7 +30,10 @@ const getWebsocketStatus = (ws) => {
     return status;
 }
 
-const keepSocketAlive = () => setTimeout(() => sendRequest('Server.GetRPCVersion'), 20 * 1000);
+const keepSocketAlive = () => setTimeout(() => {
+    sendRequest('Server.GetRPCVersion');
+    keepSocketAlive();
+}, 20 * 1000);
 
 export const connectToSnapcastServer = (onMessage, onStatus, retries = 0, firstConnection = true) => {
     let hasRetried = false;
