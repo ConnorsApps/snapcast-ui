@@ -78,33 +78,33 @@ const ClientSetting = ({ client }) => {
             elevation={1}
             className='clientSetting'
         >
-            <div className='topRow'>
-                <div className='primarySection section'>
-                    <div className='row'>
-                        <ConnectionIcon conencted={client.connected} />
-                        <BsFillSpeakerFill className='icon' />
+            <div className='topRow section'>
+                <div className='primarySection row'>
+                    <ConnectionIcon conencted={client.connected} />
+                    <BsFillSpeakerFill className='icon' />
 
-                        <TextField
-                            label='Name'
-                            variant='standard'
-                            value={client.config.name}
-                            onChange={handleChange}
-                            sx={{ minWidth: '10rem' }}
-                        />
-                    </div>
+                    <TextField
+                        label='Name'
+                        variant='standard'
+                        value={client.config.name}
+                        onChange={handleChange}
+                        sx={{ minWidth: '10rem' }}
+                    />
                 </div>
 
                 <div className='secondarySection section'>
                     <FormControl className='group'>
                         <InputLabel id={`group-label-${client.id}`}>Group</InputLabel>
                         <Select
-                            labelId={`group-label-${client.id}`}
+                            sx={{ height: '3rem' }}
+                            labelId={`selector group-label-${client.id}`}
                             label='Group'
                             value={client.groupId}
                             onChange={groupChange}
                         >
                             {groupList.map((group, i) => (
                                 <MenuItem
+                                    sx={{height: '3rem'}}
                                     key={i}
                                     value={group.id}
                                 >

@@ -9,7 +9,7 @@ docker buildx build . \
     --build-arg REACT_APP_SNAPCAST_HOST="$REACT_APP_SNAPCAST_HOST" \
     --platform linux/arm64,linux/amd64 \
     --tag $DOCKER_REGISTRY:latest \
-    --tag $DOCKER_REGISTRY:1.0.1 \
+    --tag $DOCKER_REGISTRY:1.1.0 \
     --output type=registry
 
 docker buildx rm snapcast-ui

@@ -9,7 +9,6 @@
 
     @media only screen and (min-width: 500px) {
         flex-direction: row;
-        padding-right: 1.5rem;
     }
 
     padding: 1rem;
@@ -29,29 +28,37 @@
         flex-direction: column;
     }
 
-    .primarySection {
-        .icon {
-            font-size: 2rem;
+    .topRow {
+        @media only screen and (min-width: 500px) {
+            flex-direction: row;
+            padding-right: 2rem;
         }
 
-        .latency {
-            .stepper {
-                font-size: 20px;
+        .primarySection {
+            .icon {
+                font-size: 2rem;
+            }
+    
+            .latency {
+                .stepper {
+                    font-size: 20px;
+                }
+            }
+        }
+    
+        .secondarySection {
+            .group {
+                margin-top: .5rem;
+    
+                .MuiSelect-select {
+                    padding-left: 1rem;
+                    padding-top: 4px;
+                    padding-bottom: 4px;
+                }
             }
         }
     }
 
-    .secondarySection {
-        .group {
-            margin-top: .5rem;
-
-            .MuiSelect-select {
-                padding-left: 1rem;
-                padding-top: 4px;
-                padding-bottom: 4px;
-            }
-        }
-    }
 
     .toggleInfo {
         position: absolute;
