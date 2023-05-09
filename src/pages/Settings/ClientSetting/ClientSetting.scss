@@ -1,6 +1,7 @@
 .clientSetting {
     display: flex;
     background-color: #ffffffe0 !important;
+    position: relative;
 
     @media only screen and (max-width: 500px) {
         flex-direction: column;
@@ -8,6 +9,7 @@
 
     @media only screen and (min-width: 500px) {
         flex-direction: row;
+        padding-right: 1.5rem;
     }
 
     padding: 1rem;
@@ -51,28 +53,12 @@
         }
     }
 
-    .infoTable {
-        text-align: left;
-
-        @media only screen and (max-width: 650px) {
-            width: 100%;
-            table {
-                width: 100%;
-            }
-        }
-        
-        table {
-            @media only screen and (min-width: 650px) {
-                min-width: 20rem;
-            }
-            border-collapse: collapse;
-        }
-        tr {
-            border-bottom: 1px solid rgb(134, 134, 134);
-        }
-        th, td {
-            padding-top: 5px;
-        }
+    .toggleInfo {
+        position: absolute;
+        cursor: pointer;
+        right: .5rem;
+        top: .5rem;
+        font-size: 2rem;
     }
 
     .delete {
