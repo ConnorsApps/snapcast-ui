@@ -52,7 +52,7 @@ export const AppContextProvider = ({ children, theme }) => {
     }, [disbatchStreams, disbatchGroups, disbatchClients]);
 
     useEffect(() => {
-        console.debug('Websocket status change', status);
+        console.debug('Websocket status', status);
 
         if (status === WEBSOCKET_STATUS.open) {
             sendRequest(REQUESTS.server.getStatus, null, true);
@@ -61,12 +61,12 @@ export const AppContextProvider = ({ children, theme }) => {
         }
     }, [status]);
 
-    useEffect(() => {
+    // useEffect(() => {
         // Refresh current state and create new websocket when browser comes back into focus
-        window.addEventListener('focus', () => {
-            connectToSnapcastServer(onMessage, setStatus);
-        });
-    }, [onMessage]);
+        // window.addEventListener('focus', () => {
+        //     connectToSnapcastServer(onMessage, setStatus);
+        // });
+    // }, [onMessage]);
 
     useEffect(() => {
         connectToSnapcastServer(onMessage, setStatus);
