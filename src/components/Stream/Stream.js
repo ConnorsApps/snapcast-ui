@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import { AppContext } from '../../utils/AppContext';
 import { SiAirplayaudio, SiPlex, SiSoundcloud } from 'react-icons/si';
 import PlayingLoader from '../PlayingLoader/PlayingLoader';
 import './Stream.scss';
@@ -26,9 +24,7 @@ const SteamIcon = ({ artData, name }) => {
     }
 };
 
-const Stream = ({ id }) => {
-    const { streams } = useContext(AppContext);
-    const stream = streams[id];
+const Stream = ({ stream }) => {
     const name = stream?.uri?.query?.name || stream.id;
 
     const artData = stream?.properties?.metadata?.artData;

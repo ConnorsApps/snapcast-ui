@@ -1,26 +1,23 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { REQUESTS } from './Constants.js';
-import { clientsReducer, groupsReducer, stateFromStatus, streamsReducer } from './Reducer.js';
+import { reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
 
-export const AppContext = createContext(null);
+export const AppContext = createContext();
 
 export const AppContextProvider = ({ children, theme }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState(WEBSOCKET_STATUS.connecting);
 
     const [server, setServer] = useState([]);
-    const [groups, disbatchGroups] = useReducer(groupsReducer, {});
+    const [groups, disbatch] = useReducer(reducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
-    const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
     const onServerUpdate = (update) => {
-        const { server, streams, groups, clients } = stateFromStatus(update);
-        setServer(server);
+        setServer(update.server.server);
 
-        disbatchStreams({ type: 'init', streams });
-        disbatchGroups({ type: 'init', groups });
-        disbatchClients({ type: 'init', clients });
+        disbatchStreams({ type: 'init', streams: update.server.streams });
+        disbatch({ type: 'init', groups: update.server.groups });
 
         setIsLoading(false);
     }
@@ -39,17 +36,15 @@ export const AppContextProvider = ({ children, theme }) => {
 
             if (event === 'Server.OnUpdate') {
                 onServerUpdate(params)
-            } else if (event.startsWith('Group.On')) {
-                disbatchGroups({ type: event, params });
+            } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
+                disbatch({ type: event, params });
             } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
-            } else if (event.startsWith('Client.On')) {
-                disbatchClients({ type: event, params });
             }
 
         }
 
-    }, [disbatchStreams, disbatchGroups, disbatchClients]);
+    }, [disbatchStreams, disbatch]);
 
     useEffect(() => {
         console.debug('Websocket status', status);
@@ -78,11 +73,9 @@ export const AppContextProvider = ({ children, theme }) => {
                 streams,
                 server,
                 groups,
-                clients,
                 isLoading,
                 disbatchStreams,
-                disbatchGroups,
-                disbatchClients,
+                disbatch,
                 webSocketStatus: status,
                 theme,
             }}

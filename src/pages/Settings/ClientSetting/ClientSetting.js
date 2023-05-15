@@ -10,12 +10,12 @@ import { IoAddCircleOutline } from 'react-icons/io5';
 import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
 
 const ClientSetting = ({ client }) => {
-    const { disbatchClients, disbatchGroups, groups } = useContext(AppContext);
+    const { disbatch, groups } = useContext(AppContext);
     const groupList = Object.values(groups);
     const [showInfo, setShowInfo] = useState(false);
 
     const handleChange = (event) => {
-        disbatchClients({
+        disbatch({
             type: REQUESTS.client.setName,
             params: {
                 id: client.id,
@@ -29,7 +29,7 @@ const ClientSetting = ({ client }) => {
         if (value === 'add') {
             // To create a new snapcast group, set the existing group id to only have selected client
 
-            disbatchGroups({
+            disbatch({
                 type: REQUESTS.group.setClients,
                 params: {
                     id: client.groupId,
@@ -42,7 +42,7 @@ const ClientSetting = ({ client }) => {
             const existingClients = group.clients.map(client => client.id);
             const newClients = existingClients.concat(client.id);
 
-            disbatchGroups({
+            disbatch({
                 type: REQUESTS.group.setClients,
                 params: {
                     id: value,
@@ -54,7 +54,7 @@ const ClientSetting = ({ client }) => {
 
     const setLatency = (value) => {
         if (value >= 0) {
-            disbatchClients({
+            disbatch({
                 type: REQUESTS.client.setLatency,
                 params: {
                     id: client.id,
@@ -65,7 +65,7 @@ const ClientSetting = ({ client }) => {
     };
 
     const deleteClient = () => {
-        disbatchClients({
+        disbatch({
             type: REQUESTS.server.deleteClient,
             params: {
                 id: client.id

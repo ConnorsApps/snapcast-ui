@@ -32,7 +32,7 @@ const StreamBar = () => {
                             key={i}
                         >
                             <Stream
-                                id={stream.id}
+                                stream={stream}
                             />
                         </MenuItem>
                     ))}

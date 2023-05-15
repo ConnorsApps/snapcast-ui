@@ -7,14 +7,14 @@ import ClientSetting from './ClientSetting/ClientSetting';
 import './Settings.scss';
 
 const GroupSetting = ({ group, clients, number }) => {
-    const { disbatchGroups } = useContext(AppContext)
+    const { disbatch } = useContext(AppContext)
     const [groupName, setGroupName] = useState(group.name || `Group ${number}`);
 
     const changeGroupName = (event) => {
         const name = event.target.value;
         setGroupName(name);
         const params = { id: group.id, name };
-        disbatchGroups({ type: REQUESTS.group.setName, params });
+        disbatch({ type: REQUESTS.group.setName, params });
     };
 
     return (
@@ -42,12 +42,8 @@ const GroupSetting = ({ group, clients, number }) => {
 }
 
 const Settings = () => {
-    const { groups, clients } = useContext(AppContext);
+    const { groups } = useContext(AppContext);
     const groupList = Object.values(groups ?? {});
-
-    const clientList = Object.values(clients || {})
-        .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec);
-
     return (
         <div className='settings'>
             {groupList.map((group, i) => (
@@ -55,7 +51,8 @@ const Settings = () => {
                     group={group}
                     key={i}
                     number={i + 1}
-                    clients={clientList.filter(c => c.groupId === group.id)}
+                    clients={Object.values(group.clients)
+                        .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec)}
                 />
             ))}
         </div>
