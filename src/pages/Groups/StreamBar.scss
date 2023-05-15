@@ -1,0 +1,25 @@
+@import './Groups.scss';
+
+.streamBar {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @include groupSidesMargin();
+    margin-bottom: max(1rem, env(safe-area-inset-bottom));
+    
+    .topRow {
+        display: flex;
+        justify-content: flex-end;
+        
+        .selector {
+            min-width: 40%;
+        }
+    }
+
+    .volume-slider {
+        padding: 0.5rem 1rem;
+    }
+}

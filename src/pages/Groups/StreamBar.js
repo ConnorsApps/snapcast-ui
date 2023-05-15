@@ -17,26 +17,28 @@ const StreamBar = () => {
             elevation={3}
             sx={{ backgroundColor: theme.palette.transparent.main }}
         >
+            <div className='topRow'>
+                <Select
+                    className='selector'
+                    aria-label='Select Stream'
+                    value={'default'}
+                    onChange={() => { }}
+                >
+                    {streamList.map((stream, i) => (
+                        <MenuItem
+                            value={stream.id}
+                            divider={true}
+                            sx={{ padding: '1rem' }}
+                            key={i}
+                        >
+                            <Stream
+                                id={stream.id}
+                            />
+                        </MenuItem>
+                    ))}
+                </Select>
+            </div>
             <VolumeSlider volume={volume} setVolume={setVolume} />
-            <Select
-                className='streamSelector'
-                aria-label='Select Stream'
-                value={'default'}
-                onChange={()=>{}}
-            >
-                {streamList.map((stream, i) => (
-                    <MenuItem
-                        value={stream.id}
-                        divider={true}
-                        sx={{ padding: '1rem' }}
-                        key={i}
-                    >
-                        <Stream
-                            id={stream.id}
-                        />
-                    </MenuItem>
-                ))}
-            </Select>
         </Paper>
     )
 };
