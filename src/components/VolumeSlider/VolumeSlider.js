@@ -15,7 +15,7 @@ export const VolumeIcon = ({ percent, muted }) => {
     }
 }
 
-// FROM https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+// From https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
 const iOS = () => {
     const platform = navigator.userAgentData?.platform || navigator.platform;
 
@@ -41,6 +41,9 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
         setVolume({ percent: newValue, muted: volume.muted })
     };
 
+    
+    const sliderClass = volume.muted ? 'disabled' : ''
+
     return (
         <div className='volume-slider'>
             <button
@@ -58,7 +61,7 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
                 onChange={handleChange}
                 color={color}
                 // Not using offical disabled field to still allow adjusting volume
-                className={volume.muted ? 'disabled' : ''}
+                className={sliderClass}
                 aria-label='Volume Slider'
             />
         </div>)

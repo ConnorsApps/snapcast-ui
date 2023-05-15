@@ -1,5 +1,5 @@
 import './Group.scss';
-import { MenuItem, Paper, Select } from '@mui/material';
+import { MenuItem, Paper, Select, useTheme } from '@mui/material';
 import Stream from '../../../components/Stream/Stream';
 import Client from './Client/Client';
 import { useContext } from 'react';
@@ -9,6 +9,7 @@ import { VolumeIcon } from '../../../components/VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
     const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);
+    const theme = useTheme();
 
     const streamList = Object.values(streams);
 
@@ -37,6 +38,7 @@ const Group = ({ group, number }) => {
         <Paper
             className='group'
             elevation={3}
+            sx={{ backgroundColor: theme.palette.transparent.main }}
         >
             <div className='info'>
                 <p className='name'> {group.name || `Group ${number}`} </p>

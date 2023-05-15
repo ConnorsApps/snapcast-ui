@@ -41,5 +41,4 @@ const Stream = ({ id }) => {
     );
 };
 
-
 export default Stream;
