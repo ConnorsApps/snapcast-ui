@@ -5,12 +5,14 @@ import VolumeSlider from '../../../../components/VolumeSlider/VolumeSlider';
 import { useContext } from 'react';
 import { AppContext } from '../../../../utils/AppContext';
 import { REQUESTS } from '../../../../utils/Constants';
+import { internalVolumes } from '../../../../utils/InternalVolumes';
 
 const Client = ({ client }) => {
     const { disbatch } = useContext(AppContext);
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
 
     const setVolume = (volume) => {
+        internalVolumes.updateClient(client.id, volume.percent);
         disbatch({ type: REQUESTS.client.setVolume, params: { id: client.id, volume } });
     };
 

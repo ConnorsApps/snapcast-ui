@@ -1,4 +1,3 @@
-
 export const REQUESTS = {
     client: {
         getStatus: 'Client.GetStatus',

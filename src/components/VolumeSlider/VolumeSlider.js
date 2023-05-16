@@ -1,6 +1,6 @@
 
 import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-icons/io5'
-import { Slider } from '@mui/material';
+import Slider from '@mui/material/Slider';
 import './VolumeSlider.scss';
 
 export const VolumeIcon = ({ percent, muted }) => {
@@ -27,7 +27,7 @@ const iOS = () => {
         'iPhone',
         'iPod'
     ].includes(platform)
-    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+        || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     // iPad on iOS 13 detection
 }
 const isIOS = iOS();
@@ -41,7 +41,7 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
         setVolume({ percent: newValue, muted: volume.muted })
     };
 
-    
+
     const sliderClass = volume.muted ? 'disabled' : ''
 
     return (

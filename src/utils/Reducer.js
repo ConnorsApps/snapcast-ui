@@ -1,4 +1,5 @@
 import { EVENTS, REQUESTS } from "./Constants";
+import { internalVolumes } from "./InternalVolumes";
 import { sendRequest } from "./WebSocket";
 
 const clientsGroupId = (clientId, state) => {
@@ -17,14 +18,18 @@ export const reducer = (state, action) => {
         // Use object instead of array for easy access later
         const groups = {};
 
+        let allClients = [];
         action.groups.forEach(group => {
             const clients = {};
             group.clients.forEach(client => {
                 clients[client.id] = { ...client, groupId: group.id }
             });
-            
-            groups[group.id] = {...group, clients};
+            allClients = allClients.concat(group.clients);
+
+            groups[group.id] = { ...group, clients };
         });
+
+        internalVolumes.init(allClients);
 
         return groups;
     }
@@ -93,6 +98,7 @@ export const reducer = (state, action) => {
 
             delete state[groupId].clients[params.id];
             sendRequest(REQUESTS.server.deleteClient, params);
+            internalVolumes.deleteClient()
 
         } else if (event === REQUESTS.client.setLatency) {
 
@@ -125,8 +131,7 @@ export const streamsReducer = (state, action) => {
 
     } else if (event === EVENTS.stream.onProperties) {
         const stream = state[params.id];
-
-        console.log('stream ', stream, 'params', params)
+        console.log('todo impliment stream onProperties stream:', stream, 'params:', params);
 
     } else {
         console.warn(`Streams Event not implimented`, state, action)
