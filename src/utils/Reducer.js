@@ -98,7 +98,6 @@ export const reducer = (state, action) => {
 
             delete state[groupId].clients[params.id];
             sendRequest(REQUESTS.server.deleteClient, params);
-            internalVolumes.deleteClient()
 
         } else if (event === REQUESTS.client.setLatency) {
 

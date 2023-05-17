@@ -18,12 +18,14 @@ const updateClient = (clientId, percent) => {
     const volumes = get();
     volumes[clientId] = { percent };
     set(volumes);
+    return volumes;
 };
 
 const deleteClient = (clientId) => {
     const volumes = get();
     delete volumes[clientId];
     set(volumes);
+    return volumes;
 };
 
 const init = (clients) => {

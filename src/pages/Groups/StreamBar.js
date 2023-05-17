@@ -9,18 +9,19 @@ import { REQUESTS } from '../../utils/Constants';
 
 const StreamBar = () => {
     const theme = useTheme();
-    const { streams, groups, disbatch } = useContext(AppContext);
-    const [selectedStream, setSelectedStream] = useState('default');
+    const { streams, groups, disbatch, internalClientVolumes } = useContext(AppContext);
     const streamList = Object.values(streams);
+    const [selectedStream, setSelectedStream] = useState(localStorage.getItem('lastSelectedStream') ?? streamList[0].id);
     const [volume, setVolume] = useState({ percent: 50, muted: false });
     const [clients, setClients] = useState([]);
 
-    useEffect(() => {
-        // store last selected group keep as default
-        let streamClients = [];
-        // const volumes = internalVolumes.get();
+    const selectStream = (stream) => {
+        localStorage.setItem('lastSelectedStream', stream);
+        setSelectedStream(stream);
+    };
 
-        // let totalVolume = 0;
+    useEffect(() => {
+        let streamClients = [];
 
         for (const group of Object.values(groups)) {
             if (group.stream_id === selectedStream) {
@@ -38,26 +39,24 @@ const StreamBar = () => {
 
     }, [selectedStream, groups, volume.muted]);
 
-    // useEffect(() => {
-    //     const volumes = internalVolumes.get();
-    //     let total = 0;
-    //     for (const client of clients) {
-    //         total += volumes[client.id].percent;
-    //     }
+    useEffect(() => {
+        let total = 0;
+        for (const client of clients) {
+            total += internalClientVolumes[client.id].percent;
+        }
 
-    //     setVolume({
-    //         percent: total / clients.length,
-    //         muted: volume.muted
-    //     });
-    //     console.log('total',total)
-    // }, [clients, volume.muted]);
+        setVolume({
+            percent: clients.length > 0 ? total / clients.length : 50,
+            muted: volume.muted
+        });
+    }, [internalClientVolumes]);
 
     const setStreamVolume = (e) => {
         const volumes = internalVolumes.get();
         let sum = 0;
 
         for (const client of clients) {
-            sum += client.volume.percent;
+            sum += volumes[client.id].percent;
         }
         
         const newStreamVolume = e.percent;
@@ -103,7 +102,7 @@ const StreamBar = () => {
                     className='selector'
                     aria-label='Select Stream'
                     value={selectedStream}
-                    onChange={(e) => setSelectedStream(e.target.value)}
+                    onChange={(e) => selectStream(e.target.value)}
                 >
                     {streamList.map((stream, i) => (
                         <MenuItem

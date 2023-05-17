@@ -8,9 +8,10 @@ import { REQUESTS } from '../../../utils/Constants';
 import { AiOutlinePlus, AiOutlineMinus, AiFillDelete, AiFillInfoCircle } from 'react-icons/ai';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
+import { internalVolumes } from '../../../utils/InternalVolumes';
 
 const ClientSetting = ({ client }) => {
-    const { disbatch, groups } = useContext(AppContext);
+    const { disbatch, groups, setInternalClientVolumes } = useContext(AppContext);
     const groupList = Object.values(groups);
     const [showInfo, setShowInfo] = useState(false);
 
@@ -39,7 +40,7 @@ const ClientSetting = ({ client }) => {
 
         } else {
             const group = groups[value];
-            const existingClients = group.clients.map(client => client.id);
+            const existingClients = Object.values(group.clients).map(client => client.id);
             const newClients = existingClients.concat(client.id);
 
             disbatch({
@@ -65,6 +66,7 @@ const ClientSetting = ({ client }) => {
     };
 
     const deleteClient = () => {
+        setInternalClientVolumes(internalVolumes.deleteClient());
         disbatch({
             type: REQUESTS.server.deleteClient,
             params: {

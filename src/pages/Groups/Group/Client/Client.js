@@ -8,11 +8,11 @@ import { REQUESTS } from '../../../../utils/Constants';
 import { internalVolumes } from '../../../../utils/InternalVolumes';
 
 const Client = ({ client }) => {
-    const { disbatch } = useContext(AppContext);
+    const { disbatch, setInternalClientVolumes } = useContext(AppContext);
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
 
     const setVolume = (volume) => {
-        internalVolumes.updateClient(client.id, volume.percent);
+        setInternalClientVolumes(internalVolumes.updateClient(client.id, volume.percent))
         disbatch({ type: REQUESTS.client.setVolume, params: { id: client.id, volume } });
     };
 

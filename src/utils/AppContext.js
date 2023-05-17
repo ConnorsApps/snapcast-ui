@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useReducer, useState } from 'rea
 import { REQUESTS } from './Constants.js';
 import { reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
+import { internalVolumes } from './InternalVolumes.js';
 
 export const AppContext = createContext();
 
@@ -12,6 +13,7 @@ export const AppContextProvider = ({ children, theme }) => {
     const [server, setServer] = useState([]);
     const [groups, disbatch] = useReducer(reducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
+    const [internalClientVolumes, setInternalClientVolumes] = useState(internalVolumes.get());
 
     const onServerUpdate = (update) => {
         setServer(update.server.server);
@@ -78,6 +80,8 @@ export const AppContextProvider = ({ children, theme }) => {
                 disbatch,
                 webSocketStatus: status,
                 theme,
+                internalClientVolumes,
+                setInternalClientVolumes
             }}
         >
             {children}
