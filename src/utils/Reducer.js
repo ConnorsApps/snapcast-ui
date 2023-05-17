@@ -1,4 +1,4 @@
-import { EVENTS, REQUESTS } from "./Constants";
+import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from "./Constants";
 import { internalVolumes } from "./InternalVolumes";
 import { sendRequest } from "./WebSocket";
 
@@ -10,6 +10,30 @@ const clientsGroupId = (clientId, state) => {
     }
 }
 
+export const internalVolumesReducer = (state, action) => {
+    const event = action.type;
+    const clientId = action.clientId;
+
+    if (event === 'init') {
+        let clients = [];
+        action.groups.forEach(group =>
+            clients = clients.concat(group.clients)
+        );
+
+        return internalVolumes.init(clients);
+    } else if (event === INTERNAL_VOLUMES.client.update) {
+        state[clientId] = { percent: action.volume.percent };
+        internalVolumes.set(state);
+    } else if (event === INTERNAL_VOLUMES.client.delete) {
+        delete state[clientId];
+        internalVolumes.set(state);
+    } else {
+        console.error('Unhandled event', event, action)
+    }
+
+    return { ...state };
+};
+
 export const reducer = (state, action) => {
     const params = action.params;
     const event = action.type;
@@ -18,22 +42,17 @@ export const reducer = (state, action) => {
         // Use object instead of array for easy access later
         const groups = {};
 
-        let allClients = [];
         action.groups.forEach(group => {
             const clients = {};
-            group.clients.forEach(client => {
+            group.clients.forEach(client =>
                 clients[client.id] = { ...client, groupId: group.id }
-            });
-            allClients = allClients.concat(group.clients);
+            );
 
             groups[group.id] = { ...group, clients };
         });
 
-        internalVolumes.init(allClients);
-
         return groups;
-    }
-    if (event.startsWith('Group.')) {
+    } else if (event.startsWith('Group.')) {
 
         if (event === EVENTS.group.onMute) {
             state[params.id].mute = params.mute;
@@ -66,7 +85,7 @@ export const reducer = (state, action) => {
             console.error(`Groups Event not implimented`, state, action)
         }
 
-    } else if (event.startsWith('Client.')) {
+    } else if (event.startsWith('Client.') || REQUESTS.server.deleteClient) {
         const groupId = clientsGroupId(params.id, state);
         if (!groupId) {
             console.error("Unable to find client's group", params);
@@ -79,7 +98,7 @@ export const reducer = (state, action) => {
 
         } else if (event === EVENTS.client.onConnect || event === EVENTS.client.onDisconnect) {
 
-            state[groupId].clients[params.id] = { ...params, id: params.id };
+            state[groupId].clients[params.id] = { ...params.client, groupId, id: params.id };
 
         } else if (event === EVENTS.client.onLatencyChanged) {
 
@@ -94,11 +113,6 @@ export const reducer = (state, action) => {
             state[groupId].clients[params.id].config.volume = params.volume;
             sendRequest(REQUESTS.client.setVolume, params);
 
-        } else if (event === REQUESTS.server.deleteClient) {
-
-            delete state[groupId].clients[params.id];
-            sendRequest(REQUESTS.server.deleteClient, params);
-
         } else if (event === REQUESTS.client.setLatency) {
 
             state[groupId].clients[params.id].config.latency = params.latency;
@@ -108,9 +122,17 @@ export const reducer = (state, action) => {
 
             state[groupId].clients[params.id].config.name = params.name;
             sendRequest(REQUESTS.client.setName, params);
+
+        } else if (event === REQUESTS.server.deleteClient) {
+
+            delete state[groupId].clients[params.id];
+            sendRequest(REQUESTS.server.deleteClient, params);
+
         } else {
-            console.warn(`Client Event not implimented`, state, action)
+            console.warn('Client Event not implimented', state, action)
         }
+    } else {
+        console.warn('Event not implimented', event)
     }
 
     return { ...state };

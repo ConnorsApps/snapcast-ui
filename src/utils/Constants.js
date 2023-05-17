@@ -48,3 +48,10 @@ export const EVENTS = {
         setProperty: 'Stream.SetProperty',
     },
 };
+
+export const INTERNAL_VOLUMES = {
+    client: {
+        update: 'update',
+        delete: 'delete',
+    }
+};

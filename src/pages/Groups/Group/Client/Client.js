@@ -4,16 +4,25 @@ import { Paper } from '@mui/material';
 import VolumeSlider from '../../../../components/VolumeSlider/VolumeSlider';
 import { useContext } from 'react';
 import { AppContext } from '../../../../utils/AppContext';
-import { REQUESTS } from '../../../../utils/Constants';
-import { internalVolumes } from '../../../../utils/InternalVolumes';
+import { INTERNAL_VOLUMES, REQUESTS } from '../../../../utils/Constants';
 
 const Client = ({ client }) => {
-    const { disbatch, setInternalClientVolumes } = useContext(AppContext);
+    const { disbatch, disbatchInternalVolumes } = useContext(AppContext);
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
 
     const setVolume = (volume) => {
-        setInternalClientVolumes(internalVolumes.updateClient(client.id, volume.percent))
-        disbatch({ type: REQUESTS.client.setVolume, params: { id: client.id, volume } });
+        disbatchInternalVolumes({
+            type: INTERNAL_VOLUMES.client.update,
+            clientId: client.id,
+            volume,
+        });
+        disbatch({
+            type: REQUESTS.client.setVolume,
+            params: {
+                id: client.id,
+                volume,
+            }
+        });
     };
 
     return (

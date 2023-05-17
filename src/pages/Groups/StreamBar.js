@@ -2,14 +2,13 @@ import { MenuItem, Paper, Select, useTheme } from '@mui/material';
 import './StreamBar.scss';
 import Stream from '../../components/Stream/Stream';
 import VolumeSlider from '../../components/VolumeSlider/VolumeSlider';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../utils/AppContext';
-import { internalVolumes } from '../../utils/InternalVolumes';
 import { REQUESTS } from '../../utils/Constants';
 
 const StreamBar = () => {
     const theme = useTheme();
-    const { streams, groups, disbatch, internalClientVolumes } = useContext(AppContext);
+    const { streams, groups, disbatch, internalVolumes } = useContext(AppContext);
     const streamList = Object.values(streams);
     const [selectedStream, setSelectedStream] = useState(localStorage.getItem('lastSelectedStream') ?? streamList[0].id);
     const [volume, setVolume] = useState({ percent: 50, muted: false });
@@ -26,11 +25,12 @@ const StreamBar = () => {
         for (const group of Object.values(groups)) {
             if (group.stream_id === selectedStream) {
                 for (const client of Object.values(group.clients)) {
-                    // totalVolume += volumes[client.id].percent;
-                    streamClients.push({
-                        id: client.id,
-                        volume: client.config.volume
-                    });
+                    if (client.connected) {
+                        streamClients.push({
+                            id: client.id,
+                            volume: client.config.volume
+                        });
+                    }
                 }
             }
         }
@@ -42,23 +42,22 @@ const StreamBar = () => {
     useEffect(() => {
         let total = 0;
         for (const client of clients) {
-            total += internalClientVolumes[client.id].percent;
+            total += internalVolumes[client.id].percent;
         }
 
         setVolume({
             percent: clients.length > 0 ? total / clients.length : 50,
             muted: volume.muted
         });
-    }, [internalClientVolumes]);
+    }, [internalVolumes]);
 
-    const setStreamVolume = (e) => {
-        const volumes = internalVolumes.get();
+    const setStreamVolume = useCallback((e) => {
         let sum = 0;
 
         for (const client of clients) {
-            sum += volumes[client.id].percent;
+            sum += internalVolumes[client.id].percent;
         }
-        
+
         const newStreamVolume = e.percent;
         const oldStreamVolume = sum / clients.length;
 
@@ -83,12 +82,17 @@ const StreamBar = () => {
         for (const client of clients) {
             disbatch({
                 type: REQUESTS.client.setVolume,
-                params: { id: client.id, volume: { percent: clientVolume(volumes[client.id].percent) } }
+                params: {
+                    id: client.id,
+                    volume: {
+                        percent: clientVolume(internalVolumes[client.id].percent)
+                    }
+                }
             });
         }
 
         setVolume(e);
-    };
+    }, [clients, internalVolumes]);
 
 
     return (

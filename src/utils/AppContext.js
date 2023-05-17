@@ -1,8 +1,7 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { REQUESTS } from './Constants.js';
-import { reducer, streamsReducer } from './Reducer.js';
+import { internalVolumesReducer, reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
-import { internalVolumes } from './InternalVolumes.js';
 
 export const AppContext = createContext();
 
@@ -13,13 +12,14 @@ export const AppContextProvider = ({ children, theme }) => {
     const [server, setServer] = useState([]);
     const [groups, disbatch] = useReducer(reducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
-    const [internalClientVolumes, setInternalClientVolumes] = useState(internalVolumes.get());
+    const [internalVolumes, disbatchInternalVolumes] = useReducer(internalVolumesReducer, {});
 
     const onServerUpdate = (update) => {
         setServer(update.server.server);
 
         disbatchStreams({ type: 'init', streams: update.server.streams });
         disbatch({ type: 'init', groups: update.server.groups });
+        disbatchInternalVolumes({ type: 'init', groups: update.server.groups })
 
         setIsLoading(false);
     }
@@ -40,6 +40,13 @@ export const AppContextProvider = ({ children, theme }) => {
                 onServerUpdate(params)
             } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
                 disbatch({ type: event, params });
+                // if (event === EVENTS.client.onVolumeChanged) {
+                //     disbatchInternalVolumes({
+                //         type: INTERNAL_VOLUMES.client.update,
+                //         clientId: params.id,
+                //         volume: params.volume,
+                //     });
+                // }
             } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
             }
@@ -80,8 +87,9 @@ export const AppContextProvider = ({ children, theme }) => {
                 disbatch,
                 webSocketStatus: status,
                 theme,
-                internalClientVolumes,
-                setInternalClientVolumes
+                status,
+                internalVolumes,
+                disbatchInternalVolumes
             }}
         >
             {children}
