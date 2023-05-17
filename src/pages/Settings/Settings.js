@@ -28,7 +28,7 @@ const GroupSetting = ({ group, clients, number }) => {
                 />
             </div>
 
-            {clients.length === 0 && <p>No Clients</p>}
+            {clients.length === 0 && <p> No Clients </p>}
 
             <div className='clients'>
                 {clients.map((client, i) => (
