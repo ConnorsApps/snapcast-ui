@@ -54,6 +54,7 @@ const Group = ({ group, number }) => {
                         onChange={setStream}
                         className='streamSelector'
                         aria-label='Select Stream'
+                        sx={{height: '3.5rem'}}
                     >
                         {streams.map((stream, i) => (
                             <MenuItem

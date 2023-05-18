@@ -2,6 +2,7 @@
 import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-icons/io5'
 import Slider from '@mui/material/Slider';
 import './VolumeSlider.scss';
+import { useCallback } from 'react';
 
 export const VolumeIcon = ({ percent, muted }) => {
     if (percent === 0 || muted) {
@@ -33,16 +34,15 @@ const iOS = () => {
 const isIOS = iOS();
 
 const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
-    const handleChange = (event, newValue) => {
+    const handleChange = useCallback((event, newValue) => {
         // Slider component workaround for Safari https://github.com/mui/material-ui/issues/31869
         if (event.type === 'mousedown' && isIOS) {
             return;
         }
         setVolume({ percent: newValue, muted: volume.muted })
-    };
+    }, [volume, setVolume]);
 
-
-    const sliderClass = volume.muted ? 'disabled' : ''
+    const sliderClass = volume.muted ? 'disabled' : '';
 
     return (
         <div className='volume-slider'>

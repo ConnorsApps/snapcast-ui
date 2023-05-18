@@ -4,8 +4,8 @@ import Group from './Group/Group';
 import { AppContext } from '../../utils/AppContext';
 import GroupsLoading from './GroupsLoading';
 import StreamBar from './StreamBar';
-import './Groups.scss';
 import { WEBSOCKET_STATUS } from '../../utils/WebSocket';
+import './Groups.scss';
 
 const Groups = () => {
     const { groups, isLoading, status } = useContext(AppContext);

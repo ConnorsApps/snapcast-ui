@@ -43,3 +43,13 @@ services:
         build:
             context: .
             dockerfile: .docker/DockerfileSnapcastClient
+
+    snapcast-client3:
+        container_name: snapcast-client3
+        command:
+            - "--logfilter=warning"
+            - "--instance=3"
+
+        build:
+            context: .
+            dockerfile: .docker/DockerfileSnapcastClient

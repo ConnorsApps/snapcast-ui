@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from './Constants.js';
-import { internalVolumesReducer, isLoopbackVolumeUpdate, reducer, streamsReducer } from './Reducer.js';
+import { internalVolumesReducer, reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
 import { InternalVolumes } from './InternalVolumes.js';
 
@@ -44,7 +44,6 @@ export const AppContextProvider = ({ children, theme }) => {
                 disbatch({ type: event, params });
                 if (event === EVENTS.client.onVolumeChanged) {
                     const isLoopback = InternalVolumes.isLoopbackVolumeEvent(params);
-                    console.log('isLoopback', isLoopback);
                     if (!isLoopback) {
                         disbatchInternalVolumes({
                             type: INTERNAL_VOLUMES.client.update,
@@ -71,12 +70,12 @@ export const AppContextProvider = ({ children, theme }) => {
         }
     }, [status]);
 
-    // useEffect(() => {
-    // Refresh current state and create new websocket when browser comes back into focus
-    // window.addEventListener('focus', () => {
-    //     connectToSnapcastServer(onMessage, setStatus);
-    // });
-    // }, [onMessage]);
+    useEffect(() => {
+        // Refresh current state and create new websocket when browser comes back into focus
+        window.addEventListener('focus', () => {
+            sendRequest(REQUESTS.server.getStatus, null, true);
+        });
+    }, []);
 
     useEffect(() => {
         connectToSnapcastServer(onMessage, setStatus);

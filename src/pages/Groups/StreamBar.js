@@ -40,10 +40,10 @@ const StreamBar = () => {
         setClients(streamClients);
         setVolume({
             percent: streamClients.length > 0 ? total / streamClients.length : 50,
-            muted: volume.muted
+            muted: volume.muted,
         });
 
-    }, [selectedStream, groups, volume.muted, setVolume]);
+    }, [selectedStream, groups, volume.muted, setClients, setVolume]);
 
     const setStreamVolume = useCallback((e) => {
         let sum = 0;
@@ -79,14 +79,15 @@ const StreamBar = () => {
                 params: {
                     id: client.id,
                     volume: {
-                        percent: clientVolume(internalVolumes[client.id].percent)
+                        percent: clientVolume(internalVolumes[client.id].percent),
+                        muted: client.volume.muted,
                     }
                 }
             });
         }
 
         setVolume(e);
-    }, [clients, internalVolumes]);
+    }, [clients, disbatch, internalVolumes]);
 
 
     return (
@@ -99,6 +100,7 @@ const StreamBar = () => {
                 <Select
                     className='selector'
                     aria-label='Select Stream'
+                    sx={{ height: '4rem' }}
                     value={selectedStream}
                     onChange={(e) => selectStream(e.target.value)}
                 >
