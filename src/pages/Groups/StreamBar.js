@@ -1,4 +1,4 @@
-import { MenuItem, Paper, Select, useTheme } from '@mui/material';
+import { Chip, MenuItem, Paper, Select } from '@mui/material';
 import './StreamBar.scss';
 import Stream from '../../components/Stream/Stream';
 import VolumeSlider from '../../components/VolumeSlider/VolumeSlider';
@@ -7,7 +7,6 @@ import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
 
 const StreamBar = () => {
-    const theme = useTheme();
     const { streams, groups, disbatch, internalVolumes } = useContext(AppContext);
     const streamList = Object.values(streams);
     const [selectedStream, setSelectedStream] = useState(localStorage.getItem('lastSelectedStream') ?? streamList[0].id);
@@ -89,14 +88,45 @@ const StreamBar = () => {
         setVolume(e);
     }, [clients, disbatch, internalVolumes]);
 
+    const selectGroup = useCallback((group) => {
+        if (group.stream_id !== selectedStream) {
+            disbatch({
+                type: REQUESTS.group.setStream,
+                params: {
+                    id: group.id,
+                    stream_id: selectedStream,
+                },
+            });
+        } else {
+            disbatch({
+                type: REQUESTS.group.setMute,
+                params: {
+                    id: group.id,
+                    mute: !group.mute,
+                },
+            });
+        }
+
+    }, [selectStream]);
 
     return (
         <Paper
             className='streamBar'
             elevation={3}
-            sx={{ backgroundColor: theme.palette.transparent.main }}
+            sx={{ backgroundColor: '#fffffffa' }}
         >
             <div className='topRow'>
+                <div className='groupChips'>
+                    {Object.values(groups).map((group, i) => (
+                        <Chip
+                            onClick={() => selectGroup(group)}
+                            variant={group.stream_id === selectedStream && !group.mute ? 'filled' : 'outlined'}
+                            key={i}
+                            label={group.name && group.name !== '' ? group.name : `Group ${i + 1}`}
+                            color='primary'
+                        />
+                    ))}
+                </div>
                 <Select
                     className='selector'
                     aria-label='Select Stream'
