@@ -32,4 +32,23 @@ const init = (clients) => {
     return volumes;
 };
 
-export const internalVolumes = { init, get, set };
+// Store recent requests to determine on client update message is caused from an external application
+window.clientVolumeRequests = {};
+
+const isLoopbackVolumeEvent = (params) => {
+    const event = window.clientVolumeRequests[`${params.id}${params.volume.percent}`];
+
+    if (event === undefined) {
+        return false;
+    } else {
+        const secondsSince = (new Date() - event) / 1000;
+        return secondsSince < 4;
+    }
+};
+
+const storeVolumeEvent = (clientId, percent) => {
+    window.clientVolumeRequests[`${clientId}${percent}`] = new Date();
+};
+
+
+export const InternalVolumes = { init, get, set, isLoopbackVolumeEvent, storeVolumeEvent };

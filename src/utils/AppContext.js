@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useReducer, useState } from 'rea
 import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from './Constants.js';
 import { internalVolumesReducer, isLoopbackVolumeUpdate, reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
+import { InternalVolumes } from './InternalVolumes.js';
 
 export const AppContext = createContext();
 
@@ -42,7 +43,7 @@ export const AppContextProvider = ({ children, theme }) => {
             } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
                 disbatch({ type: event, params });
                 if (event === EVENTS.client.onVolumeChanged) {
-                    const isLoopback = isLoopbackVolumeUpdate(params);
+                    const isLoopback = InternalVolumes.isLoopbackVolumeEvent(params);
                     console.log('isLoopback', isLoopback);
                     if (!isLoopback) {
                         disbatchInternalVolumes({
