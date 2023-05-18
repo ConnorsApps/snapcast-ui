@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
-import { REQUESTS } from './Constants.js';
-import { internalVolumesReducer, reducer, streamsReducer } from './Reducer.js';
+import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from './Constants.js';
+import { internalVolumesReducer, isLoopbackVolumeUpdate, reducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
 
 export const AppContext = createContext();
@@ -26,6 +26,7 @@ export const AppContextProvider = ({ children, theme }) => {
 
     const onMessage = useCallback((message) => {
         const data = JSON.parse(message.data);
+
         const isRequestResponse = data.id !== undefined;
         if (isRequestResponse) {
             const event = requests[data.id];
@@ -37,16 +38,20 @@ export const AppContextProvider = ({ children, theme }) => {
             const params = data.params;
 
             if (event === 'Server.OnUpdate') {
-                onServerUpdate(params)
+                onServerUpdate(params);
             } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
                 disbatch({ type: event, params });
-                // if (event === EVENTS.client.onVolumeChanged) {
-                //     disbatchInternalVolumes({
-                //         type: INTERNAL_VOLUMES.client.update,
-                //         clientId: params.id,
-                //         volume: params.volume,
-                //     });
-                // }
+                if (event === EVENTS.client.onVolumeChanged) {
+                    const isLoopback = isLoopbackVolumeUpdate(params);
+                    console.log('isLoopback', isLoopback);
+                    if (!isLoopback) {
+                        disbatchInternalVolumes({
+                            type: INTERNAL_VOLUMES.client.update,
+                            clientId: params.id,
+                            volume: params.volume,
+                        });
+                    }
+                }
             } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
             }
@@ -66,10 +71,10 @@ export const AppContextProvider = ({ children, theme }) => {
     }, [status]);
 
     // useEffect(() => {
-        // Refresh current state and create new websocket when browser comes back into focus
-        // window.addEventListener('focus', () => {
-        //     connectToSnapcastServer(onMessage, setStatus);
-        // });
+    // Refresh current state and create new websocket when browser comes back into focus
+    // window.addEventListener('focus', () => {
+    //     connectToSnapcastServer(onMessage, setStatus);
+    // });
     // }, [onMessage]);
 
     useEffect(() => {

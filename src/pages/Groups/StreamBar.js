@@ -21,6 +21,7 @@ const StreamBar = () => {
 
     useEffect(() => {
         let streamClients = [];
+        let total = 0;
 
         for (const group of Object.values(groups)) {
             if (group.stream_id === selectedStream) {
@@ -30,26 +31,19 @@ const StreamBar = () => {
                             id: client.id,
                             volume: client.config.volume
                         });
+                        total += client.config.volume.percent;
                     }
                 }
             }
         }
 
         setClients(streamClients);
-
-    }, [selectedStream, groups, volume.muted]);
-
-    useEffect(() => {
-        let total = 0;
-        for (const client of clients) {
-            total += internalVolumes[client.id].percent;
-        }
-
         setVolume({
-            percent: clients.length > 0 ? total / clients.length : 50,
+            percent: streamClients.length > 0 ? total / streamClients.length : 50,
             muted: volume.muted
         });
-    }, [internalVolumes]);
+
+    }, [selectedStream, groups, volume.muted, setVolume]);
 
     const setStreamVolume = useCallback((e) => {
         let sum = 0;

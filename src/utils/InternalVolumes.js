@@ -22,10 +22,13 @@ const init = (clients) => {
     for (const client of clients) {
         if (!storedVolumes[client.id]) {
             volumes[client.id] = { percent: client.config.volume.percent };
+        } else {
+            volumes[client.id] = storedVolumes[client.id];
         }
     }
 
     set(volumes);
+
     return volumes;
 };
 

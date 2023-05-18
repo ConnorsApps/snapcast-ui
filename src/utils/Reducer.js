@@ -8,7 +8,21 @@ const clientsGroupId = (clientId, state) => {
             return group.id;
         }
     }
-}
+};
+
+// Store recent requests to determine on client update message is caused from an external application
+window.clientVolumeRequests = {};
+
+export const isLoopbackVolumeUpdate = (params) => {
+    const event = window.clientVolumeRequests[`${params.id}${params.volume.percent}`];
+
+    if (event === undefined) {
+        return false;
+    } else {
+        const secondsSince = (new Date() - event) / 1000;
+        return secondsSince < 4;
+    }
+};
 
 export const internalVolumesReducer = (state, action) => {
     const event = action.type;
@@ -109,9 +123,13 @@ export const reducer = (state, action) => {
             state[groupId].clients[params.id].config.name = params.name;
 
         } else if (event === REQUESTS.client.setVolume) {
+            params.volume.percent = Math.round(params.volume.percent);
 
             state[groupId].clients[params.id].config.volume = params.volume;
             sendRequest(REQUESTS.client.setVolume, params);
+            // console.log('sending ', `${params.id}${params.volume.percent}`);
+            window.clientVolumeRequests[`${params.id}${params.volume.percent}`] = new Date();
+            // console.log('set length', Object.values(window.clientVolumeRequests).length);
 
         } else if (event === REQUESTS.client.setLatency) {
 
