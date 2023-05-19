@@ -5,6 +5,7 @@ import VolumeSlider from '../../components/VolumeSlider/VolumeSlider';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../utils/AppContext';
 import { REQUESTS } from '../../utils/Constants';
+import { SlArrowUp } from 'react-icons/sl';
 
 const StreamBar = () => {
     const { streams, groups, disbatch, internalVolumes } = useContext(AppContext);
@@ -107,7 +108,7 @@ const StreamBar = () => {
             });
         }
 
-    }, [selectStream]);
+    }, [selectStream, disbatch, selectedStream]);
 
     return (
         <Paper
@@ -116,16 +117,8 @@ const StreamBar = () => {
             sx={{ backgroundColor: '#fffffffa' }}
         >
             <div className='topRow'>
-                <div className='groupChips'>
-                    {Object.values(groups).map((group, i) => (
-                        <Chip
-                            onClick={() => selectGroup(group)}
-                            variant={group.stream_id === selectedStream && !group.mute ? 'filled' : 'outlined'}
-                            key={i}
-                            label={group.name && group.name !== '' ? group.name : `Group ${i + 1}`}
-                            color='primary'
-                        />
-                    ))}
+                <div>
+                    <SlArrowUp />
                 </div>
                 <Select
                     className='selector'
@@ -147,6 +140,17 @@ const StreamBar = () => {
                         </MenuItem>
                     ))}
                 </Select>
+                <div className='groupChips'>
+                    {Object.values(groups).map((group, i) => (
+                        <Chip
+                            onClick={() => selectGroup(group)}
+                            variant={group.stream_id === selectedStream && !group.mute ? 'filled' : 'outlined'}
+                            key={i}
+                            label={group.name && group.name !== '' ? group.name : `Group ${i + 1}`}
+                            color='primary'
+                        />
+                    ))}
+                </div>
             </div>
             <VolumeSlider
                 volume={volume}
