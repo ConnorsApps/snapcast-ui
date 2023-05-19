@@ -2,7 +2,7 @@
 import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-icons/io5'
 import Slider from '@mui/material/Slider';
 import './VolumeSlider.scss';
-import { useCallback } from 'react';
+import { useCallback, useReducer, useState } from 'react';
 
 export const VolumeIcon = ({ percent, muted }) => {
     if (percent === 0 || muted) {
@@ -42,12 +42,15 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
         setVolume({ percent: newValue, muted: volume.muted })
     }, [volume, setVolume]);
 
+
     const sliderClass = volume.muted ? 'disabled' : '';
 
     return (
         <div className='volume-slider'>
             <button
-                onClick={() => setVolume({ percent: volume.percent, muted: !volume.muted })}
+                onClick={() => {
+                    setVolume({ percent: volume.percent, muted: !volume.muted })
+                }}
             >
                 <VolumeIcon
                     percent={volume.percent}
