@@ -49,9 +49,3 @@ export const EVENTS = {
     },
 };
 
-export const INTERNAL_VOLUMES = {
-    client: {
-        update: 'update',
-        delete: 'delete',
-    }
-};

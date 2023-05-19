@@ -4,13 +4,13 @@ import { useContext, useState } from 'react';
 import { AppContext } from '../../../utils/AppContext';
 import { BsFillSpeakerFill } from 'react-icons/bs';
 import ConnectionIcon from '../../../components/ConnectionIcon/ConnectionIcon';
-import { INTERNAL_VOLUMES, REQUESTS } from '../../../utils/Constants';
+import { REQUESTS } from '../../../utils/Constants';
 import { AiOutlinePlus, AiOutlineMinus, AiFillDelete, AiFillInfoCircle } from 'react-icons/ai';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
 
 const ClientSetting = ({ client }) => {
-    const { disbatch, groups, disbatchInternalVolumes } = useContext(AppContext);
+    const { disbatch, groups } = useContext(AppContext);
     const groupList = Object.values(groups);
     const [showInfo, setShowInfo] = useState(false);
 
@@ -65,10 +65,6 @@ const ClientSetting = ({ client }) => {
     };
 
     const deleteClient = () => {
-        disbatchInternalVolumes({
-            type: INTERNAL_VOLUMES.client.delete,
-            clientId: client.id,
-        });
         disbatch({
             type: REQUESTS.server.deleteClient,
             params: {

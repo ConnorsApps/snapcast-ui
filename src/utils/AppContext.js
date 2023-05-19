@@ -1,8 +1,7 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
-import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from './Constants.js';
-import { internalVolumesReducer, reducer, streamsReducer } from './Reducer.js';
+import { REQUESTS } from './Constants.js';
+import { clientsReducer, groupsReducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
-import { InternalVolumes } from './InternalVolumes.js';
 
 export const AppContext = createContext();
 
@@ -11,16 +10,16 @@ export const AppContextProvider = ({ children, theme }) => {
     const [status, setStatus] = useState(WEBSOCKET_STATUS.connecting);
 
     const [server, setServer] = useState([]);
-    const [groups, disbatch] = useReducer(reducer, {});
+    const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
-    const [internalVolumes, disbatchInternalVolumes] = useReducer(internalVolumesReducer, {});
+    const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
     const onServerUpdate = (update) => {
         setServer(update.server.server);
 
         disbatchStreams({ type: 'init', streams: update.server.streams });
-        disbatch({ type: 'init', groups: update.server.groups });
-        disbatchInternalVolumes({ type: 'init', groups: update.server.groups })
+        disbatchGroups({ type: 'init', groups: update.server.groups });
+        disbatchClients({ type: 'init', groups: update.server.groups });
 
         setIsLoading(false);
     }
@@ -40,25 +39,17 @@ export const AppContextProvider = ({ children, theme }) => {
 
             if (event === 'Server.OnUpdate') {
                 onServerUpdate(params);
-            } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
-                disbatch({ type: event, params });
-                if (event === EVENTS.client.onVolumeChanged) {
-                    const isLoopback = InternalVolumes.isLoopbackVolumeEvent(params);
-                    if (!isLoopback) {
-                        disbatchInternalVolumes({
-                            type: INTERNAL_VOLUMES.client.update,
-                            clientId: params.id,
-                            volume: params.volume,
-                        });
-                    }
-                }
+            } else if (event.startsWith('Group.On')) {
+                disbatchGroups({ type: event, params });
+            } else if (event.startsWith('Client.On')) {
+                disbatchClients({ type: event, params });
             } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
             }
 
         }
 
-    }, [disbatchStreams, disbatch]);
+    }, [disbatchStreams, disbatchGroups]);
 
     useEffect(() => {
         console.debug('Websocket status', status);
@@ -87,14 +78,14 @@ export const AppContextProvider = ({ children, theme }) => {
                 streams,
                 server,
                 groups,
+                clients,
                 isLoading,
                 disbatchStreams,
-                disbatch,
+                disbatchGroups,
+                disbatchClients,
                 webSocketStatus: status,
                 theme,
                 status,
-                internalVolumes,
-                disbatchInternalVolumes
             }}
         >
             {children}

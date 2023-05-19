@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 import Group from './Group/Group';
 import { AppContext } from '../../utils/AppContext';
 import GroupsLoading from './GroupsLoading';
-import StreamBar from './StreamBar';
 import { WEBSOCKET_STATUS } from '../../utils/WebSocket';
 import './Groups.scss';
 
@@ -12,6 +11,7 @@ const Groups = () => {
     // For smooth fade transition
     const [loadingAnimationShowing, setLoadingAnimationShowing] = useState(isLoading);
     const groupList = Object.values(groups ?? {});
+    console.log('groupList',groupList)
 
     if (loadingAnimationShowing) {
         return (
@@ -40,7 +40,6 @@ const Groups = () => {
                             number={i + 1}
                         />
                     )}
-                    <StreamBar />
                 </div>
             );
         }

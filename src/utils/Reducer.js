@@ -1,5 +1,4 @@
-import { EVENTS, INTERNAL_VOLUMES, REQUESTS } from "./Constants";
-import { InternalVolumes } from "./InternalVolumes";
+import { EVENTS, REQUESTS } from "./Constants";
 import { sendRequest } from "./WebSocket";
 
 const clientsGroupId = (clientId, state) => {
@@ -10,31 +9,7 @@ const clientsGroupId = (clientId, state) => {
     }
 };
 
-export const internalVolumesReducer = (state, action) => {
-    const event = action.type;
-    const clientId = action.clientId;
-
-    if (event === 'init') {
-        let clients = [];
-        action.groups.forEach(group =>
-            clients = clients.concat(group.clients)
-        );
-
-        return InternalVolumes.init(clients);
-    } else if (event === INTERNAL_VOLUMES.client.update) {
-        state[clientId] = { percent: action.volume.percent };
-        InternalVolumes.set(state);
-    } else if (event === INTERNAL_VOLUMES.client.delete) {
-        delete state[clientId];
-        InternalVolumes.set(state);
-    } else {
-        console.error('Unhandled event', event, action)
-    }
-
-    return { ...state };
-};
-
-export const reducer = (state, action) => {
+export const groupsReducer = (state, action) => {
     const params = action.params;
     const event = action.type;
 
@@ -43,98 +18,105 @@ export const reducer = (state, action) => {
         const groups = {};
 
         action.groups.forEach(group => {
-            const clients = {};
-            group.clients.forEach(client =>
-                clients[client.id] = { ...client, groupId: group.id }
-            );
+            const clients = [];
+            group.clients.forEach(client => clients.push(client.id));
 
             groups[group.id] = { ...group, clients };
         });
 
         return groups;
-    } else if (event.startsWith('Group.')) {
 
-        if (event === EVENTS.group.onMute) {
-            state[params.id].mute = params.mute;
+    } else if (event === EVENTS.group.onMute) {
+        state[params.id].mute = params.mute;
 
-        } else if (event === EVENTS.group.onStreamChanged) {
-            state[params.id].stream_id = params.stream_id;
+    } else if (event === EVENTS.group.onStreamChanged) {
+        state[params.id].stream_id = params.stream_id;
 
-        } else if (event === EVENTS.group.onNameChanged) {
-            state[params.id].name = params.name;
+    } else if (event === EVENTS.group.onNameChanged) {
+        state[params.id].name = params.name;
 
-        } else if (event === REQUESTS.group.setStream) {
+    } else if (event === REQUESTS.group.setStream) {
 
-            state[params.id].stream_id = params.stream_id;
-            sendRequest(REQUESTS.group.setStream, params);
+        state[params.id].stream_id = params.stream_id;
+        sendRequest(REQUESTS.group.setStream, params);
 
-        } else if (event === REQUESTS.group.setMute) {
+    } else if (event === REQUESTS.group.setMute) {
 
-            state[params.id].mute = params.mute;
-            sendRequest(REQUESTS.group.setMute, params);
+        state[params.id].mute = params.mute;
+        sendRequest(REQUESTS.group.setMute, params);
 
-        } else if (event === REQUESTS.group.setName) {
+    } else if (event === REQUESTS.group.setName) {
 
-            state[params.id].name = params.name;
-            sendRequest(REQUESTS.group.setName, params);
+        state[params.id].name = params.name;
+        sendRequest(REQUESTS.group.setName, params);
 
-        } else if (event === REQUESTS.group.setClients) {
+    } else if (event === REQUESTS.group.setClients) {
 
-            sendRequest(REQUESTS.group.setClients, params);
-        } else {
-            console.error(`Groups Event not implimented`, state, action)
-        }
+        sendRequest(REQUESTS.group.setClients, params);
 
-    } else if (event.startsWith('Client.') || REQUESTS.server.deleteClient) {
+    } else if (REQUESTS.server.deleteClient) {
         const groupId = clientsGroupId(params.id, state);
         if (!groupId) {
             console.error("Unable to find client's group", params);
             return state;
         }
+        delete state[groupId][params.id];
+        sendRequest(REQUESTS.server.deleteClient, params);
 
-        if (event === EVENTS.client.onVolumeChanged) {
-
-            state[groupId].clients[params.id].config.volume = params.volume;
-
-        } else if (event === EVENTS.client.onConnect || event === EVENTS.client.onDisconnect) {
-
-            state[groupId].clients[params.id] = { ...params.client, groupId, id: params.id };
-
-        } else if (event === EVENTS.client.onLatencyChanged) {
-
-            state[groupId].clients[params.id].config.latency = params.latency;
-
-        } else if (event === EVENTS.client.onNameChanged) {
-
-            state[groupId].clients[params.id].config.name = params.name;
-
-        } else if (event === REQUESTS.client.setVolume) {
-            params.volume.percent = Math.round(params.volume.percent);
-
-            state[groupId].clients[params.id].config.volume = params.volume;
-            sendRequest(REQUESTS.client.setVolume, params);
-            InternalVolumes.storeVolumeEvent(params.id, params.volume.percent);
-
-        } else if (event === REQUESTS.client.setLatency) {
-
-            state[groupId].clients[params.id].config.latency = params.latency;
-            sendRequest(REQUESTS.client.setLatency, params);
-
-        } else if (event === REQUESTS.client.setName) {
-
-            state[groupId].clients[params.id].config.name = params.name;
-            sendRequest(REQUESTS.client.setName, params);
-
-        } else if (event === REQUESTS.server.deleteClient) {
-
-            delete state[groupId].clients[params.id];
-            sendRequest(REQUESTS.server.deleteClient, params);
-
-        } else {
-            console.warn('Client Event not implimented', state, action)
-        }
     } else {
-        console.warn('Event not implimented', event)
+        console.error(`Groups Event not implimented`, state, action)
+    }
+
+    return { ...state };
+}
+
+export const clientsReducer = (state, action) => {
+    const params = action.params;
+    const event = action.type;
+
+    if (event === 'init') {
+        const clients = {};
+
+        action.groups.forEach(group =>
+            group.clients.forEach(client =>
+                clients[client.id] = client
+            )
+        );
+        return clients;
+    } else if (event === EVENTS.client.onVolumeChanged) {
+
+        state[params.id].config.volume = params.volume;
+
+    } else if (event === EVENTS.client.onConnect || event === EVENTS.client.onDisconnect) {
+
+        state[params.id] = params.client;
+
+    } else if (event === EVENTS.client.onLatencyChanged) {
+
+        state[params.id].config.latency = params.latency;
+
+    } else if (event === EVENTS.client.onNameChanged) {
+
+        state[params.id].config.name = params.name;
+
+    } else if (event === REQUESTS.client.setVolume) {
+        params.volume.percent = Math.round(params.volume.percent);
+
+        state[params.id].config.volume = params.volume;
+        sendRequest(REQUESTS.client.setVolume, params);
+
+    } else if (event === REQUESTS.client.setLatency) {
+
+        state[params.id].config.latency = params.latency;
+        sendRequest(REQUESTS.client.setLatency, params);
+
+    } else if (event === REQUESTS.client.setName) {
+
+        state[params.id].config.name = params.name;
+        sendRequest(REQUESTS.client.setName, params);
+
+    } else {
+        console.warn('Client Event not implimented', state, action)
     }
 
     return { ...state };

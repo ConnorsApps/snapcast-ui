@@ -11,7 +11,7 @@ const Group = ({ group, number }) => {
     const { streams, disbatch } = useContext(AppContext);
     const theme = useTheme();
 
-    const clients = Object.values(group.clients ?? []).filter(clients => clients.connected);
+    // const clients = Object.values(group.clients ?? []).filter(clients => clients.connected);
 
     const setStream = (event) => {
         const selectedStream = event.target.value;
@@ -21,7 +21,7 @@ const Group = ({ group, number }) => {
             disbatch({ type: REQUESTS.group.setStream, params });
     };
 
-    if (clients.length === 0) {
+    if (group.clients.length === 0) {
         return <></>;
     };
 
@@ -74,9 +74,9 @@ const Group = ({ group, number }) => {
 
             </div>
             <div className={`clients ${group.mute ? 'groupMuted' : ''}`}>
-                {clients.map((client, i) =>
+                {group.clients.map((clientId, i) =>
                     <Client
-                        client={client}
+                        clientId={clientId}
                         key={i}
                     />
                 )}
