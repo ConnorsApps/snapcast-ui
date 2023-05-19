@@ -7,12 +7,12 @@ import { AppContext } from '../../../../utils/AppContext';
 import { REQUESTS } from '../../../../utils/Constants';
 
 const Client = ({ clientId }) => {
-    const { disbatch, clients } = useContext(AppContext);
+    const { disbatchClients, clients } = useContext(AppContext);
     const client = clients[clientId];
     const name = !client.config.name || client.config.name === '' ? client.host.name : client.config.name;
 
     const setVolume = (volume) => {
-        disbatch({
+        disbatchClients({
             type: REQUESTS.client.setVolume,
             params: {
                 id: client.id,

@@ -3,7 +3,7 @@ import { sendRequest } from "./WebSocket";
 
 const clientsGroupId = (clientId, state) => {
     for (const group of Object.values(state)) {
-        if (group.clients[clientId]) {
+        if (group.clients.includes(clientId)) {
             return group.id;
         }
     }

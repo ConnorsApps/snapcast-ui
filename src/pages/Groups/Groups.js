@@ -11,7 +11,6 @@ const Groups = () => {
     // For smooth fade transition
     const [loadingAnimationShowing, setLoadingAnimationShowing] = useState(isLoading);
     const groupList = Object.values(groups ?? {});
-    console.log('groupList',groupList)
 
     if (loadingAnimationShowing) {
         return (

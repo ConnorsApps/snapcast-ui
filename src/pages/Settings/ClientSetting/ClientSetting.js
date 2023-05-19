@@ -9,13 +9,13 @@ import { AiOutlinePlus, AiOutlineMinus, AiFillDelete, AiFillInfoCircle } from 'r
 import { IoAddCircleOutline } from 'react-icons/io5';
 import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
 
-const ClientSetting = ({ client }) => {
-    const { disbatch, groups } = useContext(AppContext);
+const ClientSetting = ({ client, groupId }) => {
+    const { disbatchGroups, disbatchClients, groups } = useContext(AppContext);
     const groupList = Object.values(groups);
     const [showInfo, setShowInfo] = useState(false);
 
     const handleChange = (event) => {
-        disbatch({
+        disbatchClients({
             type: REQUESTS.client.setName,
             params: {
                 id: client.id,
@@ -29,20 +29,19 @@ const ClientSetting = ({ client }) => {
         if (value === 'add') {
             // To create a new snapcast group, set the existing group id to only have selected client
 
-            disbatch({
+            disbatchGroups({
                 type: REQUESTS.group.setClients,
                 params: {
-                    id: client.groupId,
+                    id: groupId,
                     clients: [client.id],
                 }
             });
 
         } else {
             const group = groups[value];
-            const existingClients = Object.values(group.clients).map(client => client.id);
-            const newClients = existingClients.concat(client.id);
+            const newClients = group.clients.concat(client.id);
 
-            disbatch({
+            disbatchGroups({
                 type: REQUESTS.group.setClients,
                 params: {
                     id: value,
@@ -54,7 +53,7 @@ const ClientSetting = ({ client }) => {
 
     const setLatency = (value) => {
         if (value >= 0) {
-            disbatch({
+            disbatchClients({
                 type: REQUESTS.client.setLatency,
                 params: {
                     id: client.id,
@@ -65,7 +64,7 @@ const ClientSetting = ({ client }) => {
     };
 
     const deleteClient = () => {
-        disbatch({
+        disbatchGroups({
             type: REQUESTS.server.deleteClient,
             params: {
                 id: client.id
@@ -99,7 +98,7 @@ const ClientSetting = ({ client }) => {
                             sx={{ height: '3rem' }}
                             labelId={`selector group-label-${client.id}`}
                             label='Group'
-                            value={client.groupId}
+                            value={groupId}
                             onChange={groupChange}
                         >
                             {groupList.map((group, i) => (
