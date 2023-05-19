@@ -6,10 +6,19 @@
     .volumeSkeleton {
         display: flex;
         align-items: center;
-        margin-top: 1.2rem;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
 
         .slider {
             margin-left: 1rem;
+        }
+    }
+
+    .group {
+        background-color: lightgray;
+
+        .clients {
+            gap: .5rem;
         }
     }
 }

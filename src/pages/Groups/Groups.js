@@ -43,7 +43,7 @@ const Groups = () => {
             );
         }
     } else {
-        return <></>
+        return <></>;
     }
 }
 

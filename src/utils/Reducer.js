@@ -16,14 +16,21 @@ export const groupsReducer = (state, action) => {
     if (event === 'init') {
         // Use object instead of array for easy access later
         const groups = {};
+        // Store number of groups and clients for loading animation
+        let loadingGroups = [];
 
         action.groups.forEach(group => {
             const clients = [];
             group.clients.forEach(client => clients.push(client.id));
 
+            const connectedClients = group.clients.filter(c => c.connected);
+            if (connectedClients.length > 0)
+                loadingGroups.push(connectedClients.length);
+
             groups[group.id] = { ...group, clients };
         });
-
+        localStorage.setItem('groupCounts', JSON.stringify(loadingGroups));
+        
         return groups;
 
     } else if (event === EVENTS.group.onMute) {

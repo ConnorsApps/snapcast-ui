@@ -6,8 +6,8 @@ const ClientLoading = () => (
         <div className='title'>
             <Skeleton
                 variant='rounded'
-                width={30}
-                height={40}
+                width={25}
+                height={35}
             />
             <Skeleton
                 className='clientName'
@@ -18,8 +18,8 @@ const ClientLoading = () => (
         <div className='volumeSkeleton'>
             <Skeleton
                 variant='circular'
-                width={30}
-                height={30}
+                width={28}
+                height={28}
             />
             <Skeleton
                 className='slider'
@@ -32,36 +32,50 @@ const ClientLoading = () => (
     </Paper>
 );
 
+const getGroupCounts = () => {
+    const groupCounts = localStorage.getItem('groupCounts');
+    if (!groupCounts || groupCounts === '') {
+        return [2];
+    } else {
+        return JSON.parse(groupCounts);
+    }
+};
+
 const GroupsLoading = ({ isLoading, setLoadingAnimationShowing }) => {
-    const clients = [0, 1];
+    const groups = getGroupCounts();
 
     return (
         <div
             className={`groups groupsLoading ${isLoading ? '' : 'groupsHidden'}`}
             onTransitionEnd={() => setLoadingAnimationShowing(false)}
         >
-            <Paper
-                className='group'
-                elevation={3}
-            >
-                <div className='info'>
-                    <p className='name'>
+            {groups.map((groupCount, i) => (
+                <Paper
+                    className='group'
+                    elevation={3}
+                    key={i}
+                >
+                    <div className='info'>
+                        <p className='name'>
+                            <Skeleton
+                                variant='text'
+                                width={120}
+                                height={50}
+                            />
+                        </p>
                         <Skeleton
-                            variant='text'
-                            width={120}
+                            variant='rounded'
+                            width={150}
                             height={50}
                         />
-                    </p>
-                    <Skeleton
-                        variant='rounded'
-                        width={150}
-                        height={50}
-                    />
-                </div>
-                <div className='clients'>
-                    {clients.map(c => <ClientLoading key={c} />)}
-                </div>
-            </Paper>
+                    </div>
+                    <div className='clients'>
+                        {Array.from({ length: groupCount })
+                            .map((_, y) => <ClientLoading key={y} />)
+                        }
+                    </div>
+                </Paper>
+            ))}
         </div>
     );
 };
