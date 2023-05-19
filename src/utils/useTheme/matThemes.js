@@ -1,11 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-const common = {
-    transparent: {
-        main: '#ffffff79',
-    },
-};
-
 const defaultTheme = createTheme({
     typography: {
         fontFamily: 'Space Grotesk'
@@ -18,7 +12,6 @@ const defaultTheme = createTheme({
         secondary: {
             main: '#FBBA89',
         },
-        ...common,
     },
 });
 const roseTheme = createTheme({
@@ -33,7 +26,6 @@ const roseTheme = createTheme({
         secondary: {
             main: '#D08858',
         },
-        ...common,
     },
 });
 const eightiesTheme = createTheme({
@@ -48,7 +40,6 @@ const eightiesTheme = createTheme({
         secondary: {
             main: '#05F2DB',
         },
-        ...common,
     },
 });
 const tropicTheme = createTheme({
@@ -63,7 +54,6 @@ const tropicTheme = createTheme({
         secondary: {
             main: '#D99E89',
         },
-        ...common,
     },
 });
 

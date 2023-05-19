@@ -71,7 +71,7 @@ export const groupsReducer = (state, action) => {
         sendRequest(REQUESTS.server.deleteClient, params);
 
     } else {
-        console.error(`Groups Event not implimented`, state, action)
+        console.warn(`Groups Event not implimented`, state, action);
     }
 
     return { ...state };
