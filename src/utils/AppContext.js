@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { REQUESTS } from './Constants.js';
-import { reducer, streamsReducer } from './Reducer.js';
+import { clientsReducer, groupsReducer, streamsReducer } from './Reducer.js';
 import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
 
 export const AppContext = createContext();
@@ -10,20 +10,23 @@ export const AppContextProvider = ({ children, theme }) => {
     const [status, setStatus] = useState(WEBSOCKET_STATUS.connecting);
 
     const [server, setServer] = useState([]);
-    const [groups, disbatch] = useReducer(reducer, {});
+    const [groups, disbatchGroups] = useReducer(groupsReducer, {});
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
+    const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
     const onServerUpdate = (update) => {
         setServer(update.server.server);
 
         disbatchStreams({ type: 'init', streams: update.server.streams });
-        disbatch({ type: 'init', groups: update.server.groups });
+        disbatchGroups({ type: 'init', groups: update.server.groups });
+        disbatchClients({ type: 'init', groups: update.server.groups });
 
         setIsLoading(false);
     }
 
     const onMessage = useCallback((message) => {
         const data = JSON.parse(message.data);
+
         const isRequestResponse = data.id !== undefined;
         if (isRequestResponse) {
             const event = requests[data.id];
@@ -35,16 +38,18 @@ export const AppContextProvider = ({ children, theme }) => {
             const params = data.params;
 
             if (event === 'Server.OnUpdate') {
-                onServerUpdate(params)
-            } else if (event.startsWith('Group.On') || event.startsWith('Client.On')) {
-                disbatch({ type: event, params });
+                onServerUpdate(params);
+            } else if (event.startsWith('Group.On')) {
+                disbatchGroups({ type: event, params });
+            } else if (event.startsWith('Client.On')) {
+                disbatchClients({ type: event, params });
             } else if (event.startsWith('Stream.On')) {
                 disbatchStreams({ type: event, params });
             }
 
         }
 
-    }, [disbatchStreams, disbatch]);
+    }, [disbatchStreams, disbatchGroups]);
 
     useEffect(() => {
         console.debug('Websocket status', status);
@@ -56,12 +61,12 @@ export const AppContextProvider = ({ children, theme }) => {
         }
     }, [status]);
 
-    // useEffect(() => {
+    useEffect(() => {
         // Refresh current state and create new websocket when browser comes back into focus
-        // window.addEventListener('focus', () => {
-        //     connectToSnapcastServer(onMessage, setStatus);
-        // });
-    // }, [onMessage]);
+        window.addEventListener('focus', () => {
+            sendRequest(REQUESTS.server.getStatus, null, true);
+        });
+    }, []);
 
     useEffect(() => {
         connectToSnapcastServer(onMessage, setStatus);
@@ -73,11 +78,14 @@ export const AppContextProvider = ({ children, theme }) => {
                 streams,
                 server,
                 groups,
+                clients,
                 isLoading,
                 disbatchStreams,
-                disbatch,
+                disbatchGroups,
+                disbatchClients,
                 webSocketStatus: status,
                 theme,
+                status,
             }}
         >
             {children}

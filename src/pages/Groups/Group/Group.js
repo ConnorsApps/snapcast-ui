@@ -2,32 +2,37 @@ import './Group.scss';
 import { MenuItem, Paper, Select, useTheme } from '@mui/material';
 import Stream from '../../../components/Stream/Stream';
 import Client from './Client/Client';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../utils/AppContext';
 import { REQUESTS } from '../../../utils/Constants';
 import { VolumeIcon } from '../../../components/VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
-    const { streams, disbatch } = useContext(AppContext);
+    const { streams, clients, disbatchGroups } = useContext(AppContext);
     const theme = useTheme();
+    const [shouldShow, setShouldShow] = useState(true);
 
-    const clients = Object.values(group.clients ?? []).filter(clients => clients.connected);
+    useEffect(() => {
+        const numClients = group.clients.map(clientId => clients[clientId])
+            .filter(clients => clients.connected).length;
+        setShouldShow(numClients > 0);
+    }, [group, clients]);
 
     const setStream = (event) => {
         const selectedStream = event.target.value;
         const params = { id: group.id, stream_id: selectedStream };
 
         if (selectedStream !== group.stream_id)
-            disbatch({ type: REQUESTS.group.setStream, params });
+            disbatchGroups({ type: REQUESTS.group.setStream, params });
     };
 
-    if (clients.length === 0) {
+    if (!shouldShow) {
         return <></>;
     };
 
     const toggleMute = () => {
         const params = { id: group.id, mute: !group.mute };
-        disbatch({ type: REQUESTS.group.setMute, params })
+        disbatchGroups({ type: REQUESTS.group.setMute, params })
     };
 
     return (
@@ -54,6 +59,7 @@ const Group = ({ group, number }) => {
                         onChange={setStream}
                         className='streamSelector'
                         aria-label='Select Stream'
+                        sx={{height: '3.5rem'}}
                     >
                         {streams.map((stream, i) => (
                             <MenuItem
@@ -73,9 +79,9 @@ const Group = ({ group, number }) => {
 
             </div>
             <div className={`clients ${group.mute ? 'groupMuted' : ''}`}>
-                {clients.map((client, i) =>
+                {group.clients.map((clientId, i) =>
                     <Client
-                        client={client}
+                        clientId={clientId}
                         key={i}
                     />
                 )}

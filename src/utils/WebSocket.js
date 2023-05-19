@@ -1,5 +1,5 @@
-const MAX_RETRIES = 10;
-const RETRY_WAIT = 2;
+const MAX_RETRIES = 5;
+const RETRY_WAIT = 4;
 const TIMEOUT = 15;
 
 const host = process.env.REACT_APP_SNAPCAST_HOST;
@@ -39,7 +39,7 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
             onStatus(WEBSOCKET_STATUS.failed);
             console.error(`Unable to connect to web socket after ${MAX_RETRIES * RETRY_WAIT} seconds.`);
         } else {
-            connectToSnapcastServer(onMessage, onStatus);
+            connectToSnapcastServer(onMessage, onStatus, ++retries);
         }
     }
 
@@ -58,6 +58,7 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
     }
 
     ws.onopen = () => {
+        retries = 0;
         onStatus(getStatus());
     };
 
@@ -72,7 +73,7 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
         onStatus(getStatus());
 
         console.log(`Websocket closed, retring in ${RETRY_WAIT} seconds. Event ${JSON.stringify(event)}`);
-        setTimeout(connectToSnapcastServer(onMessage, onStatus), RETRY_WAIT * 1000);
+        setTimeout(retry, RETRY_WAIT * 1000);
     };
 }
 

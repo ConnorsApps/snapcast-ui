@@ -6,7 +6,8 @@
     user-select: none;
 
     .disabled {
-        color: #bdbdbd;
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
     }
 
     .icon {

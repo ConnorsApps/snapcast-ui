@@ -1,4 +1,3 @@
-
 export const REQUESTS = {
     client: {
         getStatus: 'Client.GetStatus',
@@ -49,3 +48,4 @@ export const EVENTS = {
         setProperty: 'Stream.SetProperty',
     },
 };
+
