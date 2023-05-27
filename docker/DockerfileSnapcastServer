@@ -17,6 +17,6 @@ RUN apt install ./snapserver.deb -y
 
 RUN rm -rf /var/lib/apt/lists/*
 
-COPY .docker/snapserver.conf /etc/snapserver.conf
+COPY docker/snapserver.conf /etc/snapserver.conf
 
 ENTRYPOINT ["/usr/bin/snapserver", "--logging.sink=stdout"]
