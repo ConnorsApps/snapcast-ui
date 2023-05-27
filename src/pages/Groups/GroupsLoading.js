@@ -1,8 +1,8 @@
 import { Paper, Skeleton } from '@mui/material';
 import './GroupsLoading.scss';
 
-const ClientLoading = () => (
-    <Paper className='viewClient'>
+const ClientLoading = ({ clientsCount }) => (
+    <Paper className={`client ${clientsCount > 4 ? 'clientCondensed' : ''}`}>
         <div className='title'>
             <Skeleton
                 variant='rounded'
@@ -43,6 +43,7 @@ const getGroupCounts = () => {
 
 const GroupsLoading = ({ isLoading, setLoadingAnimationShowing }) => {
     const groups = getGroupCounts();
+    const clientsCount = groups.reduce((sum, val) => sum + val);
 
     return (
         <div
@@ -71,7 +72,7 @@ const GroupsLoading = ({ isLoading, setLoadingAnimationShowing }) => {
                     </div>
                     <div className='clients'>
                         {Array.from({ length: groupCount })
-                            .map((_, y) => <ClientLoading key={y} />)
+                            .map((_, y) => <ClientLoading key={y}  clientsCount={clientsCount} />)
                         }
                     </div>
                 </Paper>

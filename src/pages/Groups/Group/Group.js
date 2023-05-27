@@ -60,7 +60,7 @@ const Group = ({ group, number }) => {
                         aria-label='Select Stream'
                         sx={{height: '3.5rem'}}
                     >
-                        {streams.map((stream, i) => (
+                        {Object.values(streams).map((stream, i) => (
                             <MenuItem
                                 value={stream.id}
                                 divider={true}

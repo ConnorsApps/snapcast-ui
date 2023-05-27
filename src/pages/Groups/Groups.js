@@ -8,11 +8,11 @@ import './Groups.scss';
 
 const Groups = () => {
     const { groups, isLoading, status } = useContext(AppContext);
-    // For smooth fade transition
+    // For smooth fade out transition
     const [loadingAnimationShowing, setLoadingAnimationShowing] = useState(isLoading);
     const groupList = Object.values(groups ?? {});
 
-    if (loadingAnimationShowing) {
+    if (isLoading || loadingAnimationShowing) {
         return (
             <GroupsLoading
                 isLoading={isLoading}

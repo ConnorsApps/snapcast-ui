@@ -64,9 +64,10 @@ export const AppContextProvider = ({ children, theme }) => {
     useEffect(() => {
         // Refresh current state and create new websocket when browser comes back into focus
         window.addEventListener('focus', () => {
+            setIsLoading(true);
             sendRequest(REQUESTS.server.getStatus, null, true);
-        });
-    }, []);
+        }); 
+    }, [setIsLoading]);
 
     useEffect(() => {
         connectToSnapcastServer(onMessage, setStatus);

@@ -134,8 +134,10 @@ export const streamsReducer = (state, action) => {
     const event = action.type;
 
     if (event === 'init') {
+        const streams = {};
+        Object.values(action.streams).map(stream => streams[stream.id] = stream);
 
-        return action.streams;
+        return streams;
 
     } else if (event === EVENTS.stream.onUpdate) {
 
@@ -148,6 +150,6 @@ export const streamsReducer = (state, action) => {
     } else {
         console.warn(`Streams Event not implimented`, state, action)
     }
-
+    
     return { ...state };
 }
