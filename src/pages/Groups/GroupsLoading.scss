@@ -1,0 +1,29 @@
+.groupsLoading {
+    .clientName {
+        margin-left: .5rem;
+    }
+
+    .volumeSkeleton {
+        display: flex;
+        align-items: center;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
+
+        .slider {
+            margin-left: 1rem;
+        }
+    }
+
+    .group {
+        background-color: lightgray;
+
+        .clients {
+            gap: .5rem;
+        }
+    }
+}
+
+.groupsHidden {
+    opacity: .7;
+    transition: all 300ms linear 100ms;
+}

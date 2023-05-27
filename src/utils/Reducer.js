@@ -1,12 +1,38 @@
 import { EVENTS, REQUESTS } from "./Constants";
 import { sendRequest } from "./WebSocket";
 
+const clientsGroupId = (clientId, state) => {
+    for (const group of Object.values(state)) {
+        if (group.clients.includes(clientId)) {
+            return group.id;
+        }
+    }
+};
+
 export const groupsReducer = (state, action) => {
     const params = action.params;
     const event = action.type;
 
     if (event === 'init') {
-        return action.groups;
+        // Use object instead of array for easy access later
+        const groups = {};
+        // Store number of groups and clients for loading animation
+        let loadingGroups = [];
+
+        action.groups.forEach(group => {
+            const clients = [];
+            group.clients.forEach(client => clients.push(client.id));
+
+            const connectedClients = group.clients.filter(c => c.connected);
+            if (connectedClients.length > 0)
+                loadingGroups.push(connectedClients.length);
+
+            groups[group.id] = { ...group, clients };
+        });
+        localStorage.setItem('groupCounts', JSON.stringify(loadingGroups));
+        
+        return groups;
+
     } else if (event === EVENTS.group.onMute) {
         state[params.id].mute = params.mute;
 
@@ -34,33 +60,20 @@ export const groupsReducer = (state, action) => {
     } else if (event === REQUESTS.group.setClients) {
 
         sendRequest(REQUESTS.group.setClients, params);
-    } else {
-        console.error(`Groups Event not implimented`, state, action)
-    }
 
-    return { ...state };
-}
-
-export const streamsReducer = (state, action) => {
-    const params = action.params;
-    const event = action.type;
-
-    if (event === 'init') {
-
-        return action.streams;
-
-    } else if (event === EVENTS.stream.onUpdate) {
-
-        state[params.id] = params.stream;
-
-    } else if (event === EVENTS.stream.onProperties) {
-        const stream = state[params.id];
-
-        console.log('stream ', stream, 'params', params)
+    } else if (REQUESTS.server.deleteClient) {
+        const groupId = clientsGroupId(params.id, state);
+        if (!groupId) {
+            console.error("Unable to find client's group", params);
+            return state;
+        }
+        delete state[groupId][params.id];
+        sendRequest(REQUESTS.server.deleteClient, params);
 
     } else {
-        console.warn(`Streams Event not implimented`, state, action)
+        console.warn(`Groups Event not implimented`, state, action);
     }
+
     return { ...state };
 }
 
@@ -69,14 +82,21 @@ export const clientsReducer = (state, action) => {
     const event = action.type;
 
     if (event === 'init') {
-        return action.clients;
+        const clients = {};
+
+        action.groups.forEach(group =>
+            group.clients.forEach(client =>
+                clients[client.id] = client
+            )
+        );
+        return clients;
     } else if (event === EVENTS.client.onVolumeChanged) {
 
         state[params.id].config.volume = params.volume;
 
     } else if (event === EVENTS.client.onConnect || event === EVENTS.client.onDisconnect) {
 
-        state[params.id] = { ...params, id: params.id };
+        state[params.id] = params.client;
 
     } else if (event === EVENTS.client.onLatencyChanged) {
 
@@ -87,14 +107,10 @@ export const clientsReducer = (state, action) => {
         state[params.id].config.name = params.name;
 
     } else if (event === REQUESTS.client.setVolume) {
+        params.volume.percent = Math.round(params.volume.percent);
 
         state[params.id].config.volume = params.volume;
         sendRequest(REQUESTS.client.setVolume, params);
-
-    } else if (event === REQUESTS.server.deleteClient) {
-
-        delete state[params.id];
-        sendRequest(REQUESTS.server.deleteClient, params);
 
     } else if (event === REQUESTS.client.setLatency) {
 
@@ -105,26 +121,35 @@ export const clientsReducer = (state, action) => {
 
         state[params.id].config.name = params.name;
         sendRequest(REQUESTS.client.setName, params);
+
     } else {
-        console.warn(`Client Event not implimented`, state, action)
+        console.warn('Client Event not implimented', state, action)
     }
 
     return { ...state };
 }
 
-export const stateFromStatus = (result) => {
-    const server = result.server.server;
+export const streamsReducer = (state, action) => {
+    const params = action.params;
+    const event = action.type;
 
-    const streams = {};
-    result.server.streams.map(stream => streams[stream.id] = stream);
+    if (event === 'init') {
+        const streams = {};
+        Object.values(action.streams).map(stream => streams[stream.id] = stream);
 
-    const groups = {};
-    result.server.groups.map(group => groups[group.id] = group);
+        return streams;
 
-    const clients = {};
-    result.server.groups.forEach(group => group.clients.forEach(client => {
-        clients[client.id] = { ...client, groupId: group.id }
-    }));
+    } else if (event === EVENTS.stream.onUpdate) {
 
-    return { server, streams, groups, clients };
+        state[params.id] = params.stream;
+
+    } else if (event === EVENTS.stream.onProperties) {
+        const stream = state[params.id];
+        console.log('todo impliment stream onProperties stream:', stream, 'params:', params);
+
+    } else {
+        console.warn(`Streams Event not implimented`, state, action)
+    }
+    
+    return { ...state };
 }

@@ -2,19 +2,20 @@ import './Group.scss';
 import { MenuItem, Paper, Select } from '@mui/material';
 import Stream from '../../../components/Stream/Stream';
 import Client from './Client/Client';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../utils/AppContext';
 import { REQUESTS } from '../../../utils/Constants';
 import { VolumeIcon } from '../../../components/VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
-    const { streams, clients: allClients, disbatchGroups } = useContext(AppContext);
+    const { streams, clients, disbatchGroups } = useContext(AppContext);
+    const [shouldShow, setShouldShow] = useState(true);
 
-    const streamList = Object.values(streams);
-
-    const clients = Object.values(allClients)
-        .filter(client => client.groupId === group.id)
-        .filter(clients => clients.connected);
+    useEffect(() => {
+        const numClients = group.clients.map(clientId => clients[clientId])
+            .filter(clients => clients.connected).length;
+        setShouldShow(numClients > 0);
+    }, [group, clients]);
 
     const setStream = (event) => {
         const selectedStream = event.target.value;
@@ -24,7 +25,7 @@ const Group = ({ group, number }) => {
             disbatchGroups({ type: REQUESTS.group.setStream, params });
     };
 
-    if (clients.length === 0) {
+    if (!shouldShow) {
         return <></>;
     };
 
@@ -37,6 +38,7 @@ const Group = ({ group, number }) => {
         <Paper
             className='group'
             elevation={3}
+            sx={{ backgroundColor: '#ffffff79' }}
         >
             <div className='info'>
                 <p className='name'> {group.name || `Group ${number}`} </p>
@@ -56,8 +58,9 @@ const Group = ({ group, number }) => {
                         onChange={setStream}
                         className='streamSelector'
                         aria-label='Select Stream'
+                        sx={{height: '3.5rem'}}
                     >
-                        {streamList.map((stream, i) => (
+                        {Object.values(streams).map((stream, i) => (
                             <MenuItem
                                 value={stream.id}
                                 divider={true}
@@ -65,7 +68,7 @@ const Group = ({ group, number }) => {
                                 key={i}
                             >
                                 <Stream
-                                    id={stream.id}
+                                    stream={stream}
                                 />
                             </MenuItem>
                         ))}
@@ -75,14 +78,12 @@ const Group = ({ group, number }) => {
 
             </div>
             <div className={`clients ${group.mute ? 'groupMuted' : ''}`}>
-                {clients
-                    .filter(client => client.connected)
-                    .map((client, i) =>
-                        <Client
-                            id={client.id}
-                            key={i}
-                        />
-                    )}
+                {group.clients.map((clientId, i) =>
+                    <Client
+                        clientId={clientId}
+                        key={i}
+                    />
+                )}
             </div>
         </Paper>
     )

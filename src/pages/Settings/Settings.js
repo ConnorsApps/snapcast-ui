@@ -28,11 +28,11 @@ const GroupSetting = ({ group, clients, number }) => {
                 />
             </div>
 
-            {clients.length === 0 && <p>No Clients</p>}
+            {clients.length === 0 && <p> No Clients </p>}
 
             <div className='clients'>
                 {clients.map((client, i) => (
-                    <ClientSetting client={client} key={i} />
+                    <ClientSetting client={client} groupId={group.id} key={i} />
                 ))
                 }
             </div>
@@ -45,9 +45,6 @@ const Settings = () => {
     const { groups, clients } = useContext(AppContext);
     const groupList = Object.values(groups ?? {});
 
-    const clientList = Object.values(clients || {})
-        .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec);
-
     return (
         <div className='settings'>
             {groupList.map((group, i) => (
@@ -55,7 +52,8 @@ const Settings = () => {
                     group={group}
                     key={i}
                     number={i + 1}
-                    clients={clientList.filter(c => c.groupId === group.id)}
+                    clients={group.clients.map(clientId => clients[clientId])
+                        .sort((a, b) => b.lastSeen.sec - a.lastSeen.sec)}
                 />
             ))}
         </div>

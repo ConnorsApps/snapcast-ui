@@ -1,5 +1,5 @@
-const MAX_RETRIES = 10;
-const RETRY_WAIT = 2;
+const MAX_RETRIES = 5;
+const RETRY_WAIT = 4;
 const TIMEOUT = 15;
 
 const host = process.env.REACT_APP_SNAPCAST_HOST;
@@ -14,7 +14,7 @@ export const WEBSOCKET_STATUS = {
     failed: 'failed',
 };
 
-const getWebsocketStatus = (ws) => {
+const getStatus = () => {
     const state = ws.readyState;
     let status;
 
@@ -28,11 +28,9 @@ const getWebsocketStatus = (ws) => {
         throw new Error('Unknown Websocket Status', state)
     }
     return status;
-}
+};
 
-const keepSocketAlive = () => setTimeout(() => sendRequest('Server.GetRPCVersion'), 20 * 1000);
-
-export const connectToSnapcastServer = (onMessage, onStatus, retries = 0, firstConnection = true) => {
+export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
     let hasRetried = false;
 
     const retry = () => {
@@ -41,7 +39,7 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0, firstC
             onStatus(WEBSOCKET_STATUS.failed);
             console.error(`Unable to connect to web socket after ${MAX_RETRIES * RETRY_WAIT} seconds.`);
         } else {
-            connectToSnapcastServer(onMessage, onStatus, ++retries, false);
+            connectToSnapcastServer(onMessage, onStatus, ++retries);
         }
     }
 
@@ -60,22 +58,19 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0, firstC
     }
 
     ws.onopen = () => {
-        if (firstConnection)
-            keepSocketAlive();
-
-        onStatus(getWebsocketStatus(ws));
         retries = 0;
+        onStatus(getStatus());
     };
 
     ws.onerror = (error) => {
-        onStatus(getWebsocketStatus(ws));
+        onStatus(getStatus());
         console.error('Websocket emitted error', error);
     };
 
     ws.onmessage = onMessage;
 
     ws.onclose = (event) => {
-        onStatus(getWebsocketStatus(ws));
+        onStatus(getStatus());
 
         console.log(`Websocket closed, retring in ${RETRY_WAIT} seconds. Event ${JSON.stringify(event)}`);
         setTimeout(retry, RETRY_WAIT * 1000);
@@ -88,9 +83,14 @@ export const sendRequest = (method, params, saveRequest) => {
 
     try {
         if (ws) {
-            ws.send(JSON.stringify({ id: requestId, jsonrpc: '2.0', method, params }));
+            ws.send(JSON.stringify({
+                id: requestId,
+                jsonrpc: '2.0',
+                method,
+                params
+            }));
         } else {
-            throw new Error("Websocket is undefined");
+            throw new Error('Websocket is undefined');
         }
 
     } catch (error) {

@@ -1,7 +1,11 @@
-.viewClient {
+.client {
     display: flex;
-    padding: 1rem;
     flex-direction: column;
+    padding: 1rem;
+
+    .volume-slider {
+        padding-top: .5rem;
+    }
 
     .title {
         display: flex;
@@ -14,8 +18,12 @@
             font-size: 2rem;
         }
     }
+}
+
+.clientCondensed {
+    padding: '1rem 1rem .5rem 1rem';
 
     .volume-slider {
-        padding-top: 1rem;
+        padding-top: 0;
     }
 }

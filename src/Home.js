@@ -38,11 +38,16 @@ const Home = () => {
                     </div>
                 </Toolbar>
             </AppBar>
-            {page === 'groups' && <Groups />}
-            {page === 'settings' && <Settings />}
 
+            {webSocketStatus === WEBSOCKET_STATUS.failed ? (
+                <ErrorConnecting />
+            ): (
+                <>
+                {page === 'groups' && <Groups />}
+                {page === 'settings' && <Settings />}
+                </>
+            )}
             <Loader isLoading={isLoading} />
-            {webSocketStatus === WEBSOCKET_STATUS.failed && <ErrorConnecting />}
         </div>
     )
 };

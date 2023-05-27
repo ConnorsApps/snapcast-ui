@@ -35,7 +35,7 @@ You can develop Snapcast UI locally using Docker Compose with mock Snapcast clie
 3. Run `docker compose up`
 4. Open http://localhost:3000/ in your web browser.
 
-### Customisation
+### Customization
 
 **Themes**: `default`, `roses`, `tropic`, `80s`
 
@@ -79,7 +79,7 @@ services:
             - "3000:3000"
 ```
 
-### Using npm Serve
+### Using npm serve
 
 To build and serve the static files locally, follow these steps:
 

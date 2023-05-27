@@ -1,7 +1,8 @@
 
 import { IoVolumeMute, IoVolumeLow, IoVolumeMedium, IoVolumeHigh } from 'react-icons/io5'
-import { Slider } from '@mui/material';
+import Slider from '@mui/material/Slider';
 import './VolumeSlider.scss';
+import { useCallback } from 'react';
 
 export const VolumeIcon = ({ percent, muted }) => {
     if (percent === 0 || muted) {
@@ -15,7 +16,7 @@ export const VolumeIcon = ({ percent, muted }) => {
     }
 }
 
-// FROM https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+// From https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
 const iOS = () => {
     const platform = navigator.userAgentData?.platform || navigator.platform;
 
@@ -27,24 +28,29 @@ const iOS = () => {
         'iPhone',
         'iPod'
     ].includes(platform)
-    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+        || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     // iPad on iOS 13 detection
 }
 const isIOS = iOS();
 
 const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
-    const handleChange = (event, newValue) => {
+    const handleChange = useCallback((event, newValue) => {
         // Slider component workaround for Safari https://github.com/mui/material-ui/issues/31869
         if (event.type === 'mousedown' && isIOS) {
             return;
         }
         setVolume({ percent: newValue, muted: volume.muted })
-    };
+    }, [volume, setVolume]);
+
+
+    const sliderClass = volume.muted ? 'disabled' : '';
 
     return (
         <div className='volume-slider'>
             <button
-                onClick={() => setVolume({ percent: volume.percent, muted: !volume.muted })}
+                onClick={() => {
+                    setVolume({ percent: volume.percent, muted: !volume.muted })
+                }}
             >
                 <VolumeIcon
                     percent={volume.percent}
@@ -58,7 +64,7 @@ const VolumeSlider = ({ volume, setVolume, color = 'secondary' }) => {
                 onChange={handleChange}
                 color={color}
                 // Not using offical disabled field to still allow adjusting volume
-                className={volume.muted ? 'disabled' : ''}
+                className={sliderClass}
                 aria-label='Volume Slider'
             />
         </div>)
