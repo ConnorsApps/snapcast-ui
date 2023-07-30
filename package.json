@@ -1,25 +1,25 @@
 {
   "name": "snapcast-ui",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Connor Skees",
   "private": true,
   "license": "MIT",
   "dependencies": {
     "@canvas-fonts/comic-sans-ms": "^1.0.4",
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.10.6",
-    "@fontsource/changa": "^4.5.11",
-    "@fontsource/comic-neue": "^4.5.10",
-    "@fontsource/sansita": "^4.5.9",
-    "@fontsource/space-grotesk": "^4.5.13",
-    "@mui/material": "^5.12.3",
+    "@fontsource/changa": "^5.0.5",
+    "@fontsource/comic-neue": "^5.0.5",
+    "@fontsource/sansita": "^5.0.5",
+    "@fontsource/space-grotesk": "^5.0.5",
+    "@mui/material": "^5.14.2",
     "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0",
+    "react-icons": "^4.10.1",
     "react-scripts": "^5.0.1",
-    "sass": "^1.62.1",
-    "web-vitals": "^3.3.1"
+    "sass": "^1.64.1",
+    "web-vitals": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3"
   }
