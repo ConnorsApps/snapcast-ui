@@ -6,7 +6,7 @@ services:
         environment:
             REACT_APP_SNAPCAST_HOST: "ws://localhost:1780"
         build:
-            dockerfile: docker/DockerfileLocal
+            target: dev
         ports:
             - "3000:3000"
         volumes:
