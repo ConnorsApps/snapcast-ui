@@ -15,7 +15,8 @@ services:
 
     snapcast-server:
         build:
-            dockerfile: docker/DockerfileSnapcastServer
+            dockerfile: docker/DockerfileSnapcast
+            target: server
         ports:
             - "1780:1780"
             - "1704:1704"
@@ -25,32 +26,37 @@ services:
             - "--logfilter=warning"
             - "--instance=1"
         build:
-            dockerfile: docker/DockerfileSnapcastClient
+            dockerfile: docker/DockerfileSnapcast
+            target: client
 
     snapcast-client2:
         command:
             - "--logfilter=warning"
             - "--instance=2"
         build:
-            dockerfile: docker/DockerfileSnapcastClient
+            dockerfile: docker/DockerfileSnapcast
+            target: client
 
     snapcast-client3:
         command:
             - "--logfilter=warning"
             - "--instance=3"
         build:
-            dockerfile: docker/DockerfileSnapcastClient
+            dockerfile: docker/DockerfileSnapcast
+            target: client
 
     snapcast-client4:
         command:
             - "--logfilter=warning"
             - "--instance=4"
         build:
-            dockerfile: docker/DockerfileSnapcastClient
+            dockerfile: docker/DockerfileSnapcast
+            target: client
 
     snapcast-client5:
         command:
             - "--logfilter=warning"
             - "--instance=3"
         build:
-            dockerfile: docker/DockerfileSnapcastClient
+            dockerfile: docker/DockerfileSnapcast
+            target: client
