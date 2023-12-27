@@ -41,10 +41,10 @@ const Home = () => {
 
             {webSocketStatus === WEBSOCKET_STATUS.failed ? (
                 <ErrorConnecting />
-            ): (
+            ) : (
                 <>
-                {page === 'groups' && <Groups />}
-                {page === 'settings' && <Settings />}
+                    {page === 'groups' && <Groups />}
+                    {page === 'settings' && <Settings />}
                 </>
             )}
             <Loader isLoading={isLoading} />
