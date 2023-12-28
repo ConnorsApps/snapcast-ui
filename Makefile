@@ -3,12 +3,11 @@
 REACT_APP_HOME_TITLE := "Home Audio"
 REACT_APP_SNAPCAST_HOST := "ws://192.168.18.153:1780"
 IMAGE_REGISTRY := ""
-IMAGE_TAG := "1.1.2"
+IMAGE_TAG := "1.1.3"
 BUILD_PLATFORMS := "linux/arm64,linux/amd64"
 
-.PHONY: build-image
-
-build-image:
+.PHONY: build
+build:
 	-docker buildx rm snapcast-ui 2>/dev/null
 
 	docker buildx create --use --name snapcast-ui
