@@ -21,7 +21,7 @@ const Home = () => {
             style={{ backgroundImage: `url(${theme.backgroundImage})` }}
         >
             <AppBar className='appBar' position="static">
-                <Toolbar variant="regular">
+                <Toolbar sx={{ paddingY: '.5rem' }} variant="regular">
                     <h1> {title ?? 'Snapcast Audio'} </h1>
                     <div className='rightOptions'>
                         {page === 'settings' && <theme.Selector

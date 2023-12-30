@@ -70,7 +70,12 @@ export const AppContextProvider = ({ children, theme }) => {
     }, [setIsLoading]);
 
     useEffect(() => {
-        connectToSnapcastServer(onMessage, setStatus);
+        try {
+            connectToSnapcastServer(onMessage, setStatus);
+        } catch (error) {
+            console.error(error);
+        }
+        
     }, [onMessage, setStatus]);
 
     return (

@@ -32,6 +32,11 @@ const getStatus = () => {
 
 export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
     let hasRetried = false;
+    if (!host) {
+        onStatus(WEBSOCKET_STATUS.failed);
+        console.error('REACT_APP_SNAPCAST_HOST is required!');
+        return;
+    }
 
     const retry = () => {
         hasRetried = true;
