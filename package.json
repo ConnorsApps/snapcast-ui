@@ -16,6 +16,7 @@
     "@fontsource/sansita": "^5.0.17",
     "@fontsource/space-grotesk": "^5.0.15",
     "@mui/material": "^5.14.18",
+    "capacitor-plugin-safe-area": "^2.0.6",
     "date-fns": "^3.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sync": "npx cap sync",
+    "native": "npm run build && npm run sync"
   },
   "eslintConfig": {
     "extends": [

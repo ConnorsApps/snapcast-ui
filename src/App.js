@@ -6,7 +6,7 @@ import useTheme from './utils/useTheme/useTheme';
 
 const App = () => {
   const theme = useTheme();
-
+  
   return (
     <AppContextProvider theme={theme}>
       <ThemeProvider theme={theme.matTheme}>
