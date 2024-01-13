@@ -3,18 +3,7 @@ Snapcast UI is a static user interface built on Snapcast to control multi-room a
 
 A static UI built on [Snapcast](https://github.com/badaix/snapcast).
 
-<div style="display:flex;gap:10%">
-  <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/home.jpg" 
-    alt="Home Page" 
-    style="width: 45%;"
-  >
-  <img 
-    src="https://raw.githubusercontent.com/ConnorsApps/snapcast-ui/main/demo/settings.jpg" 
-    alt="Settings Page" 
-    style="width: 45%;"
-  >
-</div>
+![Demo](./demo/iphone-demo-joined.png)
 
 ## Overview
 
