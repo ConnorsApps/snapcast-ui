@@ -6,6 +6,9 @@
   "license": "MIT",
   "dependencies": {
     "@canvas-fonts/comic-sans-ms": "^1.0.4",
+    "@capacitor/cli": "^5.6.0",
+    "@capacitor/core": "^5.6.0",
+    "@capacitor/ios": "^5.6.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/changa": "^5.0.17",
@@ -13,6 +16,7 @@
     "@fontsource/sansita": "^5.0.17",
     "@fontsource/space-grotesk": "^5.0.15",
     "@mui/material": "^5.14.18",
+    "capacitor-plugin-safe-area": "^2.0.6",
     "date-fns": "^3.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sync": "npx cap sync",
+    "native": "npm run build && npm run sync"
   },
   "eslintConfig": {
     "extends": [
