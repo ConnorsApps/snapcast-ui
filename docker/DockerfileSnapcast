@@ -5,7 +5,7 @@ RUN dpkg --add-architecture armhf && \
     apt update && apt upgrade -y && \
     apt install -y wget
 
-FROM debian:bullseye-slim as server
+FROM debian:bullseye-slim AS server
 WORKDIR /app
 
 RUN apkArch="$(dpkg --print-architecture)"; \
@@ -25,7 +25,7 @@ COPY docker/snapserver.conf /etc/snapserver.conf
 ENTRYPOINT ["/usr/bin/snapserver", "--logging.sink=stdout"]
 
 
-FROM debian:bullseye-slim as client
+FROM debian:bullseye-slim AS client
 WORKDIR /app
 
 RUN apkArch="$(dpkg --print-architecture)"; \

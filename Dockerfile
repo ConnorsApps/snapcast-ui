@@ -1,4 +1,4 @@
-FROM node:20-alpine as build
+FROM node:22-alpine AS build
 WORKDIR /app
 
 ARG REACT_APP_HOME_TITLE
@@ -15,8 +15,8 @@ COPY ./public ./public
 
 RUN npm run build
 
-FROM node:20-alpine as dev
-WORKDIR /app
+FROM node:22-alpine AS dev
+WORKDIR /app 
 
 COPY package*.json ./
 RUN npm install
