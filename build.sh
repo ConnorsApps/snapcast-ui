@@ -1,7 +1,7 @@
 
 REACT_APP_HOME_TITLE="Home Audio"
 REACT_APP_SNAPCAST_HOST="ws://node-a.connorskees.com:1780"
-IMAGE_REGISTRY="registry.connorskees.com/lib/snapcast-listener"
+IMAGE_REGISTRY="registry.connorskees.com/lib/snapcast-ui"
 IMAGE_TAG="1.x.x"
 BUILD_PLATFORMS="linux/arm64,linux/amd64"
 
@@ -15,7 +15,6 @@ docker buildx build . \
 	--platform "${BUILD_PLATFORMS}" \
 	--tag "${IMAGE_REGISTRY}:latest" \
 	--tag "${IMAGE_REGISTRY}:${IMAGE_TAG}" \
-	--output type=registry \
 	--push
 
 docker buildx rm snapcast-ui
