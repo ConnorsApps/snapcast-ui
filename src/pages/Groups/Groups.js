@@ -1,5 +1,5 @@
 import { Paper } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Group from './Group/Group';
 import { AppContext } from '../../utils/AppContext';
 import GroupsLoading from './GroupsLoading';
@@ -10,7 +10,11 @@ const Groups = () => {
     const { groups, isLoading, status } = useContext(AppContext);
     // For smooth fade out transition
     const [loadingAnimationShowing, setLoadingAnimationShowing] = useState(isLoading);
-    const groupList = Object.values(groups ?? {});
+    const [groupList, setGroupList] = useState([]);
+
+    useEffect(() => {
+        setGroupList(Object.values(groups ?? {}))
+    }, [groups]);
 
     if (isLoading || loadingAnimationShowing) {
         return (

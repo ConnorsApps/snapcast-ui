@@ -2,20 +2,13 @@ import './Group.scss';
 import { MenuItem, Paper, Select } from '@mui/material';
 import Stream from '../../../components/Stream/Stream';
 import Client from './Client/Client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../../../utils/AppContext';
 import { REQUESTS } from '../../../utils/Constants';
 import { VolumeIcon } from '../../../components/VolumeSlider/VolumeSlider';
 
 const Group = ({ group, number }) => {
-    const { streams, clients, disbatchGroups } = useContext(AppContext);
-    const [shouldShow, setShouldShow] = useState(true);
-
-    useEffect(() => {
-        const numClients = group.clients.map(clientId => clients[clientId])
-            .filter(clients => clients.connected).length;
-        setShouldShow(numClients > 0);
-    }, [group, clients]);
+    const { streams, disbatchGroups } = useContext(AppContext);
 
     const setStream = (event) => {
         const selectedStream = event.target.value;
@@ -23,10 +16,6 @@ const Group = ({ group, number }) => {
 
         if (selectedStream !== group.stream_id)
             disbatchGroups({ type: REQUESTS.group.setStream, params });
-    };
-
-    if (!shouldShow) {
-        return <></>;
     };
 
     const toggleMute = () => {

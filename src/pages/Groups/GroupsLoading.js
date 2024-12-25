@@ -43,7 +43,10 @@ const getGroupCounts = () => {
 
 const GroupsLoading = ({ isLoading, setLoadingAnimationShowing }) => {
     const groups = getGroupCounts();
-    const clientsCount = groups.reduce((sum, val) => sum + val);
+    let clientsCount = 0;
+    if (groups.length !== 0) {
+        clientsCount = groups.reduce((sum, val) => sum + val);
+    }
 
     return (
         <div

@@ -14,7 +14,7 @@ export const AppContextProvider = ({ children, theme }) => {
     const [streams, disbatchStreams] = useReducer(streamsReducer, {});
     const [clients, disbatchClients] = useReducer(clientsReducer, {});
 
-    const onServerUpdate = (update) => {
+    const onServerUpdate = useCallback((update) => {
         setServer(update.server.server);
 
         disbatchStreams({ type: 'init', streams: update.server.streams });
@@ -22,7 +22,7 @@ export const AppContextProvider = ({ children, theme }) => {
         disbatchClients({ type: 'init', groups: update.server.groups });
 
         setIsLoading(false);
-    }
+    }, [setServer, disbatchStreams, disbatchGroups, disbatchClients, setIsLoading]);
 
     const onMessage = useCallback((message) => {
         const data = JSON.parse(message.data);
@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children, theme }) => {
 
         }
 
-    }, [disbatchStreams, disbatchGroups]);
+    }, [disbatchStreams, disbatchGroups, onServerUpdate]);
 
     useEffect(() => {
         console.debug('Websocket status', status);
@@ -66,7 +66,7 @@ export const AppContextProvider = ({ children, theme }) => {
         window.addEventListener('focus', () => {
             setIsLoading(true);
             sendRequest(REQUESTS.server.getStatus, null, true);
-        }); 
+        });
     }, [setIsLoading]);
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export const AppContextProvider = ({ children, theme }) => {
         } catch (error) {
             console.error(error);
         }
-        
+
     }, [onMessage, setStatus]);
 
     return (
