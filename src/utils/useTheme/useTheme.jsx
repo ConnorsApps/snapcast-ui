@@ -16,7 +16,7 @@ export const THEME_OPTIONS = [
   '80s'
 ];
 
-const envTheme = process.env.REACT_APP_THEME;
+const envTheme = import.meta.env.VITE_THEME;
 
 const useTheme = () => {
   const [theme, setTheme] = useState(localStorage.getItem('SNAPCAST_UI_THEME') || envTheme || 'default');

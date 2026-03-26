@@ -2,7 +2,7 @@ const MAX_RETRIES = 5;
 const RETRY_WAIT = 4;
 const TIMEOUT = 15;
 
-const host = process.env.REACT_APP_SNAPCAST_HOST;
+const host = import.meta.env.VITE_SNAPCAST_HOST;
 const websocketUrl = `${host}/jsonrpc`;
 let ws;
 let requestId = 0;
@@ -34,7 +34,7 @@ export const connectToSnapcastServer = (onMessage, onStatus, retries = 0) => {
     let hasRetried = false;
     if (!host) {
         onStatus(WEBSOCKET_STATUS.failed);
-        console.error('REACT_APP_SNAPCAST_HOST is required!');
+        console.error('VITE_SNAPCAST_HOST is required!');
         return;
     }
 

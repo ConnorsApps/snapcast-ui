@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
-import { REQUESTS } from './Constants.js';
-import { clientsReducer, groupsReducer, streamsReducer } from './Reducer.js';
-import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket.js';
+import { REQUESTS } from './Constants';
+import { clientsReducer, groupsReducer, streamsReducer } from './Reducer';
+import { requests, connectToSnapcastServer, WEBSOCKET_STATUS, sendRequest } from './WebSocket';
 
 export const AppContext = createContext();
 

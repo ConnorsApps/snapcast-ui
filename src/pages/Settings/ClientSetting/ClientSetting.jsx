@@ -7,7 +7,7 @@ import ConnectionIcon from '../../../components/ConnectionIcon/ConnectionIcon';
 import { REQUESTS } from '../../../utils/Constants';
 import { AiOutlinePlus, AiOutlineMinus, AiFillDelete, AiFillInfoCircle } from 'react-icons/ai';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import ClientInfoTable from './ClientInfoTable/ClientInfoTable.js';
+import ClientInfoTable from './ClientInfoTable/ClientInfoTable';
 
 const ClientSetting = ({ client, groupId }) => {
     const { disbatchGroups, disbatchClients, groups } = useContext(AppContext);

@@ -1,14 +1,13 @@
-version: '3'
 services:
     frontend:
         env_file:
             - "./.env"
         environment:
-            REACT_APP_SNAPCAST_HOST: "ws://localhost:1780"
+            VITE_SNAPCAST_HOST: "ws://localhost:1780"
         build:
             target: dev
         ports:
-            - "3000:3000"
+            - "5173:5173"
         volumes:
           - "/app/node_modules"
           - "./:/app/"

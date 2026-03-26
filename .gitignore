@@ -10,7 +10,7 @@
 .env
 build-local.sh
 # production
-/build
+/dist
 
 # misc
 .DS_Store
