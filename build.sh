@@ -1,6 +1,7 @@
 
 VITE_HOME_TITLE="Home Audio"
-VITE_SNAPCAST_HOST="ws://audio.connorskees.com:1780"
+# VITE_SNAPCAST_HOST="ws://audio.connorskees.com:1780"
+# VITE_SNAPCAST_HOST defaults to ws://<browser hostname>:1780
 IMAGE_REGISTRY="connorsapps/snapcast-ui"
 IMAGE_TAG="latest"
 BUILD_PLATFORMS="linux/arm64,linux/amd64"
