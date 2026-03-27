@@ -2,8 +2,9 @@ services:
     frontend:
         env_file:
             - "./.env"
-        environment:
-            VITE_SNAPCAST_HOST: "ws://localhost:1780"
+        # VITE_SNAPCAST_HOST defaults to ws://<browser hostname>:1780
+        # environment:
+        #     VITE_SNAPCAST_HOST: "ws://localhost:1780"
         build:
             target: dev
         ports:

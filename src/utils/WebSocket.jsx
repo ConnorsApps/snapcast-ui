@@ -2,7 +2,7 @@ const MAX_RETRIES = 5;
 const RETRY_WAIT = 4;
 const TIMEOUT = 15;
 
-const host = import.meta.env.VITE_SNAPCAST_HOST;
+const host = import.meta.env.VITE_SNAPCAST_HOST || `ws://${window.location.hostname}:1780`;
 const websocketUrl = `${host}/jsonrpc`;
 let ws;
 let requestId = 0;

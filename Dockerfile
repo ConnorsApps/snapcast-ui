@@ -27,6 +27,6 @@ ENTRYPOINT [ "npm", "run", "dev", "--", "--host", "0.0.0.0" ]
 FROM nginx:alpine-slim
 WORKDIR /app
 
-COPY --from=build /app/dist ./dist
+COPY --chmod=755 --from=build /app/dist ./dist
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
